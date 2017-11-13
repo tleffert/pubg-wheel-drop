@@ -25,8 +25,6 @@ export class WheelComponent implements OnInit {
   constructor() { this.wheelPower = 2;}
 
   ngOnInit() {
-      swal("fuck")
-
       this.init = true;
       this.wheelSegments = [];
 
@@ -110,51 +108,32 @@ export class WheelComponent implements OnInit {
 
 
   spin() : void {
-      this.wheel.animation['callbackFinished'] = this.announceLocation();
-      // Ensure that spinning can't be clicked again while already running.
-      if (!this.wheelSpinning) {
-          // Based on the power level selected adjust the number of spins for the wheel, the more times is has
-          // to rotate with the duration of the animation the quicker the wheel spins.
-          if (this.wheelPower == 1)
-          {
-              this.wheel.animation.spins = 2;
-          }
-          else if (this.wheelPower == 2)
-          {
-              this.wheel.animation.spins = 5;
-          }
-          else if (this.wheelPower == 3)
-          {
-              this.wheel.animation.spins = 8;
-          }
-
-          // Begin the spin animation by calling startAnimation on the wheel object.
-          this.wheel.startAnimation();
-          // Set to true so that power can't be changed and spin button re-enabled during
-          // the current animation. The user will have to reset before spinning again.
-          this.wheelSpinning = true;
-      }
-      this.init = false;
+      // Begin the spin animation by calling startAnimation on the wheel object.
+      this.wheel.startAnimation();
+      // Set to true so that power can't be changed and spin button re-enabled during
+      // the current animation. The user will have to reset before spinning again.
   }
 
-  announceLocation() : void {
+  announceLocation(winningLocation?) : void {
+      let winner = this.wheel.getIndicatedSegment();
+      console.log("THIS IS THE WINNER", winner.text, winner);
 
-    //   let winner;
-    //   if(this.wheel) {
-    //       winner = this.wheel.getIndicatedSegment();
-    //       swal({
-    //           title: 'Here you go killing again',
-    //           text: winner.text,
-    //           type: 'info',
-    //           confirmButtonText: 'The Wheel Provides'
-    //       });
-    //   }
+      swal({
+          title: 'You\'re going to Sunny .... ',
+          text: winner.text + "!!!",
+          type: 'info',
+          confirmButtonText: 'The Wheel Provides',
+          imageUrl: '/assets/gatka.png',
+          imageWidth: 400,
+          imageHeight: 200,
+          imageAlt: 'Custom image',
+      });
+
 
   }
 
 
   reset() : void {
-      this.initWheel();
       this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
       this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
       this.wheel.draw();                // Call draw to render changes to the wheel.
@@ -162,7 +141,7 @@ export class WheelComponent implements OnInit {
   }
 
   initWheel(initText?) : void {
-      this.init = true;
+    //   this.init = true;
       this.wheel = new Winwheel({
          'numSegments'       : this.wheelSegments.length || 1,         // Specify number of segments.
          'outerRadius'       : 200,       // Set outer radius so wheel fits inside the background.
@@ -180,13 +159,15 @@ export class WheelComponent implements OnInit {
          'textFillStyle'     : 'black',
          'fillStyle' : '#eadec4',
          'pointerAngle' : 90,
+        //  'callbackFinished' : this.announceLocation,
+
          'segments' : initText || this.wheelSegments,
          'animation' :                   // Specify the animation to use.
          {
              'type'     : 'spinToStop',
              'duration' : 5,     // Duration in seconds.
              'spins'    : 8,     // Number of complete spins.
-             'onComplete' : this.announceLocation()
+             'callbackFinished' : () => {this.announceLocation('sfdsf')}
          }
      });
   }

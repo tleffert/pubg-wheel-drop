@@ -19,3 +19,11 @@ body {
         while the background image is loading */
      background-color: #464646;
 }
+
+.swal2-container {
+  z-index: 1000;
+}
+
+.swal2-modal {
+    position: initial !important;
+}

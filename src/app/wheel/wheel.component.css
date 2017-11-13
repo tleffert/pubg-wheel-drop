@@ -39,5 +39,9 @@
 .rules-list {
     font-size: 12px;
     list-style: none;
+}
 
+.location-preview {
+    width : 450px !important;
+    height : 450px !important;
 }
