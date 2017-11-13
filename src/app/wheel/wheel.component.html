@@ -1,0 +1,149 @@
+<div class="container wheel-main">
+    <div>
+        <div>
+            <img src="/assets/generatedtext.png"/>
+        </div>
+
+    </div>
+    <div class="wheel-main-container">
+        <div class="row">
+            <div class="wheel-selection col-md-5 border border-secondary rounded">
+                <div class="spice1 rounded mt-5">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <button class="btn btn-sm"
+                            (click)="addOptions(locations1)"
+                            >
+                                Add All
+                            </button>
+                        </div>
+                        <div class="spice-level offset-4 row">
+                            <div class="col-md-1">
+                                <img src="/assets/icons8-chili-pepper.png"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spice row">
+                        <div *ngFor="let location of locations1" class="col-md-3">
+                            <button class="btn btn-secondary btn-sm btn-block"
+                            (click)="addOption(location)"
+
+                            >
+                                {{location.text}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spice2 rounded mt-5">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <button class="btn btn-sm"
+                            (click)="addOptions(locations2)"
+                            >
+                                Add All
+                            </button>
+                        </div>
+                        <div class="spice-level offset-4 row">
+                            <div class="col-md-1">
+                                <img src="/assets/icons8-chili-pepper.png"/>
+                            </div>
+                            <div class="col-md-1">
+                                <img src="/assets/icons8-chili-pepper.png"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spice row">
+                        <div *ngFor="let location of locations2" class="col-md-3">
+                            <button class="btn btn-secondary btn-sm btn-block"
+                            (click)="addOption(location)"
+
+                            >
+                                {{location.text}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spice3 rounded mt-5">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <button class="btn btn-sm"
+                            (click)="addOptions(locations3)"
+                            >
+                                Add All
+                            </button>
+                        </div>
+                        <div class="spice-level offset-4 row">
+                            <div class="col-md-1">
+                                <img src="/assets/icons8-chili-pepper.png"/>
+                            </div>
+                            <div class="col-md-1">
+                                <img src="/assets/icons8-chili-pepper.png"/>
+                            </div>
+                            <div class="col-md-1">
+                                <img src="/assets/icons8-chili-pepper.png"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spice row">
+                        <div *ngFor="let location of locations3" class="col-md-3">
+                            <button class="btn btn-secondary btn-sm btn-block"
+                            (click)="addOption(location)"
+                            >
+                                {{location.text}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wheel col-md-5 offset-2 border border-secondary rounded">
+                <div class="the_wheel">
+                    <canvas id="canvas" width="500" height="500" (click)="spin();" >
+                        <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
+                    </canvas>
+                </div>
+                <div id="spin-wheel" class="col-md-1 offset-5">
+                    <button class="btn btn-primary btn-sm" (click)="spin();"><span>SPIN</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="wheel-rules-panel border border-secondary rounded col-md-5">
+                <div class="offset-4">
+                    <h2>RULES</h2>
+                </div>
+                <div>
+                    <ul class="rules-list">
+                        <li>
+                            <span>Always follow the Wheel</span>
+                        </li>
+                        <li >
+                            <span><b>No looting</b> till you've reachced location specified by the Wheel</span>
+                        </li>
+                        <li >
+                            <span>The Wheel Provides</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="inspiration" class="col-md-5 offset-2 border border-secondary rounded">
+                <div class="offset-4">
+                    <h2>Noteables</h2>
+                </div>
+                <div>
+                    <ul class="rules-list">
+                        <li>
+                            <span>Inspired by : <a href="http://pubg.megachris.tv/">http://pubg.megachris.tv/</a></span>
+                        </li>
+                        <li >
+                            <span>Wheel Tech : <a href="http://dougtesting.net/">http://dougtesting.net/</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

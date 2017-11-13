@@ -1,0 +1,43 @@
+.the_wheel {
+    background-image: url("/assets/murder-wheel-back.png");
+    margin-left: -23px;
+}
+
+.wheel, .wheel-selection, .wheel-rules-panel, #inspiration {
+    background-color: rgba(255, 255, 255, 0.84);
+}
+
+.wheel-selection .spice {
+    margin-top: .5em;
+}
+
+.wheel-selection .btn {
+
+}
+
+.wheel-selection .spice1 {
+}
+
+.wheel-selection .spice1 .btn {
+    background-color: #1d5d1d;
+}
+
+.wheel-selection .spice2 {
+}
+
+.wheel-selection .spice2 .btn {
+    background-color: #ea9904;
+}
+
+.wheel-selection .spice3 {
+}
+
+.wheel-selection .spice3 .btn {
+    background-color: #e02626;
+}
+
+.rules-list {
+    font-size: 12px;
+    list-style: none;
+
+}
