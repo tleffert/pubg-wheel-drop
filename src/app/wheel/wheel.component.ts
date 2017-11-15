@@ -22,9 +22,12 @@ export class WheelComponent implements OnInit {
 
     private init : boolean;
 
+    private toggleLocationSelect : boolean;
+
   constructor() { this.wheelPower = 2;}
 
   ngOnInit() {
+      this.toggleLocationSelect = true;
       this.init = true;
       this.wheelSegments = [];
 
@@ -33,7 +36,7 @@ export class WheelComponent implements OnInit {
           {text : 'Gatka Radio', spice : 1},
           {text : 'Hospital', spice : 1},
           {text : 'Farm', spice : 1},
-          {text : 'Quary', spice : 1},
+          {text : 'Quarry', spice : 1},
           {text : 'East Bridge', spice : 1},
           {text : 'West Bridge', spice : 1},
           {text : 'Swamp', spice : 1},
@@ -69,13 +72,12 @@ export class WheelComponent implements OnInit {
 
       ]
 
-    //  this.initWheel([{text:"\'Round and \'Round it goes, where it'll stop nobody knows"}]);
-    //  this.wheel.draw();
+     this.initWheel([{text:"\'Round and \'Round it goes, where it'll stop nobody knows", textOrientation : 'curved', textDirection : 'reversed'}]);
+     this.wheel.draw();
      this.ready = true;
   }
 
   addOptions(options) : void {
-      console.log(options)
       options.forEach(option => {
         option.selected = true;
         switch(option.spice) {
@@ -85,7 +87,6 @@ export class WheelComponent implements OnInit {
         }
      })
      this.wheelSegments = this.wheelSegments.concat(options);
-     console.log(this.wheelSegments);
      this.initWheel();
   }
 
@@ -108,6 +109,7 @@ export class WheelComponent implements OnInit {
 
 
   spin() : void {
+      this.toggleLocationSelect = false;
       // Begin the spin animation by calling startAnimation on the wheel object.
       this.wheel.startAnimation();
       // Set to true so that power can't be changed and spin button re-enabled during

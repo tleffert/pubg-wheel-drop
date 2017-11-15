@@ -27,3 +27,12 @@ body {
 .swal2-modal {
     position: initial !important;
 }
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.page-header {
+    background-color: rgba(0, 0, 0, 0.43);
+}

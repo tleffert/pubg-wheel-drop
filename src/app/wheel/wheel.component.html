@@ -1,17 +1,68 @@
-<div class="container wheel-main">
-    <div>
-        <div>
-            <img src="/assets/generatedtext.png"/>
-        </div>
-
+<div class="container-fluid page-header">
+    <div class="container">
+        <img src="/assets/generatedtext.png"/>
     </div>
+</div>
+<div class="container wheel-main">
     <div class="wheel-main-container">
+        <div id="info-bar" class="row border border-secondary rounded">
+            <div class="wheel-rules-panel col-md-5">
+                <div class="offset-4">
+                    <h3>RULES</h3>
+                </div>
+                <div>
+                    <ul class="rules-list">
+                        <li>
+                            <span>Always follow the Wheel</span>
+                        </li>
+                        <li >
+                            <span><b>No looting</b> till you've reachced location specified by the Wheel</span>
+                        </li>
+                        <li >
+                            <span>The Wheel Provides</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="inspiration" class="col-md-5 offset-2">
+                <div class="offset-4">
+                    <h3>NOTEABLES</h3>
+                </div>
+                <div>
+                    <ul class="rules-list">
+                        <li>
+                            <span>Inspired by : <a href="http://pubg.megachris.tv/">http://pubg.megachris.tv/</a></span>
+                        </li>
+                        <li >
+                            <span>Wheel Library : <a href="http://dougtesting.net/">http://dougtesting.net/</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+            <div class=" wheel-selection-header border border-secondary rounded row">
+                <div class="col-md-3 offset-1 text-center">
+                    <h3>Where to drop?</h3>
+                </div>
+                <div class="col-md-2" (click)="toggleLocationSelect = !toggleLocationSelect">
+                    <fa [name]="'arrow-circle-down'" [size]="3" *ngIf="toggleLocationSelect"></fa>
+                    <fa [name]="'arrow-circle-left'" [size]="3" *ngIf="!toggleLocationSelect"></fa>
+
+                    <!-- <fa (click)="toggleLocationSelect = !toggleLocationSelect">
+                      <i class="fa fa-arrow-circle-down" ></i>
+                    </fa> -->
+                </div>
+                <div class="col-md-5 offset-1 text-center">
+                    <h3>THE WHEEL</h3>
+                </div>
+            </div>
         <div class="row">
-            <div class="wheel-selection col-md-5 border border-secondary rounded">
+            <div class="wheel-selection col-md-5 border border-secondary rounded" *ngIf="toggleLocationSelect">
                 <div class="spice1 rounded mt-5">
+
                     <div class="row">
                         <div class="col-md-1">
-                            <button class="btn btn-sm"
+                            <button class="btn btn-sm btn-secondary"
                             (click)="addOptions(locations1)"
                             >
                                 Add All
@@ -38,7 +89,7 @@
                 <div class="spice2 rounded mt-5">
                     <div class="row">
                         <div class="col-md-1">
-                            <button class="btn btn-sm"
+                            <button class="btn btn-sm btn-secondary"
                             (click)="addOptions(locations2)"
                             >
                                 Add All
@@ -68,7 +119,7 @@
                 <div class="spice3 rounded mt-5">
                     <div class="row">
                         <div class="col-md-1">
-                            <button class="btn btn-sm"
+                            <button class="btn btn-sm btn-secondary"
                             (click)="addOptions(locations3)"
                             >
                                 Add All
@@ -98,52 +149,18 @@
                 </div>
             </div>
 
-            <div class="wheel col-md-5 offset-2 border border-secondary rounded">
+            <div class="wheel border border-secondary rounded col-md-5" [ngClass]="{'offset-2' : toggleLocationSelect, 'col-centered' : !toggleLocationSelect}">
+                <div id="spin-wheel" class="col-md-1 offset-5">
+                    <button class="btn btn-primary btn-sm" (click)="reset(); spin();"><span>SPIN</span></button>
+                </div>
                 <div class="the_wheel">
-                    <canvas id="canvas" width="500" height="500" (click)="spin();" >
+                    <canvas id="canvas" width="500" height="500" (click)="reset(); spin();" >
                         <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
                     </canvas>
                 </div>
-                <div id="spin-wheel" class="col-md-1 offset-5">
-                    <button class="btn btn-primary btn-sm" (click)="spin();"><span>SPIN</span></button>
-                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="wheel-rules-panel border border-secondary rounded col-md-5">
-                <div class="offset-4">
-                    <h2>RULES</h2>
-                </div>
-                <div>
-                    <ul class="rules-list">
-                        <li>
-                            <span>Always follow the Wheel</span>
-                        </li>
-                        <li >
-                            <span><b>No looting</b> till you've reachced location specified by the Wheel</span>
-                        </li>
-                        <li >
-                            <span>The Wheel Provides</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="inspiration" class="col-md-5 offset-2 border border-secondary rounded">
-                <div class="offset-4">
-                    <h2>Noteables</h2>
-                </div>
-                <div>
-                    <ul class="rules-list">
-                        <li>
-                            <span>Inspired by : <a href="http://pubg.megachris.tv/">http://pubg.megachris.tv/</a></span>
-                        </li>
-                        <li >
-                            <span>Wheel Tech : <a href="http://dougtesting.net/">http://dougtesting.net/</a></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+
 
     </div>
 </div>

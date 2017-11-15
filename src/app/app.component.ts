@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlertModule } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-root',
