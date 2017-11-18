@@ -1,48 +1,43 @@
 .the_wheel {
     background-image: url("/assets/murder-wheel-back.png");
     margin-left: -23px;
+    background-repeat: no-repeat;
 }
 
-.wheel, .wheel-selection, .wheel-header, .wheel-selection-header, #info-bar {
-    background-color: rgba(255, 255, 255, 0.84);
+.page-content {
+    background-color: rgba(216, 212, 212, 0.43);
+    height: 100vh;
 }
 
-.wheel-selection .spice {
-    margin-top: .5em;
+#sidebar, .sidebar-collapse {
+    background-color: rgba(0, 0, 0, 0.43);
+    height: 100vh;
 }
 
-.wheel-selection .btn {
-
+#sidebar-title h2 {
+    color: white;
 }
 
-.wheel-selection .spice1 {
+#sidebar .sidebar-close, .sidebar-open {
+    color: white;
 }
 
-.wheel-selection .spice1 .btn {
-    background-color: #1d5d1d;
+#spice-title {
+    color: white;
 }
 
-.wheel-selection .spice2 {
+.green-screen {
+    background-color: green;
 }
 
-.wheel-selection .spice2 .btn {
-    background-color: #ea9904;
+.spice1-active {
+    background-color: green;
 }
 
-.wheel-selection .spice3 {
-    margin-bottom: 1em;
+.spice2-active {
+    color: orange;
 }
 
-.wheel-selection .spice3 .btn {
-    background-color: #e02626;
-}
-
-.rules-list {
-    font-size: 12px;
-    list-style: none;
-}
-
-.location-preview {
-    width : 450px !important;
-    height : 450px !important;
+.spice3-active {
+    color: red;
 }

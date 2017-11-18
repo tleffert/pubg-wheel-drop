@@ -18,6 +18,8 @@ body {
      /* Set a background color that will be displayed
         while the background image is loading */
      background-color: #464646;
+
+     overflow: hidden;
 }
 
 .swal2-container {
@@ -28,11 +30,20 @@ body {
     position: initial !important;
 }
 
-.col-centered{
+.col-centered {
     float: none;
-    margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .page-header {
     background-color: rgba(0, 0, 0, 0.43);
+}
+
+.spacer {
+    margin-top: 2em;
+}
+
+.spacer-sm {
+    margin-top: 1em;
 }

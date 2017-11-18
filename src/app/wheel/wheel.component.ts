@@ -13,7 +13,7 @@ export class WheelComponent implements OnInit {
     private wheelSegments : object[];
     private wheelSpinning : boolean;
     private wheelPower : number;
-    private locations1 : object[];
+    private locations : object[];
     private locations2 : object[];
 
     private locations3 : object[];
@@ -23,6 +23,8 @@ export class WheelComponent implements OnInit {
     private init : boolean;
 
     private toggleLocationSelect : boolean;
+    private showSidebar : boolean = true;
+    private showGreenScreen : boolean = false;
 
   constructor() { this.wheelPower = 2;}
 
@@ -31,7 +33,7 @@ export class WheelComponent implements OnInit {
       this.init = true;
       this.wheelSegments = [];
 
-      this.locations1 = [
+      this.locations = [
           {text : 'Sunken City', spice : 1},
           {text : 'Gatka Radio', spice : 1},
           {text : 'Hospital', spice : 1},
@@ -40,8 +42,25 @@ export class WheelComponent implements OnInit {
           {text : 'East Bridge', spice : 1},
           {text : 'West Bridge', spice : 1},
           {text : 'Swamp', spice : 1},
-
-
+        //   {text : 'Lipovka', spice : 2},
+        //   {text : 'Novo', spice : 2},
+        //   {text : 'Primorsk', spice : 2},
+        //   {text : 'Mylta Power', spice : 2},
+        //   {text : 'Mylta', spice : 2},
+        //   {text : 'Kameshki', spice : 2},
+        //   {text : 'Prison', spice : 2},
+        //   {text : 'Gatka', spice : 2},
+        //   {text : 'Zharki', spice : 2},
+        //   {text : 'Stalber', spice : 2},
+        //   {text : 'Mansion', spice : 2},
+        //   {text : 'Gun Range', spice : 2},
+        //   {text : 'Military' , spice : 3},
+        //   {text : 'School', spice : 3},
+        //   {text : 'Pochinki', spice : 3},
+        //   {text : 'Polyana', spice : 3},
+        //   {text : 'Georgopol', spice :3},
+        //   {text : 'Rozhok', spice : 3},
+        //   {text : 'Shelter', spice : 3},
       ]
       this.locations2 = [
           {text : 'Lipovka', spice : 2},
@@ -75,6 +94,14 @@ export class WheelComponent implements OnInit {
      this.initWheel([{text:"\'Round and \'Round it goes, where it'll stop nobody knows", textOrientation : 'curved', textDirection : 'reversed'}]);
      this.wheel.draw();
      this.ready = true;
+  }
+
+  toggleSidebar() : void {
+      this.showSidebar = !this.showSidebar;
+  }
+
+  toggleGreenScreen() : void {
+      this.showGreenScreen = !this.showGreenScreen;
   }
 
   addOptions(options) : void {
