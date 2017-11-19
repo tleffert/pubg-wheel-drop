@@ -63,30 +63,32 @@ export class WheelComponent implements OnInit {
         //   {text : 'Shelter', spice : 3},
       ]
       this.locations2 = [
-          {text : 'Lipovka', spice : 2},
-          {text : 'Novo', spice : 2},
+          {text : 'Lipovka', spice : 2, selected : true},
+          {text : 'Novo', spice : 2, selected : true},
           {text : 'Primorsk', spice : 2},
-          {text : 'Mylta Power', spice : 2},
+          {text : 'Mylta Power', spice : 2, selected : true},
           {text : 'Mylta', spice : 2},
           {text : 'Kameshki', spice : 2},
           {text : 'Prison', spice : 2},
           {text : 'Gatka', spice : 2},
-          {text : 'Zharki', spice : 2},
+          {text : 'Zharki', spice : 2, selected : true},
           {text : 'Stalber', spice : 2},
-          {text : 'Mansion', spice : 2},
+          {text : 'Mansion', spice : 2, selected : true},
           {text : 'Gun Range', spice : 2},
+          {text : 'Severny', spice : 2, selected : true},
+
 
 
       ]
       this.locations3 = [
 
-          {text : 'Military' , spice : 3},
+          {text : 'Military' , spice : 3, selected : true},
           {text : 'School', spice : 3},
           {text : 'Pochinki', spice : 3},
           {text : 'Polyana', spice : 3},
-          {text : 'Georgopol', spice :3},
-          {text : 'Rozhok', spice : 3},
-          {text : 'Shelter', spice : 3},
+          {text : 'Georgopol', spice :3, selected : true},
+          {text : 'Rozhok', spice : 3, selected : true},
+          {text : 'Shelter', spice : 3, selected : true},
 
 
       ]
@@ -170,9 +172,21 @@ export class WheelComponent implements OnInit {
   }
 
   initWheel(initText?) : void {
+      this.locations2.forEach( location => {
+          if(location['selected']) {
+               location['fillStyle'] = '#ea9904';
+              this.wheelSegments.push(location);
+          }
+      })
+      this.locations3.forEach( location => {
+          if(location['selected']) {
+              location['fillStyle'] = '#e02626';
+              this.wheelSegments.push(location);
+          }
+      })
     //   this.init = true;
       this.wheel = new Winwheel({
-         'numSegments'       : this.wheelSegments.length || 1,         // Specify number of segments.
+         'numSegments'       : this.wheelSegments.length,         // Specify number of segments.
          'outerRadius'       : 200,       // Set outer radius so wheel fits inside the background.
          'innerRadius' : 75,
          'drawMode'          : 'code',   // drawMode must be set to image.
@@ -190,7 +204,7 @@ export class WheelComponent implements OnInit {
          'pointerAngle' : 90,
         //  'callbackFinished' : this.announceLocation,
 
-         'segments' : initText || this.wheelSegments,
+         'segments' : this.wheelSegments,
          'animation' :                   // Specify the animation to use.
          {
              'type'     : 'spinToStop',

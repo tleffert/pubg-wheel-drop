@@ -17,12 +17,13 @@
         <!-- SIDE BAR -->
         <div class="sidebar-collapse col-md-1" *ngIf="!showSidebar">
             <div class="spacer"></div>
-            <div class="sidebar-open col-centered">
-                <div>
+            <div class="sidebar-open">
+                <div title="Wheel Segment Options" class="col-md-3 offset-2">
                     <fa [name]="'cog'" [size]="3"  (click)="toggleSidebar()"></fa>
                 </div>
-                <div class="spacer-sm"></div>
-                <div title="Green Screen Friendly">
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+                <div title="Green Screen Friendly" class="col-md-3 offset-2">
                     <fa [name]="'desktop'" [size]="3"  (click)="toggleGreenScreen()"></fa>
                 </div>
             </div>
@@ -51,7 +52,7 @@
                 <div class="row">
                     <div *ngFor="let location of locations" class="col-md-3" style="margin-top: .5em;">
                         <div class="spice1" *ngIf="location.spice == 1">
-                            <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice1-active' : location.selected}">{{location.text}}</button>
+                            <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
                     </div>
                 </div>
@@ -63,7 +64,7 @@
                 <div class="row">
                     <div *ngFor="let location of locations2" class=" col-md-3" style="margin-top: .5em;">
                         <div class="spice2 " *ngIf="location.spice == 2">
-                            <button class="btn btn-secondary btn-block">{{location.text}}</button>
+                            <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
                     </div>
                 </div>
@@ -75,9 +76,10 @@
                 <div class="row">
                     <div *ngFor="let location of locations3" class=" col-md-3" style="margin-top: .5em;">
                         <div class="spice3" *ngIf="location.spice == 3">
-                            <button class="btn btn-secondary btn-block">{{location.text}}</button>
+                            <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -85,12 +87,52 @@
         <!-- /SIDE BAR -->
 
         <div id="page-content" class="col-md-8" [ngClass]="{'green-screen' : showGreenScreen, 'page-content' : !showGreenScreen, 'col-md-11' : !showSidebar}">
-            <div class="wheel col-md-4 offset-md-4 spacer" style="height: 60vh">
+            <div class="wheel col-md-4 offset-md-4 spacer" style="height: 50vh; margin-top: 9em;">
                <div class="the_wheel">
                    <canvas id="canvas" width="500" height="500" (click)="reset(); spin();" >
                        <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
                    </canvas>
                </div>
+            </div>
+            <!-- INFO SECTION -->
+            <div id="info-section" class="col-md-12" style="height: 100vh">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="col-md-2 offset-md-5">
+                            <h3>Rules</h3>
+                        </div>
+                        <div>
+                            <ul>
+                                <li>
+                                    <span>Feed the Wheel locations to drop</span>
+                                </li>
+                                <li>
+                                    <span>Spin the Wheel! (click it)</span>
+                                </li>
+                                <li>
+                                    <span>You must reach the location the Wheel decides before looting anything</span>
+                                </li>
+                                <li>
+                                    <span>Never question the Wheel and chicken will come</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-2 offset-md-5">
+                            <h3>Notes</h3>
+                        </div>
+                        <div>                            
+                            <div>
+                                <ul>
+                                    <li>
+                                        <span>Inspired by: <a href="http://pubg.megachris.tv/">http://pubg.megachris.tv/</a></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

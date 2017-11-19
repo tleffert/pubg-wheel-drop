@@ -5,12 +5,12 @@
 }
 
 .page-content {
-    background-color: rgba(216, 212, 212, 0.43);
+    background-color: rgba(216, 212, 212, 0.5);
     height: 100vh;
 }
 
 #sidebar, .sidebar-collapse {
-    background-color: rgba(0, 0, 0, 0.43);
+    background-color: rgba(0, 0, 0, 0.5);
     height: 100vh;
 }
 
@@ -30,14 +30,14 @@
     background-color: green;
 }
 
-.spice1-active {
+.spice1 .spice-active {
     background-color: green;
 }
 
-.spice2-active {
-    color: orange;
+.spice2 .spice-active {
+    background-color: orange;
 }
 
-.spice3-active {
-    color: red;
+.spice3 .spice-active {
+    background-color: red;
 }
