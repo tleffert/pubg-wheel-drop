@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 body {
+    /*background-image: url("./assets/pubg_map_down_scale.jpg");*/
     background-image: url("./assets/pubg_map_down_scale.jpg");
+
     /* Background image is centered vertically and horizontally at all times */
      background-position: center center;
 
@@ -47,3 +49,6 @@ body {
 .spacer-sm {
     margin-top: 1em;
 }
+ #location-select .btn {
+     font-size: .9rem;
+ }

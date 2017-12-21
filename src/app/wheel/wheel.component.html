@@ -3,15 +3,6 @@
         <img src="/assets/generatedtext.png"/>
     </div>
 </div>
-<!-- <div class="main">
-    <div class="row">
-        <div class="col-md-4">
-            side-panel
-
-        </div>
-
-    </div>
-</div> -->
 <div class="container-fluid">
     <div class="row" >
         <!-- SIDE BAR -->
@@ -47,10 +38,13 @@
         <hr>
             <div id="location-select">
                 <div id="spice-title">
-                    <h3>Spice 1</h3>
+                    <!-- <h3>Spice 1</h3> -->
+                    <div class="col-md-1">
+                        <img src="/assets/spicyfull-small.png" />
+                    </div>
                 </div>
                 <div class="row">
-                    <div *ngFor="let location of locations" class="col-md-3" style="margin-top: .5em;">
+                    <div *ngFor="let location of currentMapLocations.locations" class="col-md-3" style="margin-top: .5em;">
                         <div class="spice1" *ngIf="location.spice == 1">
                             <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
@@ -58,11 +52,17 @@
                 </div>
 
                 <div class="spacer"></div>
-                <div id="spice-title">
-                    <h3>Spice 2</h3>
+                <div id="spice-title" class="row">
+                    <!-- <h3>Spice 2</h3> -->
+                    <div class="col-md-1">
+                        <img src="/assets/spicyfull-small.png" />
+                    </div>
+                    <div class="col-md-1">
+                        <img src="/assets/spicyfull-small.png" />
+                    </div>
                 </div>
                 <div class="row">
-                    <div *ngFor="let location of locations2" class=" col-md-3" style="margin-top: .5em;">
+                    <div *ngFor="let location of currentMapLocations.locations2" class=" col-md-3" style="margin-top: .5em;">
                         <div class="spice2 " *ngIf="location.spice == 2">
                             <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
@@ -70,11 +70,20 @@
                 </div>
 
                 <div class="spacer"></div>
-                <div id="spice-title">
-                    <h3>Spice 3</h3>
+                <div id="spice-title" class="row">
+                    <!-- <h3>Spice 2</h3> -->
+                    <div class="col-md-1">
+                        <img src="/assets/spicyfull-small.png" />
+                    </div>
+                    <div class="col-md-1">
+                        <img src="/assets/spicyfull-small.png" />
+                    </div>
+                    <div class="col-md-1">
+                        <img src="/assets/spicyfull-small.png" />
+                    </div>
                 </div>
                 <div class="row">
-                    <div *ngFor="let location of locations3" class=" col-md-3" style="margin-top: .5em;">
+                    <div *ngFor="let location of currentMapLocations.locations3" class=" col-md-3" style="margin-top: .5em;">
                         <div class="spice3" *ngIf="location.spice == 3">
                             <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
@@ -87,52 +96,95 @@
         <!-- /SIDE BAR -->
 
         <div id="page-content" class="col-md-8" [ngClass]="{'green-screen' : showGreenScreen, 'page-content' : !showGreenScreen, 'col-md-11' : !showSidebar}">
-            <div class="wheel col-md-4 offset-md-4 spacer" style="height: 50vh; margin-top: 9em;">
-               <div class="the_wheel">
-                   <canvas id="canvas" width="500" height="500" (click)="reset(); spin();" >
-                       <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
-                   </canvas>
-               </div>
-            </div>
+
             <!-- INFO SECTION -->
-            <div id="info-section" class="col-md-12" style="height: 100vh">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="col-md-2 offset-md-5">
-                            <h3>Rules</h3>
-                        </div>
-                        <div>
-                            <ul>
-                                <li>
-                                    <span>Feed the Wheel locations to drop</span>
-                                </li>
-                                <li>
-                                    <span>Spin the Wheel! (click it)</span>
-                                </li>
-                                <li>
-                                    <span>You must reach the location the Wheel decides before looting anything</span>
-                                </li>
-                                <li>
-                                    <span>Never question the Wheel and chicken will come</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="col-md-2 offset-md-5">
-                            <h3>Notes</h3>
-                        </div>
-                        <div>                            
-                            <div>
+            <!-- <div id="info-section" class="col-md-12" >
+                <div class="row" >
+                    <div class="col-md-4" >
+                        <div class="card">
+                            <h3 class="card-header" data-toggle="collapse" data-target="#rules-body">
+                                Rules
+                            </h3>
+                            <div class="card-body collapse" id="rules-body" >
                                 <ul>
                                     <li>
-                                        <span>Inspired by: <a href="http://pubg.megachris.tv/">http://pubg.megachris.tv/</a></span>
+                                        <span>Feed the Wheel locations to drop</span>
+                                    </li>
+                                    <li>
+                                        <span>Spin the Wheel! (click it)</span>
+                                    </li>
+                                    <li>
+                                        <span>Reach your destination before looting</span>
+                                    </li>
+                                    <li>
+                                        <span>Never question the Wheel and chicken will come</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <h3 class="card-header" data-toggle="collapse" data-target="#notes-body">
+                            Notes
+                        </h3>
+                        <div class="card-body collapse" id="notes-body">
+                            <ul>
+                                <li>
+                                    <span>Come watch the <a href="https://www.twitch.tv/notthatwillsmith">Spice Club boys</a></span>
+                                </li>
+                                <li>
+                                    <span>Inspired by: <a href="http://pubg.megachris.tv/">http://pubg.megachris.tv/</a></span>
+                                </li>
+                                <li>
+                                    <span>Cool Wheel Lib: <a href="http://dougtesting.net/winwheel/docs">http://dougtesting.net/winwheel/docs</a></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    </div>
                 </div>
+            </div> -->
+
+            <div id="location-select">
+                <div>
+                    <span class="badge badge-default">Location select</span>
+                </div>
+                <!-- <div>
+                    <button class="btn btn-sm btn-primary active" aria-pressed="true">
+                        Erangel
+                    </button>
+                    <button class="btn btn-sm btn-primary" aria-pressed="false">
+                        Miramar
+                    </button>
+                </div> -->
+
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn active" [ngClass]="{'btn-primary' : currentMap == 'erangel', 'btn-secondary' : currentMap == 'miramar'}" (click)="checkMapSelection('erangel')">
+                    <input type="radio" name="options" id="option1" [value]="erangel"  autocomplete="off" checked> Erangel
+                  </label>
+                  <label class="btn" [ngClass]="{'btn-primary' : currentMap == 'miramar', 'btn-secondary' : currentMap == 'erangel'}"  (click)="checkMapSelection('miramar')">
+                    <input type="radio" name="options" id="option2" [value]="miramar" autocomplete="off"> Miramar
+                  </label>
+                </div>
+            </div>
+            <div id="spice-quick-select">
+                <div>
+                    <span class="badge badge-default">Spice quick select</span>
+                </div>
+                <div>
+
+                </div>
+            </div>
+
+            <!-- WHEEL SECTION -->
+            <div class="wheel col-md-6 offset-md-4 spacer" style="height: 50vh; margin-top: 4.5em; margin-bottom: 4.5em;">
+               <div class="the_wheel">
+                   <canvas id="canvas" width="500" height="500" (click)="reset(); spin();"  >
+                       <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
+                   </canvas>
+               </div>
             </div>
         </div>
     </div>
