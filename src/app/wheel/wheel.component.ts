@@ -157,7 +157,7 @@ export class WheelComponent implements OnInit {
               this.wheelSegments.push(location);
           }
       });
-      this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
+    //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
 
      this.initWheel();
      this.wheel.draw();
@@ -165,7 +165,6 @@ export class WheelComponent implements OnInit {
   }
 
   checkMapSelection(mapSelection) : void {
-      console.log("CHECKING SELECTED MAP", mapSelection);
       if(mapSelection != this.currentMap){
           this.wheelSegments = [];
           if(mapSelection == 'miramar') {
@@ -204,7 +203,7 @@ export class WheelComponent implements OnInit {
           });
 
 
-          this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'});
+        //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'});
           //resest and redraw wheel
           this.initWheel();
         //   this.wheel.draw();
