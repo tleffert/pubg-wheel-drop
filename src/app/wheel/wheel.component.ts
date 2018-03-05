@@ -1,5 +1,7 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { LocationApiService } from '../location-api.service';
 
 import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 declare var $: any;
@@ -18,7 +20,8 @@ export class WheelComponent implements OnInit {
     private wheelSpinning : boolean;
     private wheelPower : number;
 
-    private locations : object[];
+    private locationsReady : boolean;
+    private locations1 : object[];
     private locations2 : object[];
     private locations3 : object[];
     private bonus : object[];
@@ -37,9 +40,10 @@ export class WheelComponent implements OnInit {
     private showGreenScreen : boolean = false;
     private showBonus : boolean = false;
 
-  constructor() { this.wheelPower = 2;}
+  constructor(private locationApi : LocationApiService) {this.wheelPower = 2;}
 
   ngOnInit() {
+
       this.showBonus = false;
       this.toggleLocationSelect = true;
       this.init = true;
@@ -48,83 +52,7 @@ export class WheelComponent implements OnInit {
       this.erangel = {};
       this.miramar = {};
 
-      this.erangel.locations = [
-          {text : 'Sunken City', spice : 1},
-          {text : 'Gatka Radio', spice : 1},
-          {text : 'Hospital', spice : 1},
-          {text : 'Farm', spice : 1},
-          {text : 'Quarry', spice : 1},
-          {text : 'East Bridge', spice : 1},
-          {text : 'West Bridge', spice : 1},
-          {text : 'Swamp', spice : 1}
-      ];
 
-      this.erangel.locations2 = [
-          {text : 'Novo', spice : 2, selected : true},
-          {text : 'Primorsk', spice : 2},
-          {text : 'Mylta Power', spice : 2, selected : true},
-          {text : 'Mylta', spice : 2},
-          {text : 'Kameshki', spice : 2},
-          {text : 'Prison', spice : 2},
-          {text : 'Gatka', spice : 2},
-          {text : 'Zharki', spice : 2, selected : true},
-          {text : 'Stalber', spice : 2},
-          {text : 'Mansion', spice : 2, selected : true},
-          {text : 'Gun Range', spice : 2},
-      ];
-
-      this.erangel.locations3 = [
-
-          {text : 'Military' , spice : 3, selected : true},
-          {text : 'School', spice : 3},
-          {text : 'Pochinki', spice : 3},
-          {text : 'Polyana', spice : 3},
-          {text : 'Georgopol', spice :3, selected : true},
-          {text : 'Rozhok', spice : 3, selected : true},
-          {text : 'Shelter', spice : 3, selected : true},
-          {text : 'Severny', spice : 3, selected : true},
-          {text : 'Lipovka', spice : 3, selected : true},
-
-      ];
-
-      this.miramar.locations = [
-          {text : 'Islands (SE)', spice : 1},
-          {text : 'Power Grid', spice : 1},
-          {text : 'Water Treatment', spice : 1},
-          {text : 'Tierra Bronca', spice : 1},
-          {text : 'Cruz Del Valle', spice : 1},
-          {text : 'Graveyard', spice : 1},
-          {text : 'Minas Generales', spice : 1},
-          {text : 'Junkyard', spice : 1},
-          {text : 'Minas Del Valle', spice : 1},
-
-      ];
-
-      this.miramar.locations2 = [
-          {text : 'Cobreria', spice : 2, selected : true},
-          {text : 'Chumacera', spice : 2},
-          {text : 'Pecado', spice : 2, selected : true},
-          {text : 'San Martin', spice : 2},
-          {text : 'Impala', spice : 2},
-          {text : 'La Bendita', spice : 2},
-          {text : 'Monte Nuevo', spice : 2},
-          {text : 'El Azahar', spice : 2, selected : true},
-          {text : 'Torre Ahumada', spice : 2},
-          {text : 'Velle Del Mar', spice : 2},
-          {text : 'Minas Del Sur', spice : 2},
-          {text : 'Los Higos', spice : 2},
-
-      ];
-
-      this.miramar.locations3 = [
-
-          {text : 'Leones' , spice : 3, selected : true},
-          {text : 'El Pozo', spice : 3},
-          {text : 'Campo Militar', spice : 3},
-          {text : 'Prison', spice : 3},
-          {text : 'Hacienda', spice : 3, selected : true},
-
-      ];
 
 
       this.bonus = [
@@ -136,78 +64,103 @@ export class WheelComponent implements OnInit {
           {text : 'Example4'}
 
       ]
+      this.locationApi.listByMap('Erangel')
+      .subscribe(response => {
+          this.updateMapLocations(response);
+          this.locationsReady = true;
+
+          this.initWheel();
+      }, error => {
+          console.log(error);
+      });
+
+    //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
+
+     this.initWheel();
+     this.wheel.draw();
+     this.locationsReady = true;
+     this.ready = true;
+  }
+
+  // Updates the Location selection from the DB
+  checkMapSelection(mapSelection) : void {
+      if(mapSelection != this.currentMap){
+          this.locationsReady = false;
+          //Update wheel for new map selections
+          this.currentMap = mapSelection;
+          this.wheelSegments = [];
+          if(mapSelection == 'miramar') {
+              $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
+              this.locationApi.listByMap('Miramar')
+              .subscribe(response => {
+                  this.updateMapLocations(response);
+                  console.log(this.wheelSegments);
+                  this.locationsReady = true;
+                  this.initWheel();
+
+              }, error => {
+                  console.log(error);
+
+              });
+          } else {
+              $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
+              this.locationApi.listByMap('Erangel')
+              .subscribe(response => {
+                  this.updateMapLocations(response);
+                  this.locationsReady = true;
+
+                  this.initWheel();
+              }, error => {
+                  console.log(error);
+              });
+          }
+      }
+  }
+
+  updateMapLocations(locations) : void {
+      this.locations1=[];
+      this.locations2=[];
+      this.locations3=[];
+      locations.forEach(location => {
+          if(location.level == 1) {
+              this.locations1.push(location)
+          }
+          if(location.level == 2) {
+              this.locations2.push(location)
+          }
+          if(location.level == 3) {
+              this.locations3.push(location)
+          }
+      });
+
 
       this.currentMapLocations = {
-          locations : this.erangel.locations,
-          locations2 : this.erangel.locations2,
-          locations3 : this.erangel.locations3,
+          locations : this.locations1,
+          locations2 : this.locations2,
+          locations3 : this.locations3,
       };
 
+      console.log("THESE ARE THE NEW SELECTS", this.currentMapLocations);
       // Setting up default selections
       this.currentMapLocations.locations2.forEach( location => {
           if(location['selected']) {
                location['fillStyle'] = '#ea9904';
-              this.wheelSegments.push(location);
           }
       });
 
       this.currentMapLocations.locations3.forEach( location => {
           if(location['selected']) {
               location['fillStyle'] = '#e02626';
-              this.wheelSegments.push(location);
           }
       });
-    //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
-
-     this.initWheel();
-     this.wheel.draw();
-     this.ready = true;
-  }
-
-  checkMapSelection(mapSelection) : void {
-      if(mapSelection != this.currentMap){
-          this.wheelSegments = [];
-          if(mapSelection == 'miramar') {
-              $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
-          } else {
-              $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
-
-          }
-          //Update wheel for new map selections
-          this.currentMap = mapSelection;
-          this.currentMapLocations = {
-              locations : this[mapSelection].locations,
-              locations2 : this[mapSelection].locations2,
-              locations3 : this[mapSelection].locations3,
-          };
-
-          // Setting up default selections
-          this.currentMapLocations.locations2.forEach( location => {
-              if(location['selected']) {
-                   location['fillStyle'] = '#ea9904';
+      // reset wheel options for new selections
+      Object.keys(this.currentMapLocations).forEach(spiceLevel => {
+          this.currentMapLocations[spiceLevel].forEach(option => {
+              if(option.selected) {
+                  this.wheelSegments.push(option);
               }
-          });
-
-          this.currentMapLocations.locations3.forEach( location => {
-              if(location['selected']) {
-                  location['fillStyle'] = '#e02626';
-              }
-          });
-          // reset wheel options for new selections
-          Object.keys(this.currentMapLocations).forEach(spiceLevel => {
-              this.currentMapLocations[spiceLevel].forEach(option => {
-                  if(option.selected) {
-                      this.wheelSegments.push(option);
-                  }
-              })
-          });
-
-
-        //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'});
-          //resest and redraw wheel
-          this.initWheel();
-        //   this.wheel.draw();
-      }
+          })
+      });
   }
 
   toggleSidebar() : void {
@@ -270,10 +223,8 @@ export class WheelComponent implements OnInit {
       } else {
           winner = this.wheel.getIndicatedSegment();
       }
-      console.log("THIS IS THE WINNER ============", winner.text, winner);
       if(winner.text === 'Bonus') {
           this.showBonus = true;
-          console.log("BONUS WHEEL TIME");
         swal({
             text : "ITS BONUS TIME, GIVE THE BONUS WHEEL A SPIN",
             allowOutsideClick: false
@@ -281,15 +232,16 @@ export class WheelComponent implements OnInit {
         this.initBonusWheel();
 
       } else {
+          // Reporting the winner for SCIENCE
+          this.locationApi.reportWinner(winner._id).subscribe();
           swal({
-              title: 'You\'re going to Sunny .... ',
+              title: winner['winner_message'],
               text: winner.text + "!!!",
-              type: 'info',
               confirmButtonText: 'The Wheel Provides',
-              imageUrl: '/assets/gatka.png',
-              imageWidth: 400,
-              imageHeight: 200,
-              imageAlt: 'Custom image',
+            //   imageUrl: '/assets/gatka.png',
+            //   imageWidth: 400,
+            //   imageHeight: 200,
+            //   imageAlt: 'Custom image',
               allowOutsideClick: false
 
           })
@@ -307,7 +259,7 @@ export class WheelComponent implements OnInit {
               if(this.showBonus) {
                   this.showBonus = false;
               }
-              this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'});
+            //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'});
               this.initWheel();
               this.wheel.draw();
           })

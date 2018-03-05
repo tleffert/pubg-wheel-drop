@@ -44,8 +44,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div *ngFor="let location of currentMapLocations.locations" class="col-md-3" style="margin-top: .5em;">
-                        <div class="spice1" *ngIf="location.spice == 1">
+                    <div *ngFor="let location of locations1" class="col-md-4" style="margin-top: .5em;">
+                        <div class="spice1" *ngIf="location.level == 1">
                             <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
                     </div>
@@ -62,8 +62,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div *ngFor="let location of currentMapLocations.locations2" class=" col-md-3" style="margin-top: .5em;">
-                        <div class="spice2 " *ngIf="location.spice == 2">
+                    <div *ngFor="let location of locations2" class=" col-md-4" style="margin-top: .5em;">
+                        <div class="spice2 " *ngIf="location.level == 2">
                             <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
                     </div>
@@ -82,9 +82,9 @@
                         <img src="/assets/spicyfull-small.png" />
                     </div>
                 </div>
-                <div class="row">
-                    <div *ngFor="let location of currentMapLocations.locations3" class=" col-md-3" style="margin-top: .5em;">
-                        <div class="spice3" *ngIf="location.spice == 3">
+                <div class="row" *ngIf="locationsReady">
+                    <div *ngFor="let location of locations3" class=" col-md-4" style="margin-top: .5em;">
+                        <div class="spice3" *ngIf="location.level == 3">
                             <button class="btn btn-block" (click)="addOption(location)" [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">{{location.text}}</button>
                         </div>
                     </div>
