@@ -11,7 +11,7 @@ var Location  = require('./schemas/LocationSchema');
 
 // Get our API routes
 // const api = require('./server/routes/api');
-// OSCAR POINT  Correct - 11 Missed - 7 
+// OSCAR POINT  Correct - 17 Missed - 7 
 const app = express();
 
 mongoose.connect('mongodb://localhost/wheel');

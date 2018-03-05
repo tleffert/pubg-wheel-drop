@@ -174,7 +174,7 @@ export class WheelComponent implements OnInit {
   addOptions(options) : void {
       options.forEach(option => {
         option.selected = true;
-        switch(option.spice) {
+        switch(option.level) {
             case 1: option.fillStyle = '#1d5d1d'; break;
             case 2: option.fillStyle = '#ea9904'; break;
             case 3: option.fillStyle = '#e02626'; break;
@@ -192,7 +192,7 @@ export class WheelComponent implements OnInit {
          option.selected = false;
       } else {
          option.selected = true;
-         switch(option.spice) {
+         switch(option.level) {
              case 1: option.fillStyle = '#1d5d1d'; break;
              case 2: option.fillStyle = '#ea9904'; break;
              case 3: option.fillStyle = '#e02626'; break;
@@ -285,11 +285,11 @@ export class WheelComponent implements OnInit {
     //   this.init = true;
       this.wheel = new Winwheel({
          'numSegments'       : this.wheelSegments.length,         // Specify number of segments.
-         'outerRadius'       : 250,       // Set outer radius so wheel fits inside the background.
+         'outerRadius'       : 275,       // Set outer radius so wheel fits inside the background.
          'innerRadius' : 100,
          'drawMode'          : 'code',   // drawMode must be set to image.
          'drawText'          : true,      // Need to set this true if want code-drawn text on image wheels.
-         'textFontSize'      : 16,        // Set text options as desired.
+         'textFontSize'      : 12,        // Set text options as desired.
          'textOrientation'   : 'horizontal',
         //  'textDirection'     : 'reversed',
          'textAlignment'     : 'outer',
