@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
+import { Location } from '../types/Location.type';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class LocationApiService {
+    private selectSubject = new Subject<Location>();
 
   constructor(private http: HttpClient) { }
 
@@ -13,6 +16,14 @@ export class LocationApiService {
 
   reportWinner(locationId) : Observable<any> {
       return this.http.post('/api/location/winner/'+locationId, {});
+  }
+
+  notifySelected(location : Location) : void {
+      this.selectSubject.next(location);
+  }
+
+  getLocationSelectSubscription() : Observable<Location> {
+      return this.selectSubject.asObservable();
   }
 
 }

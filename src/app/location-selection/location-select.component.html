@@ -1,0 +1,42 @@
+<div class="row location-select">
+    <div class="col-4 spice-group1">
+        <div class="d-flex justify-content-center">
+            <img src="/assets/spicyfull-small.png"/>
+        </div>
+        <ng-container *ngIf="locationSpice1">
+            <button class="btn" *ngFor="let location of locationSpice1"
+            (click)="toggleOption(location)"
+            [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">
+            {{location.text}}
+            </button>
+        </ng-container>
+    </div>
+    <div class="col-4 spice-group2">
+        <div class="d-flex justify-content-center">
+            <img src="/assets/spicyfull-small.png"/>
+            <img src="/assets/spicyfull-small.png"/>
+        </div>
+        <ng-container *ngIf="locationSpice2">
+        <div class="btn" *ngFor="let location of locationSpice2"
+        (click)="toggleOption(location)"
+        [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">
+        {{location.text}}
+    </div>
+        </ng-container>
+    </div>
+    <div class="col-4 spice-group3">
+        <div class="d-flex justify-content-center">
+            <img src="/assets/spicyfull-small.png"/>
+            <img src="/assets/spicyfull-small.png"/>
+            <img src="/assets/spicyfull-small.png"/>
+        </div>
+        <ng-container *ngIf="locationSpice3">
+        <button class="btn" *ngFor="let location of locationSpice3"
+        (click)="toggleOption(location)"
+        [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">
+        {{location.text}}
+        </button>
+        </ng-container>
+    </div>
+
+</div>

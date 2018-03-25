@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
+import { EventService } from '../services/eventService.service';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,12 @@ import { AlertModule } from 'ngx-bootstrap';
 })
 export class AppComponent {
   title = 'app';
+  showLocationNav : boolean = false;
+
+  constructor(eventService : EventService) {
+      eventService.lTSubscription
+      .subscribe(() => {
+          this.showLocationNav = !this.showLocationNav;
+      });
+  }
 }

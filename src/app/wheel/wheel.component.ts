@@ -1,7 +1,8 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { LocationApiService } from '../location-api.service';
+import { LocationApiService } from '../../services/location-api.service';
+import { EventService } from '../../services/eventService.service';
 
 import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 declare var $: any;
@@ -40,7 +41,14 @@ export class WheelComponent implements OnInit {
     private showGreenScreen : boolean = false;
     private showBonus : boolean = false;
 
-  constructor(private locationApi : LocationApiService) {this.wheelPower = 2;}
+  constructor(private locationApi : LocationApiService, private eventService : EventService) {
+      this.eventService.mapSubscription
+      .subscribe(map => {
+         this.checkMapSelection(map);
+      });
+
+
+  }
 
   ngOnInit() {
 
@@ -53,7 +61,11 @@ export class WheelComponent implements OnInit {
       this.miramar = {};
 
 
-
+      this.locationApi.getLocationSelectSubscription()
+      .subscribe(selectedLocation => {
+          console.log("SEELCTD OPTINO", selectedLocation);
+          this.addOption(selectedLocation);
+      });
 
       this.bonus = [
           {text : 'Pooper Scooper'},
@@ -89,7 +101,7 @@ export class WheelComponent implements OnInit {
           //Update wheel for new map selections
           this.currentMap = mapSelection;
           this.wheelSegments = [];
-          if(mapSelection == 'miramar') {
+          if(mapSelection == 'Miramar') {
               $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
               this.locationApi.listByMap('Miramar')
               .subscribe(response => {
@@ -187,7 +199,7 @@ export class WheelComponent implements OnInit {
   addOption(option) :void {
       console.log(option);
       // If already selected, remove from selection
-      if(option.selected){
+      if(!option.selected){
          this.wheelSegments = this.wheelSegments.filter(segment => segment['text'] !== option.text);
          option.selected = false;
       } else {
@@ -216,7 +228,6 @@ export class WheelComponent implements OnInit {
   }
 
   announceLocation(showBonus?) : void {
-      console.log("SHOULD i SHOW THE BONUS", showBonus)
       let winner;
       if(showBonus) {
           winner = this.bonusWheel.getIndicatedSegment();
@@ -246,15 +257,15 @@ export class WheelComponent implements OnInit {
 
           })
           .then(() => {
-              this.wheelSegments=[];
+            //   this.wheelSegments=[];
               // reset wheel options for new selections
-              Object.keys(this.currentMapLocations).forEach(spiceLevel => {
-                  this.currentMapLocations[spiceLevel].forEach(option => {
-                      if(option.selected) {
-                          this.wheelSegments.push(option);
-                      }
-                  })
-              });
+            //   Object.keys(this.currentMapLocations).forEach(spiceLevel => {
+            //       this.currentMapLocations[spiceLevel].forEach(option => {
+            //           if(option.selected) {
+            //               this.wheelSegments.push(option);
+            //           }
+            //       })
+            //   });
 
               if(this.showBonus) {
                   this.showBonus = false;
@@ -281,7 +292,6 @@ export class WheelComponent implements OnInit {
   }
 
   initWheel(initText?) : void {
-      console.log(this.wheelSegments);
     //   this.init = true;
       this.wheel = new Winwheel({
          'numSegments'       : this.wheelSegments.length,         // Specify number of segments.
@@ -306,8 +316,8 @@ export class WheelComponent implements OnInit {
          'animation' :                   // Specify the animation to use.
          {
              'type'     : 'spinToStop',
-             'duration' : 5,     // Duration in seconds.
-             'spins'    : 8,     // Number of complete spins.
+             'duration' : (Math.random()+1)*5,     // Duration in seconds.
+             'spins'    : (Math.random()+2)*3,     // Number of complete spins.
              'callbackFinished' : () => {this.announceLocation()}
          }
      });
