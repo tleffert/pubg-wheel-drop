@@ -9,6 +9,8 @@ import { AlertModule } from 'ngx-bootstrap';
 import { AppComponent } from './app.component';
 import { WheelComponent } from './wheel/wheel.component';
 import { LocationApiService } from '../services/location-api.service';
+import { StreamService } from '../services/streamService.service';
+
 import { LocationSelectModule } from './location-selection/location-select.module';
 import { NavComponent } from './nav/nav.component';
 import { EventService } from '../services/eventService.service';
@@ -27,7 +29,7 @@ import { EventService } from '../services/eventService.service';
     CommonModule,
     LocationSelectModule
   ],
-  providers: [LocationApiService, EventService],
+  providers: [LocationApiService, EventService, StreamService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
