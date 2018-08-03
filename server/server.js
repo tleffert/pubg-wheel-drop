@@ -8,13 +8,12 @@ var fs = require('fs');
 // var obj = JSON.parse(fs.readFileSync('./data/locations.json', 'utf8'));
 
 var Location  = require('./schemas/LocationSchema');
-
+CONFIG = require('./config.json');
 // Get our API routes
 // const api = require('./server/routes/api');
 // OSCAR POINT  Correct - 17 Missed - 7
 const app = express();
-
-mongoose.connect('mongodb://localhost/wheel');
+mongoose.connect(`mongodb://${CONFIG['dbUser']}:${CONFIG['dbUser-pwd']}@localhost/wheel`);
 
 // Parsers for POST data
 app.use(express.json());       // to support JSON-encoded bodies
@@ -30,7 +29,6 @@ require('./routes')(app);
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
-
 
 /**
  * Get port from environment and store in Express.
