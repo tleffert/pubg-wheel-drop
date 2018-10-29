@@ -17,11 +17,7 @@ export class LocationApiService {
   reportWinner(locationId) : Observable<any> {
       return this.http.post('/api/location/winner/'+locationId, {});
   }
-
-  notifySelected(location : Location) : void {
-      this.selectSubject.next(location);
-  }
-
+  
   getLocationSelectSubscription() : Observable<Location> {
       return this.selectSubject.asObservable();
   }

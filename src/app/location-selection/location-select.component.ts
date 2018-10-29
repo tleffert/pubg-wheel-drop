@@ -2,6 +2,7 @@ import { Component, OnInit, NgModule, Input } from '@angular/core';
 import { LocationApiService } from '../../services/location-api.service';
 import { Location } from '../../types/Location.type';
 import { EventService } from '../../services/eventService.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'location-select',
@@ -17,9 +18,13 @@ export class LocationSelectComponent implements OnInit {
     private locationSpice2 : Location[] = [];
     private locationSpice3 : Location[] = [];
 
-    constructor(private locationService : LocationApiService, private eventService : EventService) {
-        this.eventService.mapSubscription
-        .subscribe(map => {
+    constructor(
+        private locationService : LocationApiService,
+        private eventService : EventService
+    ) {}
+
+    ngOnInit() {
+        this.eventService.on('MAP_SELECT', map => {
             this.locationService.listByMap(map)
             .subscribe(locations => {
                 this.resetLocations();
@@ -37,23 +42,20 @@ export class LocationSelectComponent implements OnInit {
             });
         });
 
-    }
-
-    ngOnInit() {
-        this.locationService.listByMap('Erangel')
-        .subscribe(locations => {
-            locations.forEach(location => {
-                if(location.level == 1){
-                    this.locationSpice1.push(location);
-                }
-                if(location.level == 2){
-                    this.locationSpice2.push(location);
-                }
-                if(location.level == 3){
-                    this.locationSpice3.push(location);
-                }
-            });
-        });
+        // this.locationService.listByMap('Erangel')
+        // .subscribe(locations => {
+        //     locations.forEach(location => {
+        //         if(location.level == 1){
+        //             this.locationSpice1.push(location);
+        //         }
+        //         if(location.level == 2){
+        //             this.locationSpice2.push(location);
+        //         }
+        //         if(location.level == 3){
+        //             this.locationSpice3.push(location);
+        //         }
+        //     });
+        // });
     }
 
     resetLocations() : void {
@@ -63,7 +65,11 @@ export class LocationSelectComponent implements OnInit {
     }
 
     toggleOption(location : Location) : void {
-        location.selected = !location.selected;
-        this.locationService.notifySelected(location);
+
+        if(location) {
+            location.selected = !location.selected;
+            this.eventService.broadcast("LOCATION_SELECTED", location);
+        }
+
     }
 }

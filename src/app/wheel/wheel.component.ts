@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { LocationApiService } from '../../services/location-api.service';
 import { EventService } from '../../services/eventService.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 declare var $: any;
@@ -41,14 +42,10 @@ export class WheelComponent implements OnInit {
     private showGreenScreen : boolean = false;
     private showBonus : boolean = false;
 
-  constructor(private locationApi : LocationApiService, private eventService : EventService) {
-      this.eventService.mapSubscription
-      .subscribe(map => {
-         this.checkMapSelection(map);
-      });
-
-
-  }
+  constructor(
+      private locationApi : LocationApiService,
+      private eventService : EventService
+  ) {}
 
   ngOnInit() {
 
@@ -61,11 +58,17 @@ export class WheelComponent implements OnInit {
       this.miramar = {};
 
 
-      this.locationApi.getLocationSelectSubscription()
-      .subscribe(selectedLocation => {
-          console.log("SEELCTD OPTINO", selectedLocation);
-          this.addOption(selectedLocation);
-      });
+    //   this.locationApi.getLocationSelectSubscription()
+    //   .subscribe(selectedLocation => {
+    //       console.log("SEELCTD OPTINO", selectedLocation);
+    //       this.addOption(selectedLocation);
+    //   });
+
+      this.eventService.on("LOCATION_SELECTED", selectedLocation => {
+          if(selectedLocation) {
+              this.addOption(selectedLocation);
+          }
+      })
 
       this.bonus = [
           {text : 'Pooper Scooper'},
@@ -76,22 +79,23 @@ export class WheelComponent implements OnInit {
           {text : 'Example4'}
 
       ]
-      this.locationApi.listByMap('Erangel')
-      .subscribe(response => {
-          this.updateMapLocations(response);
-          this.locationsReady = true;
+//    Eventually will be a bonus wheel again
+//    this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
 
-          this.initWheel();
-      }, error => {
-          console.log(error);
-      });
+     this.locationApi.listByMap('Erangel')
+     .subscribe(response => {
+         this.updateMapLocations(response);
+         this.locationsReady = true;
 
-    //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
+         this.initWheel();
+     }, error => {
+         console.log(error);
+     });
 
-     this.initWheel();
-     this.wheel.draw();
-     this.locationsReady = true;
-     this.ready = true;
+     this.eventService.on("MAP_SELECT", map => {
+         this.checkMapSelection(map);
+     });
+
   }
 
   // Updates the Location selection from the DB
@@ -152,7 +156,6 @@ export class WheelComponent implements OnInit {
           locations3 : this.locations3,
       };
 
-      console.log("THESE ARE THE NEW SELECTS", this.currentMapLocations);
       // Setting up default selections
       this.currentMapLocations.locations2.forEach( location => {
           if(location['selected']) {

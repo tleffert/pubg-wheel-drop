@@ -38,11 +38,12 @@ export class NavComponent implements OnInit {
 
     toggleLocationNav() : void {
         this.locationSelectToggle = !this.locationSelectToggle;
-        this.eventService.toggleLocationSelect();
+        this.eventService.broadcast("TOGGLE_LOCATION_SELECT", this.locationSelectToggle);
     }
 
     selectMap(map) : void {
         this.map = map;
-        this.eventService.selectMap(this.map);
+        // this.eventService.selectMap(this.map);
+        this.eventService.broadcast("MAP_SELECT", map);
     }
 }

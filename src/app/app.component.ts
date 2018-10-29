@@ -12,9 +12,8 @@ export class AppComponent {
   showLocationNav : boolean = false;
 
   constructor(eventService : EventService) {
-      eventService.lTSubscription
-      .subscribe(() => {
-          this.showLocationNav = !this.showLocationNav;
+      eventService.on("TOGGLE_LOCATION_SELECT", showLocationToggleValue => {
+          this.showLocationNav = showLocationToggleValue;
       });
   }
 }
