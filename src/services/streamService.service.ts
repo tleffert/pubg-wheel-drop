@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Location } from '../types/Location.type';
-import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class StreamService {

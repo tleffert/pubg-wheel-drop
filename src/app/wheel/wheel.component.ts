@@ -57,13 +57,6 @@ export class WheelComponent implements OnInit {
       this.erangel = {};
       this.miramar = {};
 
-
-    //   this.locationApi.getLocationSelectSubscription()
-    //   .subscribe(selectedLocation => {
-    //       console.log("SEELCTD OPTINO", selectedLocation);
-    //       this.addOption(selectedLocation);
-    //   });
-
       this.eventService.on("LOCATION_SELECTED", selectedLocation => {
           if(selectedLocation) {
               this.addOption(selectedLocation);
@@ -82,7 +75,7 @@ export class WheelComponent implements OnInit {
 //    Eventually will be a bonus wheel again
 //    this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
 
-     this.locationApi.listByMap('Erangel')
+     this.locationApi.getMapLocations('Erangel')
      .subscribe(response => {
          this.updateMapLocations(response);
          this.locationsReady = true;
@@ -93,6 +86,7 @@ export class WheelComponent implements OnInit {
      });
 
      this.eventService.on("MAP_SELECT", map => {
+         console.log("MAP_SELECTT", map);
          this.checkMapSelection(map);
      });
 
@@ -107,7 +101,7 @@ export class WheelComponent implements OnInit {
           this.wheelSegments = [];
           if(mapSelection == 'Miramar') {
               $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
-              this.locationApi.listByMap('Miramar')
+              this.locationApi.getMapLocations('Miramar')
               .subscribe(response => {
                   this.updateMapLocations(response);
                   console.log(this.wheelSegments);
@@ -120,7 +114,7 @@ export class WheelComponent implements OnInit {
               });
           } else {
               $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
-              this.locationApi.listByMap('Erangel')
+              this.locationApi.getMapLocations('Erangel')
               .subscribe(response => {
                   this.updateMapLocations(response);
                   this.locationsReady = true;

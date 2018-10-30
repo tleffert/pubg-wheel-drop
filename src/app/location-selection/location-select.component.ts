@@ -19,13 +19,13 @@ export class LocationSelectComponent implements OnInit {
     private locationSpice3 : Location[] = [];
 
     constructor(
-        private locationService : LocationApiService,
+        private locationApi : LocationApiService,
         private eventService : EventService
     ) {}
 
     ngOnInit() {
         this.eventService.on('MAP_SELECT', map => {
-            this.locationService.listByMap(map)
+            this.locationApi.getMapLocations(map)
             .subscribe(locations => {
                 this.resetLocations();
                 locations.forEach(location => {
