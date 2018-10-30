@@ -57,12 +57,6 @@ export class WheelComponent implements OnInit {
       this.erangel = {};
       this.miramar = {};
 
-      this.eventService.on("LOCATION_SELECTED", selectedLocation => {
-          if(selectedLocation) {
-              this.addOption(selectedLocation);
-          }
-      })
-
       this.bonus = [
           {text : 'Pooper Scooper'},
           {text : 'Red Pin Wins'},
@@ -75,19 +69,15 @@ export class WheelComponent implements OnInit {
 //    Eventually will be a bonus wheel again
 //    this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
 
-     this.locationApi.getMapLocations('Erangel')
-     .subscribe(response => {
-         this.updateMapLocations(response);
-         this.locationsReady = true;
-
-         this.initWheel();
-     }, error => {
-         console.log(error);
+     // Listener to monitor changes in the selected mapSelection
+     // Triggers the wheel to update to newly selected map
+     this.eventService.on("MAP_SELECT", map => {
+         this.checkMapSelection(map);
      });
 
-     this.eventService.on("MAP_SELECT", map => {
-         console.log("MAP_SELECTT", map);
-         this.checkMapSelection(map);
+     // Registering listener for selecting locations for a particular map
+     this.eventService.on("LOCATION_SELECTED", selectedLocation => {
+         this.addOption(selectedLocation);
      });
 
   }

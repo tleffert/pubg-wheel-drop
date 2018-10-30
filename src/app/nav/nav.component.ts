@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Input, Output } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { LocationApiService } from '../../services/location-api.service';
 import { Location } from '../../types/Location.type';
 import { EventService } from '../../services/eventService.service';
@@ -9,7 +9,7 @@ import { StreamService } from '../../services/streamService.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css'],
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, AfterViewInit {
 
     private map : string = 'Erangel';
     private locationSelectToggle : boolean = false;
@@ -20,10 +20,10 @@ export class NavComponent implements OnInit {
         trevor : false
     };
 
-    constructor(private locationService : LocationApiService,
+    constructor(
          private eventService : EventService,
-         private streamService : StreamService) {
-    }
+         private streamService : StreamService
+     ) {}
 
     ngOnInit() {
         this.streamService.checkLive();
@@ -36,6 +36,10 @@ export class NavComponent implements OnInit {
         });
     }
 
+    ngAfterViewInit() {
+        this.selectMap(this.map);
+    }
+
     toggleLocationNav() : void {
         this.locationSelectToggle = !this.locationSelectToggle;
         this.eventService.broadcast("TOGGLE_LOCATION_SELECT", this.locationSelectToggle);
@@ -43,7 +47,6 @@ export class NavComponent implements OnInit {
 
     selectMap(map) : void {
         this.map = map;
-        // this.eventService.selectMap(this.map);
         this.eventService.broadcast("MAP_SELECT", map);
     }
 }
