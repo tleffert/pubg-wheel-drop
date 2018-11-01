@@ -7,7 +7,7 @@
     border : none;
 }
 
-.btn.btn-bonus.active {
+.btn.btn-bonus, .btn.btn-bonus.active {
     background-color: #99019a;
     border-color: #99019a
 }

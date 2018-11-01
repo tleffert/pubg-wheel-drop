@@ -119,12 +119,6 @@ export class WheelComponent implements OnInit {
           //Update wheel for new map selections
           this.currentMap = mapSelection;
           this.wheelSegments = [];
-          if(mapSelection == 'Miramar') {
-              $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
-          } else {
-              $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
-
-          }
 
           this.locationApi.getMapLocations(mapSelection)
           .subscribe(response => {
@@ -141,6 +135,17 @@ export class WheelComponent implements OnInit {
           this.currentMap = 'Bonus';
          //TODO BONUS WHEEL
          this.initBonusWheel();
+      }
+
+      switch (this.currentMap) {
+        case 'Miramar':
+            $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
+            break;
+        case 'Sahnok':
+            $('body').css('background-image', 'url("./assets/PUBG-Sanhok-map.jpg")');
+            break;
+        case 'Bonus': break;
+        default: $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
       }
   }
 
