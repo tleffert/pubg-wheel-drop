@@ -57,4 +57,28 @@
  {"text" : "Campo Militar", "level" : 3, "map" : "Miramar"},
  {"text" : "Prison", "level" : 3, "map" : "Miramar"},
  {"text" : "Hacienda", "level" : 3, "map" : "Miramar", "selected" : true}
+
+
+ {"text" : "Tat Mok", "level" : 1, "map" : "Sahnok"},
+ {"text" : "Tambang", "level" : 1, "map" : "Sahnok"},
+ {"text" : "Cave", "level" : 1, "map" : "Sahnok", "selected" : true},
+ {"text" : "Lakawi", "level" : 1, "map" : "Sahnok"},
+ {"text" : "Bhan", "level" : 1, "map" : "Sahnok", "selected" : true},
+ {"text" : "SW of Paradise", "level" : 1, "map" : "Sahnok", "selected" : true},
+ {"text" : "Mongnai", "level" : 1, "map" : "Sahnok", "selected" : true},
+ {"text" : "Khao" , "level" : 2, "map" : "Sahnok", "selected" : true},
+ {"text" : "Pai Nan", "level" : 2, "map" : "Sahnok"},
+ {"text" : "Docks" , "level" : 2, "map" : "Sahnok", "selected" : true},
+ {"text" : "Kampong", "level" : 2, "map" : "Sahnok"},
+ {"text" : "Quarry", "level" : 2, "map" : "Sahnok"},
+ {"text" : "Na Kham", "level" : 2, "map" : "Sahnok", "selected" : true},
+ {"text" : "Sahmee" , "level" : 2, "map" : "Sahnok", "selected" : true},
+ {"text" : "Ban Tai", "level" : 2, "map" : "Sahnok"},
+ {"text" : "Ha Tinh" , "level" : 2, "map" : "Sahnok", "selected" : true},
+ {"text" : "Camp Alpha", "level" : 3, "map" : "Sahnok"},
+ {"text" : "Ruins", "level" : 3, "map" : "Sahnok"},
+ {"text" : "Camp Charlie", "level" : 3, "map" : "Sahnok"},
+ {"text" : "Bootcamp" , "level" : 3, "map" : "Sahnok", "selected" : true},
+ {"text" : "Camp Bravo", "level" : 3, "map" : "Sahnok"},
+ {"text" : "Paradise", "level" : 3, "map" : "Sahnok", "selected": true}
 ]

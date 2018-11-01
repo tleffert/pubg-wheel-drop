@@ -1,9 +1,6 @@
-import { Component, OnInit, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { LocationApiService } from '../../services/location-api.service';
 import { EventService } from '../../services/eventService.service';
-import { distinctUntilChanged } from 'rxjs/operators';
 
 import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 declare var $: any;
@@ -58,12 +55,45 @@ export class WheelComponent implements OnInit {
       this.miramar = {};
 
       this.bonus = [
-          {text : 'Pooper Scooper'},
-          {text : 'Red Pin Wins'},
-          {text : 'Example1'},
-          {text : 'Example2'},
-          {text : 'Example3'},
-          {text : 'Example4'}
+        {
+            text : 'Winters Run',
+            winner_message: `<small>Everyone marks a location on the map and must loot selected location before meeting up with rest of team.</small>`
+        },
+        {
+            text : 'Pooper Scooper',
+            winner_message: `<small>See a plane, chase the plane, scoop the poop.</small>`},
+        {
+            text : "Can't Stop, won't stop",
+            winner_message: `<small>Always be moving! No sitting around.</small>`
+        },
+        {
+            text : 'Protect the VIP',
+            winner_message: `<small>The VIP can only equip armor and pistols. If the VIP dies, team frags out.</small>`
+        },
+        {
+            text : 'Dare',
+            winner_message: `<small>Dare to be great! If the dare gets the person knocked or killed, the issuer must revive or get revenge.</small>`
+        },
+        {
+            text : 'Sticky Bows',
+            winner_message: `<small>See a bow? It's yours now! No dropping it till you get a kill with it.</small>`
+        },
+        {
+            text : 'Love at first sight',
+            winner_message: `<small>You must equip each slot with the first weapon you see that fills that slot. Can only loot other weapons off of killed players.</small>`
+        },
+        {
+            text : 'Saving Private Ryan',
+            winner_message: `<small>3 players drop at the start of the flight path. The 4th drops at the end, and the rest of team comes for the rescue!</small>`
+        },
+        {
+            text : 'Running Man',
+            winner_message: `<small>No cars, just run.</small>`
+        },
+        {
+            text : 'Stuntin\'',
+            winner_message: `<small>Only vehicle you can use are motorcycles. In order to get off the bike you must do a flip.</small>`
+        }
 
       ]
 //    Eventually will be a bonus wheel again
@@ -71,7 +101,7 @@ export class WheelComponent implements OnInit {
 
      // Listener to monitor changes in the selected mapSelection
      // Triggers the wheel to update to newly selected map
-     this.eventService.on("MAP_SELECT", map => {
+ this.eventService.on("MAP_SELECT", map => {
          this.checkMapSelection(map);
      });
 
@@ -84,36 +114,33 @@ export class WheelComponent implements OnInit {
 
   // Updates the Location selection from the DB
   checkMapSelection(mapSelection) : void {
-      if(mapSelection != this.currentMap){
+      if(mapSelection != this.currentMap && mapSelection !== 'Bonus'){
           this.locationsReady = false;
           //Update wheel for new map selections
           this.currentMap = mapSelection;
           this.wheelSegments = [];
           if(mapSelection == 'Miramar') {
               $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
-              this.locationApi.getMapLocations('Miramar')
-              .subscribe(response => {
-                  this.updateMapLocations(response);
-                  console.log(this.wheelSegments);
-                  this.locationsReady = true;
-                  this.initWheel();
-
-              }, error => {
-                  console.log(error);
-
-              });
           } else {
               $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
-              this.locationApi.getMapLocations('Erangel')
-              .subscribe(response => {
-                  this.updateMapLocations(response);
-                  this.locationsReady = true;
 
-                  this.initWheel();
-              }, error => {
-                  console.log(error);
-              });
           }
+
+          this.locationApi.getMapLocations(mapSelection)
+          .subscribe(response => {
+              this.updateMapLocations(response);
+              this.locationsReady = true;
+
+              this.initWheel();
+          }, error => {
+              console.log(error);
+          });
+      }
+
+      if(mapSelection === 'Bonus') {
+          this.currentMap = 'Bonus';
+         //TODO BONUS WHEEL
+         this.initBonusWheel();
       }
   }
 
@@ -139,6 +166,13 @@ export class WheelComponent implements OnInit {
           locations2 : this.locations2,
           locations3 : this.locations3,
       };
+
+      // Setting up default selections
+      this.currentMapLocations.locations.forEach( location => {
+          if(location['selected']) {
+               location['fillStyle'] = '#1d5d1d';
+          }
+      });
 
       // Setting up default selections
       this.currentMapLocations.locations2.forEach( location => {
@@ -184,7 +218,6 @@ export class WheelComponent implements OnInit {
   }
 
   addOption(option) :void {
-      console.log(option);
       // If already selected, remove from selection
       if(!option.selected){
          this.wheelSegments = this.wheelSegments.filter(segment => segment['text'] !== option.text);
@@ -205,7 +238,7 @@ export class WheelComponent implements OnInit {
   spin() : void {
     //   this.toggleLocationSelect = false;
       // Begin the spin animation by calling startAnimation on the wheel object.
-      if(this.showBonus) {
+      if(this.showBonus || this.currentMap === 'Bonus') {
           this.bonusWheel.startAnimation();
       } else {
           this.wheel.startAnimation();
@@ -216,7 +249,7 @@ export class WheelComponent implements OnInit {
 
   announceLocation(showBonus?) : void {
       let winner;
-      if(showBonus) {
+      if(showBonus || this.currentMap === 'Bonus') {
           winner = this.bonusWheel.getIndicatedSegment();
       } else {
           winner = this.wheel.getIndicatedSegment();
@@ -231,10 +264,10 @@ export class WheelComponent implements OnInit {
 
       } else {
           // Reporting the winner for SCIENCE
-          this.locationApi.reportWinner(winner._id).subscribe();
+          // this.locationApi.reportWinner(winner._id).subscribe();
           swal({
-              title: winner['winner_message'],
-              text: winner.text + "!!!",
+              html: winner['winner_message'],
+              title: winner.text + "!!!",
               confirmButtonText: 'The Wheel Provides',
             //   imageUrl: '/assets/gatka.png',
             //   imageWidth: 400,
@@ -258,14 +291,18 @@ export class WheelComponent implements OnInit {
                   this.showBonus = false;
               }
             //   this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'});
-              this.initWheel();
-              this.wheel.draw();
-          })
+            if(this.currentMap === 'Bonus'){
+                this.initBonusWheel();
+            } else {
+                this.initWheel();
+                this.wheel.draw();
+            }
+        });
       }
   }
 
   reset() : void {
-      if(this.showBonus) {
+      if(this.showBonus || this.currentMap === 'Bonus') {
           this.bonusWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
           this.bonusWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
           this.bonusWheel.draw();                // Call draw to render changes to the wheel.
@@ -280,19 +317,22 @@ export class WheelComponent implements OnInit {
 
   initWheel(initText?) : void {
     //   this.init = true;
+    if(this.bonusWheel){
+        this.bonusWheel.clearCanvas();
+    }
       this.wheel = new Winwheel({
          'numSegments'       : this.wheelSegments.length,         // Specify number of segments.
          'outerRadius'       : 275,       // Set outer radius so wheel fits inside the background.
          'innerRadius' : 100,
          'drawMode'          : 'code',   // drawMode must be set to image.
          'drawText'          : true,      // Need to set this true if want code-drawn text on image wheels.
-         'textFontSize'      : 12,        // Set text options as desired.
+         'textFontSize'      : 13,        // Set text options as desired.
          'textOrientation'   : 'horizontal',
         //  'textDirection'     : 'reversed',
          'textAlignment'     : 'outer',
          'textMargin'        : 5,
-         'textFontFamily'    : 'Courier',
-         'textStrokeStyle'   : 'black',
+         'textFontFamily'    : 'Arial',
+         // 'textStrokeStyle'   : 'black',
         //  'textLineWidth'     : 1,
          'textFillStyle'     : 'black',
          'fillStyle' : '#eadec4',
@@ -311,22 +351,23 @@ export class WheelComponent implements OnInit {
   }
 
   initBonusWheel() : void {
+      this.wheel.clearCanvas();
       this.bonusWheel = new Winwheel({
          'numSegments'       : this.bonus.length,         // Specify number of segments.
-         'outerRadius'       : 250,       // Set outer radius so wheel fits inside the background.
+         'outerRadius'       : 275,       // Set outer radius so wheel fits inside the background.
          'innerRadius' : 100,
          'drawMode'          : 'code',   // drawMode must be set to image.
          'drawText'          : true,      // Need to set this true if want code-drawn text on image wheels.
-         'textFontSize'      : 14,        // Set text options as desired.
+         'textFontSize'      : 13,        // Set text options as desired.
          'textOrientation'   : 'horizontal',
         //  'textDirection'     : 'reversed',
          'textAlignment'     : 'outer',
          'textMargin'        : 5,
-         'textFontFamily'    : 'Courier',
-         'textStrokeStyle'   : 'black',
+         'textFontFamily'    : 'Arial',
+         // 'textStrokeStyle'   : 'black',
         //  'textLineWidth'     : 1,
          'textFillStyle'     : 'black',
-         'fillStyle' : '#eadec4',
+         'fillStyle' : '#99019a',
          'pointerAngle' : 90,
         //  'callbackFinished' : this.announceLocation,
 
@@ -334,9 +375,9 @@ export class WheelComponent implements OnInit {
          'animation' :                   // Specify the animation to use.
          {
              'type'     : 'spinToStop',
-             'duration' : 5,     // Duration in seconds.
-             'spins'    : 8,     // Number of complete spins.
-             'callbackFinished' : () => { this.announceLocation(true)}
+             'duration' : (Math.random()+1)*5,     // Duration in seconds.
+             'spins'    : (Math.random()+2)*3,     // Number of complete spins.
+             'callbackFinished' : () => {this.announceLocation()}
          }
      });
 
