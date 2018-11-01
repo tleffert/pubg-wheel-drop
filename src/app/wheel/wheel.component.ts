@@ -321,6 +321,7 @@ export class WheelComponent implements OnInit {
   }
 
   initWheel(initText?) : void {
+      this.wheelSegments.sort(function(a, b){return 0.5 - Math.random()});
     //   this.init = true;
     if(this.bonusWheel){
         this.bonusWheel.clearCanvas();
@@ -351,7 +352,13 @@ export class WheelComponent implements OnInit {
              'duration' : (Math.random()+1)*5,     // Duration in seconds.
              'spins'    : (Math.random()+2)*3,     // Number of complete spins.
              'callbackFinished' : () => {this.announceLocation()}
-         }
+         },
+        //  'pointerGuide' :        // Specify pointer guide properties.
+        // {
+        //     'display'     : true,
+        //     'strokeStyle' : 'red',
+        //     'lineWidth'   : 3
+        // }
      });
   }
 
