@@ -41,21 +41,6 @@ export class LocationSelectComponent implements OnInit {
                 });
             });
         });
-
-        // this.locationService.listByMap('Erangel')
-        // .subscribe(locations => {
-        //     locations.forEach(location => {
-        //         if(location.level == 1){
-        //             this.locationSpice1.push(location);
-        //         }
-        //         if(location.level == 2){
-        //             this.locationSpice2.push(location);
-        //         }
-        //         if(location.level == 3){
-        //             this.locationSpice3.push(location);
-        //         }
-        //     });
-        // });
     }
 
     resetLocations() : void {

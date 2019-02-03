@@ -144,6 +144,9 @@ export class WheelComponent implements OnInit {
         case 'Sahnok':
             $('body').css('background-image', 'url("./assets/PUBG-Sanhok-map.jpg")');
             break;
+        case 'Vikendi':
+            $('body').css('background-image', 'url("./assets/vikendi.jpg")');
+            break;
         case 'Bonus': break;
         default: $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
       }
