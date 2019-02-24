@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+
+import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
+
 import { LocationApiService } from '../../services/location-api.service';
 import { EventService } from '../../services/eventService.service';
 
-import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
+import { Location } from '@app/types';
+import bonusEntries from './bonus_wheel_entries.json';
+
 declare var $: any;
 
-let Winwheel = require('winwheel')
+let Winwheel = require('../Winwheel');
 // declare var Winwheel: any;
 @Component({
   selector: 'app-wheel',
@@ -20,9 +25,9 @@ export class WheelComponent implements OnInit {
     private wheelPower : number;
 
     private locationsReady : boolean;
-    private locations1 : object[];
-    private locations2 : object[];
-    private locations3 : object[];
+    private locations1 : Location[];
+    private locations2 : Location[];
+    private locations3 : Location[];
     private bonus : object[];
 
     private mapSelection : string;
@@ -42,7 +47,11 @@ export class WheelComponent implements OnInit {
   constructor(
       private locationApi : LocationApiService,
       private eventService : EventService
-  ) {}
+  ) {
+    this.bonus = bonusEntries;
+    console.log(this.bonus);
+
+  }
 
   ngOnInit() {
 
@@ -54,54 +63,9 @@ export class WheelComponent implements OnInit {
       this.erangel = {};
       this.miramar = {};
 
-      this.bonus = [
-        {
-            text : 'Winters Run',
-            winner_message: `<small>Everyone marks a location on the map and must loot selected location before meeting up with rest of team.</small>`
-        },
-        {
-            text : 'Pooper Scooper',
-            winner_message: `<small>See a plane, chase the plane, scoop the poop.</small>`},
-        {
-            text : "Can't Stop, won't stop",
-            winner_message: `<small>Always be moving! No sitting around.</small>`
-        },
-        {
-            text : 'Protect the VIP',
-            winner_message: `<small>The VIP can only equip armor and pistols. If the VIP dies, team frags out.</small>`
-        },
-        {
-            text : 'Dare',
-            winner_message: `<small>Dare to be great! If the dare gets the person knocked or killed, the issuer must revive or get revenge.</small>`
-        },
-        {
-            text : 'Sticky Bows',
-            winner_message: `<small>See a bow? It's yours now! No dropping it till you get a kill with it.</small>`
-        },
-        {
-            text : 'Love at first sight',
-            winner_message: `<small>You must equip each slot with the first weapon you see that fills that slot. Can only loot other weapons off of killed players.</small>`
-        },
-        {
-            text : 'Saving Private Ryan',
-            winner_message: `<small>3 players drop at the start of the flight path. The 4th drops at the end, and the rest of team comes for the rescue!</small>`
-        },
-        {
-            text : 'Running Man',
-            winner_message: `<small>No cars, just run.</small>`
-        },
-        {
-            text : 'Stuntin\'',
-            winner_message: `<small>Only vehicle you can use are motorcycles. In order to get off the bike you must do a flip.</small>`
-        }
-
-      ]
-//    Eventually will be a bonus wheel again
-//    this.wheelSegments.push({text : 'Bonus', selected : true,  fillStyle : '#a67c00'})
-
      // Listener to monitor changes in the selected mapSelection
      // Triggers the wheel to update to newly selected map
- this.eventService.on("MAP_SELECT", map => {
+     this.eventService.on("MAP_SELECT", map => {
          this.checkMapSelection(map);
      });
 
