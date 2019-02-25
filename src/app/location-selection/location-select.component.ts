@@ -14,9 +14,9 @@ export class LocationSelectComponent implements OnInit {
     @Input()
     map : string;
 
-    private locationSpice1 : Location[] = [];
-    private locationSpice2 : Location[] = [];
-    private locationSpice3 : Location[] = [];
+    locationSpice1 : Location[] = [];
+    locationSpice2 : Location[] = [];
+    locationSpice3 : Location[] = [];
 
     constructor(
         private locationApi : LocationApiService,

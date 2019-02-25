@@ -16,6 +16,7 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
+            "forkTypeChecker": false,
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -35,9 +36,9 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "aot": false,
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "aot": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

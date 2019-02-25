@@ -12,9 +12,9 @@ import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 })
 export class NavComponent implements OnInit, AfterViewInit {
 
-    private map : string = 'Erangel';
-    private locationSelectToggle : boolean = false;
-    private streamStatus : any = {
+    map : string = 'Erangel';
+    locationSelectToggle : boolean = false;
+    streamStatus : any = {
         will : false,
         frank : false,
         mike : false,
