@@ -14,12 +14,14 @@ import { StreamService } from '../services/streamService.service';
 import { LocationSelectModule } from './location-selection/location-select.module';
 import { NavComponent } from './nav/nav.component';
 import { EventService } from '../services/eventService.service';
+import { SteamStatusComponent } from './steam-status/steam-status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WheelComponent,
-    NavComponent
+    NavComponent,
+    SteamStatusComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,50 @@
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+        <div class="rounded-circle"
+            [ngClass]='{"live" : streamStatus.will}'
+            data-toggle="tooltip"
+            data-placement="auto"
+            html='true'
+            title="{{streamStatus.will?'Will is Live':''}}">
+            <a class="head-shot nav-link" href="https://www.twitch.tv/notthatwillsmith" target="_blank">
+                <img class="img-fluid" src="assets/will112.png"/>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <div class="rounded-circle"
+        [ngClass]='{"live" : streamStatus.mike}'
+        data-toggle="tooltip"
+        data-placement="auto"
+        html='true'
+        title="{{streamStatus.mike?'Mike is Live!':''}}">
+            <a class="head-shot nav-link" href="https://www.twitch.tv/sirmitchell" target="_blank">
+                <img class="img-fluid" src="assets/mike112.png"/>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <div class="rounded-circle"
+        [ngClass]='{"live" : streamStatus.frank}'
+        data-toggle="tooltip"
+        data-placement="auto"
+        html='true'
+        title="{{streamStatus.frank?'Frank is Live!':''}}">
+            <a class="head-shot nav-link" href="https://www.twitch.tv/beckyandfrank" target="_blank">
+                <img class="img-fluid" src="assets/frank112.png"/>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <div class="rounded-circle"
+        [ngClass]='{"live" : streamStatus.trevor}'
+        data-toggle="tooltip"
+        data-placement="auto"
+        html='true'
+        title="{{streamStatus.trevor?'Trevor is Live!':''}}">
+            <a class="head-shot nav-link" href="https://www.twitch.tv/bloodygopher" target="_blank">
+                <img class="img-fluid" src="assets/trevorv112.png"/>
+            </a>
+        </div>
+    </li>
+</ul>
