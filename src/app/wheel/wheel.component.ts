@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 
-import { LocationApiService } from '../../services/location-api.service';
-import { EventService } from '../../services/eventService.service';
+import { LocationApiService } from '@app/api';
+import { EventService } from '../shared/services/eventService.service';
 
 import { Location } from '@app/types';
 import bonusEntries from './bonus_wheel_entries.json';

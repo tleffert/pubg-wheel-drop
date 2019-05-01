@@ -8,20 +8,20 @@ import { AlertModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { WheelComponent } from './wheel/wheel.component';
-import { LocationApiService } from '../services/location-api.service';
-import { StreamService } from '../services/streamService.service';
 
 import { LocationSelectModule } from './location-selection/location-select.module';
 import { NavComponent } from './nav/nav.component';
-import { EventService } from '../services/eventService.service';
+import { EventService } from './shared/services/eventService.service';
 import { SteamStatusComponent } from './steam-status/steam-status.component';
+import { MapSelectComponent } from './map-select/map-select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WheelComponent,
     NavComponent,
-    SteamStatusComponent
+    SteamStatusComponent,
+    MapSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +31,7 @@ import { SteamStatusComponent } from './steam-status/steam-status.component';
     CommonModule,
     LocationSelectModule
   ],
-  providers: [LocationApiService, EventService, StreamService],
+  providers: [EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

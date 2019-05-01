@@ -1,7 +1,7 @@
 import { Component, OnInit, NgModule, Input } from '@angular/core';
-import { LocationApiService } from '../../services/location-api.service';
+import { LocationApiService } from '@app/api';
 import { Location } from '../../types/Location.type';
-import { EventService } from '../../services/eventService.service';
+import { EventService } from '../shared/services/eventService.service';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({

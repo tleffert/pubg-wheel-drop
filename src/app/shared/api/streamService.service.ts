@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { Location } from '../types/Location.type';
+import { Location } from '@app/types';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StreamService {
 
   constructor(private http: HttpClient) { }

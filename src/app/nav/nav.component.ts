@@ -1,8 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { LocationApiService } from '../../services/location-api.service';
 import { Location } from '../../types/Location.type';
-import { EventService } from '../../services/eventService.service';
-import { StreamService } from '../../services/streamService.service';
+import { EventService } from '../shared/services/eventService.service';
+import { LocationApiService, StreamService } from '@app/api';
 import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 
 @Component({

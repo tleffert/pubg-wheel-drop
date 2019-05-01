@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { StreamService } from '../../services/streamService.service';
+import { StreamService } from '@app/api';
 
 @Component({
   selector: 'app-steam-status',

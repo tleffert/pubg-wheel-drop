@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
-import { EventService } from '../services/eventService.service';
+import { EventService } from './shared/services/eventService.service';
 
 @Component({
   selector: 'app-root',

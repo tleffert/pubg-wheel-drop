@@ -23,6 +23,9 @@
     "paths": {
       "@app/types": [
         "types/types.barrel"
+      ],
+      "@app/api" : [
+        "app/shared/api/api.barrel.ts"
       ]
     }
   }

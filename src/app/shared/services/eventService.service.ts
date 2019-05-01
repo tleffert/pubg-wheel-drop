@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EventService {
 
     private eventSubject = new BehaviorSubject({key: null, args: null})

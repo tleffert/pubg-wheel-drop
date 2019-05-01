@@ -3,17 +3,26 @@ var express = require('express');
 
 var Location  = require('../schemas/LocationSchema');
 var LocationWinner  = require('../schemas/LocationWinSchema');
+var Map =  require('../schemas/MapSchema');
 
 module.exports = function(parentRoute) {
     var locationRouter = express.Router();
 
-    parentRoute.use('/location', locationRouter);
+    parentRoute.use('/maps', locationRouter);
 
-    locationRouter.get("/list/:map", function(req, res){
-        console.log(req.params.map);
-        Location.find({map : req.params.map})
-        .then(function(locations){
-            res.json(locations).end();
+    // Returns list of all maps
+    locationRouter.get('/', function(req, res){
+        Map.find()
+        .then(function(maps){
+            res.json(maps).end();
+        })
+    });
+
+    // Returns list of all locations of a specific map
+    locationRouter.get('/:map/locations', function(req, res){
+        Location.find({"map": req.params.map})
+        .then(function(mapLocations){
+            res.json(mapLocations).end();
         })
     });
 
