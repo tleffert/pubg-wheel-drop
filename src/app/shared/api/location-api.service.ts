@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Location } from '@app/types';
+import { Location, Map } from '@app/types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +12,12 @@ export class LocationApiService {
   constructor(private http: HttpClient) { }
 
 
-  getMaps() : Observable<any> {
-    return this.http.get('/api/maps');
+  getMaps() : Observable<Array<Map>> {
+      return this.http.get<Array<Map>>('/api/maps');
   }
 
-  getMapLocations(map) : Observable<Location[]> {
-      return this.http.get<Location[]>('/api/maps/'+map+'/locations');
+  getMapLocations(map) : Observable<Array<Location>> {
+      return this.http.get<Array<Location>>('/api/maps/'+map+'/locations');
   }
 
   reportWinner(locationId) : Observable<any> {
