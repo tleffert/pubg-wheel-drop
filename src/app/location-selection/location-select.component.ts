@@ -1,8 +1,11 @@
 import { Component, OnInit, NgModule, Input } from '@angular/core';
+
+import { tap, takeWhile, switchMap, filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
+import { LocationSelectors, LocationEntity, LocationActions, MapSelectors} from '@app/store';
 import { LocationApiService } from '@app/api';
-import { Location } from '@app/types';
 import { EventService } from '../shared/services/eventService.service';
-import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'location-select',
@@ -14,33 +17,38 @@ export class LocationSelectComponent implements OnInit {
     @Input()
     map : string;
 
-    locationSpice1 : Location[] = [];
-    locationSpice2 : Location[] = [];
-    locationSpice3 : Location[] = [];
+    locationSpice1 : LocationEntity[] = [];
+    locationSpice2 : LocationEntity[] = [];
+    locationSpice3 : LocationEntity[] = [];
 
     constructor(
+        private store: Store<any>,
         private locationApi : LocationApiService,
         private eventService : EventService
-    ) {}
+    ) {
+
+        // Need to keep an eye on the selected map to know what locations to show
+        this.store.select(MapSelectors.getSelectedMap())
+        .pipe(
+            filter(selectedMap => !!selectedMap),
+            switchMap(selectedMap => {
+                return this.store.select(LocationSelectors.getLocationsByMap(selectedMap));
+            }),
+            tap(mapLocations => {
+                this.locationSpice1 = mapLocations.filter(location => {
+                    return location.level == 1;
+                });
+                this.locationSpice2 = mapLocations.filter(location => {
+                    return location.level == 2;
+                });
+                this.locationSpice3 = mapLocations.filter(location => {
+                    return location.level == 3;
+                });
+            })
+        ).subscribe()
+    }
 
     ngOnInit() {
-        this.eventService.on('MAP_SELECT', map => {
-            this.locationApi.getMapLocations(map)
-            .subscribe(locations => {
-                this.resetLocations();
-                locations.forEach(location => {
-                    if(location.level == 1){
-                        this.locationSpice1.push(location);
-                    }
-                    if(location.level == 2){
-                        this.locationSpice2.push(location);
-                    }
-                    if(location.level == 3){
-                        this.locationSpice3.push(location);
-                    }
-                });
-            });
-        });
     }
 
     resetLocations() : void {
@@ -49,11 +57,11 @@ export class LocationSelectComponent implements OnInit {
         this.locationSpice3 = [];
     }
 
-    toggleOption(location : Location) : void {
-
-        if(location) {
-            location.selected = !location.selected;
-            this.eventService.broadcast("LOCATION_SELECTED", location);
+    toggleOption(location : LocationEntity) : void {
+        if(location.selected) {
+            this.store.dispatch(LocationActions.deselectLocation({location: location}));
+        } else {
+            this.store.dispatch(LocationActions.selectLocation({location: location}));
         }
 
     }

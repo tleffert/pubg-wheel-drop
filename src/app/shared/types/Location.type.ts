@@ -1,4 +1,5 @@
 export class Location {
+    _id: string;
     text : string; // Name of the location (currently matching text property for the wheel)
     level : number; // spice level
     map : string; // map

@@ -1,6 +1,7 @@
-import { MapEntityCollectionState } from '@app/store';
+import { MapEntityCollectionState, LocationEntityCollectionState } from '@app/store';
 
 
 export interface RootState {
-    maps: MapEntityCollectionState
+    maps: MapEntityCollectionState,
+    locations: LocationEntityCollectionState
 }

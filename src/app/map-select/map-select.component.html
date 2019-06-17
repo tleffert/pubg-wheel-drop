@@ -1,10 +1,10 @@
 <div class="btn-group btn-group-toggle">
-  <button
-      class="btn"
-      (click)="selectMap(map)"
-      [ngClass]="{'btn-primary': map.selected, 'btn-secondary' : !map.selected}"
-      *ngFor="let map of maps"
+    <button
+        *ngFor="let map of maps"
+        class="btn"
+        (click)="selectMap(map)"
+        [ngClass]="{'btn-primary': map.selected, 'btn-secondary' : !map.selected}"
     >
-      {{map.name}}
-  </button>
+    {{map.name}}
+    </button>
 </div>

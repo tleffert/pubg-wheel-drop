@@ -1,10 +1,16 @@
 import * as MapActions from './map/map-actions';
 import { MapEntity, MapEntityCollectionState, mapEntityCollectioninitialState} from './map/map-state';
 import { mapEntityCollectionReducer } from './map/map-reducer';
-import { MapStoreModule } from './map/map-store.module';
 import * as MapSelectors from './map/map-selectors';
+
+import * as LocationActions from './location/location-actions';
+import * as LocationSelectors from './location/location-selectors';
+import { LocationEntity, LocationEntityCollectionState, locationEntityAdapter, locationEntityCollectioninitialState} from './location/location-state';
+import { locationEntityCollectionReducer } from './location/location-reducer';
 
 export {
     MapActions, MapEntity, MapEntityCollectionState,
-    MapSelectors, mapEntityCollectioninitialState, mapEntityCollectionReducer
+    MapSelectors, mapEntityCollectioninitialState, mapEntityCollectionReducer,
+    LocationActions, LocationEntity, LocationEntityCollectionState, LocationSelectors,
+    locationEntityAdapter, locationEntityCollectioninitialState, locationEntityCollectionReducer
 }

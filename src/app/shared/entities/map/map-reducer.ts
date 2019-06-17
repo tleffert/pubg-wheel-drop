@@ -17,7 +17,7 @@ export const reducer = createReducer(
         (state, {map}) => {
             let updatedState = {...state};
             if(state.selectedMap) {
-                // First unselect all maps
+                // First make sure the previously selected map is deselected
                 updatedState = mapEntityAdapter.updateOne({
                     id: state.selectedMap._id,
                     changes: {
@@ -25,6 +25,7 @@ export const reducer = createReducer(
                     }
                 }, state);
             }
+
             // Update the specific map is now selected
             updatedState = mapEntityAdapter.updateOne({
                 id: map._id,
@@ -32,6 +33,7 @@ export const reducer = createReducer(
                     selected: true
                 }
             }, updatedState);
+
             // Update overall collection state on the selected map
             updatedState.selectedMap = map;
             return updatedState;
