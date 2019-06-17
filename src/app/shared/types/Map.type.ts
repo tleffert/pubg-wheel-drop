@@ -1,4 +1,4 @@
-export class Map {
-    name: String
-    selected?: boolean
+export interface Map {
+    _id: string,
+    name: string
 }

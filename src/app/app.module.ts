@@ -4,6 +4,8 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
+import { SharedModule } from './shared/shared.module';
+
 import { AlertModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -29,6 +31,7 @@ import { MapSelectComponent } from './map-select/map-select.component';
     Angular2FontawesomeModule,
     HttpClientModule,
     CommonModule,
+    SharedModule,
     LocationSelectModule
   ],
   providers: [EventService],
