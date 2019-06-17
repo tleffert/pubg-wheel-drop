@@ -100,20 +100,6 @@ export class WheelComponent implements OnInit {
          //TODO BONUS WHEEL
          this.initBonusWheel();
       }
-
-      switch (this.currentMap) {
-        case 'Miramar':
-            $('body').css('background-image', 'url("./assets/desrt-map-1080.png")');
-            break;
-        case 'Sahnok':
-            $('body').css('background-image', 'url("./assets/PUBG-Sanhok-map.jpg")');
-            break;
-        case 'Vikendi':
-            $('body').css('background-image', 'url("./assets/vikendi.jpg")');
-            break;
-        case 'Bonus': break;
-        default: $('body').css('background-image', 'url("./assets/pubg_map_down_scale.jpg")');
-      }
   }
 
   updateMapLocations(locations) : void {

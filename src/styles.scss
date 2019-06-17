@@ -25,6 +25,22 @@ body {
      background-color: #464646;
 
      overflow: hidden;
+
+     &.Erange, &.Bonus {
+        background-image: url("./assets/pubg_map_down_scale.jpg");
+     }
+
+     &.Miramar {
+        background-image: url("./assets/desrt-map-1080.png");
+     }
+
+     &.Sahnok {
+        background-image: url("./assets/PUBG-Sanhok-map.jpg");
+     }
+
+     &.Vikendi {
+        background-image: url("./assets/vikendi.jpg");
+     }
 }
 
 .swal2-container {
