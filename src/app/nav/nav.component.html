@@ -5,7 +5,8 @@
   </div>
 
   <div class="ml-auto">
-      <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+      <app-map-select></app-map-select>
+      <!-- <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
         <button class="btn" (click)="selectMap('Erangel')" [ngClass]="{'btn-primary' : map == 'Erangel', 'btn-secondary' : map != 'Erangel'}">
             Erangel
         </button>
@@ -21,7 +22,7 @@
         <button class="btn" (click)="selectMap('Bonus')" [ngClass]="{'btn-bonus' : map == 'Bonus', 'btn-secondary' : map != 'Bonus'}">
             Bonus
         </button>
-      </div>
+      </div> -->
       <div class="btn-group mr-2">
           <button class="btn btn-sm" (click)="toggleLocationNav()" [ngClass]="{'btn-primary': locationSelectToggle, 'btn-secondary' : !locationSelectToggle}">
               <fa [name]="'map-marker'" [size]="2"></fa>
