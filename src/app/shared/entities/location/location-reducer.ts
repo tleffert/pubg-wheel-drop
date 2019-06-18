@@ -52,6 +52,22 @@ export const reducer = createReducer(
             updatedState.fetching = false;
             return updatedState;
         }
+    ),
+
+    on(
+        LocationActions.selectManyLocations,
+        (state, {locations, toggleValue}) => {
+            let updates = [];
+            locations.forEach(location => {
+                updates.push({
+                    id: location._id,
+                    changes: {
+                        selected: toggleValue
+                    }
+                });
+            });
+            return locationEntityAdapter.updateMany(updates, state);
+        }
     )
 
 );
