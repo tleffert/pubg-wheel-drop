@@ -21,6 +21,11 @@
 }
 
 .spice-level-icons {
+
+    &.allSpiceLevel img {
+        content:url("/assets/spicyfull-small.png");
+    }
+
     &:hover img {
         content:url("/assets/spicyfull-small.png");
         animation: fade-in .5s ease-in ;

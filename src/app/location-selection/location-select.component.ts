@@ -64,10 +64,10 @@ export class LocationSelectComponent implements OnInit {
         for(let locationEntry in this.mapLocationsBySpice[level]) {
             locations.push(this.mapLocationsBySpice[level][locationEntry]);
         }
-        this.toggleSpice[level] = !this.toggleSpice[level];
+        this.spiceToggle[level] = !this.spiceToggle[level];
         this.store.dispatch(LocationActions.selectManyLocations({
             locations: locations,
-            toggleValue: this.toggleSpice[level]
+            toggleValue: this.spiceToggle[level]
         }));
     }
 }

@@ -3,6 +3,7 @@
         <div class="d-flex justify-content-center">
             <div
                 class="spice-level-icons"
+                [ngClass]="{'allSpiceLevel': spiceToggle[spiceLevel.key]}"
                 (click)="toggleSpice(spiceLevel.key)">
                 <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 1"/>
                 <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 2"/>
