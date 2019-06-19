@@ -10,16 +10,20 @@ import { EventService } from '../shared/services/eventService.service';
 @Component({
   selector: 'location-select',
   templateUrl: './location-select.component.html',
-  styleUrls: ['./location-select.component.css'],
+  styleUrls: ['./location-select.component.scss'],
 })
 export class LocationSelectComponent implements OnInit {
 
     @Input()
     map : string;
 
-    locationSpice1 : LocationEntity[] = [];
-    locationSpice2 : LocationEntity[] = [];
-    locationSpice3 : LocationEntity[] = [];
+    mapLocationsBySpice: {[key: number]: {[key: string]: LocationEntity}};
+    spiceToggle = {};
+
+    spice1toggleAll: boolean;
+    spice2toggleAll: boolean;
+    spice3toggleAll: boolean;
+
 
     constructor(
         private store: Store<any>,
@@ -35,14 +39,10 @@ export class LocationSelectComponent implements OnInit {
                 return this.store.select(LocationSelectors.getLocationsByMap(selectedMap));
             }),
             tap(mapLocations => {
-                this.locationSpice1 = mapLocations.filter(location => {
-                    return location.level == 1;
-                });
-                this.locationSpice2 = mapLocations.filter(location => {
-                    return location.level == 2;
-                });
-                this.locationSpice3 = mapLocations.filter(location => {
-                    return location.level == 3;
+                // reset mapLocation Map
+                this.mapLocationsBySpice = { 1:{}, 2:{}, 3:{}};
+                mapLocations.forEach(location => {
+                    this.mapLocationsBySpice[location.level][location._id] = location;
                 });
             })
         ).subscribe()
@@ -51,18 +51,23 @@ export class LocationSelectComponent implements OnInit {
     ngOnInit() {
     }
 
-    resetLocations() : void {
-        this.locationSpice1 = [];
-        this.locationSpice2 = [];
-        this.locationSpice3 = [];
-    }
-
     toggleOption(location : LocationEntity) : void {
         if(location.selected) {
             this.store.dispatch(LocationActions.deselectLocation({location: location}));
         } else {
             this.store.dispatch(LocationActions.selectLocation({location: location}));
         }
+    }
 
+    toggleSpice(level: number) {
+        let locations: LocationEntity[] = [];
+        for(let locationEntry in this.mapLocationsBySpice[level]) {
+            locations.push(this.mapLocationsBySpice[level][locationEntry]);
+        }
+        this.toggleSpice[level] = !this.toggleSpice[level];
+        this.store.dispatch(LocationActions.selectManyLocations({
+            locations: locations,
+            toggleValue: this.toggleSpice[level]
+        }));
     }
 }

@@ -1,0 +1,45 @@
+.btn {
+    margin : 5px;
+}
+
+.spice-group1 .spice-active {
+    background-color: green;
+}
+
+.spice-group2 .spice-active {
+    background-color: orange;
+}
+
+.spice-group3 .spice-active {
+    background-color: red;
+}
+
+.location-select {
+    position : absolute;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+}
+
+.spice-level-icons {
+    &:hover img {
+        content:url("/assets/spicyfull-small.png");
+        animation: fade-in .5s ease-in ;
+    }
+
+    & img {
+        height: 69px;
+        width: 31px;
+        cursor: pointer;
+        animation: fade-in .5s ease-in ;
+    }
+}
+
+@keyframes fade-in {
+  0% { opacity: .25; }
+  100% { opacity: 1; }
+}
+
+@keyframes fade-out {
+  100% { opacity: 1; }
+  0% { opacity: .25; }
+}

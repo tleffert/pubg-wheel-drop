@@ -1,42 +1,25 @@
 <div class="row location-select">
-    <div class="col-4 spice-group1">
+    <div class="col-4" *ngFor="let spiceLevel of mapLocationsBySpice | keyvalue">
         <div class="d-flex justify-content-center">
-            <img src="/assets/spicyfull-small.png"/>
+            <div
+                class="spice-level-icons"
+                (click)="toggleSpice(spiceLevel.key)">
+                <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 1"/>
+                <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 2"/>
+                <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key == 3"/>
+            </div>
         </div>
-        <ng-container *ngIf="locationSpice1">
-            <button class="btn" *ngFor="let location of locationSpice1"
-            (click)="toggleOption(location)"
-            [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">
-            {{location.text}}
+        <div
+            [ngClass]="'spice-group'+spiceLevel.key"
+        >
+            <button
+                *ngFor="let locationEntry of spiceLevel.value | keyvalue"
+                class="btn"
+                (click)="toggleOption(locationEntry.value)"
+                [ngClass]="{'btn-secondary' : !locationEntry.value.selected, 'spice-active' : locationEntry.value.selected}"
+            >
+                {{locationEntry.value.text}}
             </button>
-        </ng-container>
-    </div>
-    <div class="col-4 spice-group2">
-        <div class="d-flex justify-content-center">
-            <img src="/assets/spicyfull-small.png"/>
-            <img src="/assets/spicyfull-small.png"/>
         </div>
-        <ng-container *ngIf="locationSpice2">
-        <div class="btn" *ngFor="let location of locationSpice2"
-        (click)="toggleOption(location)"
-        [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">
-        {{location.text}}
     </div>
-        </ng-container>
-    </div>
-    <div class="col-4 spice-group3">
-        <div class="d-flex justify-content-center">
-            <img src="/assets/spicyfull-small.png"/>
-            <img src="/assets/spicyfull-small.png"/>
-            <img src="/assets/spicyfull-small.png"/>
-        </div>
-        <ng-container *ngIf="locationSpice3">
-        <button class="btn" *ngFor="let location of locationSpice3"
-        (click)="toggleOption(location)"
-        [ngClass]="{'btn-secondary' : !location.selected, 'spice-active' : location.selected}">
-        {{location.text}}
-        </button>
-        </ng-container>
-    </div>
-
 </div>
