@@ -6,7 +6,7 @@ import { MapEntity } from './map-state';
 export enum Events {
     FETCH_ALL_MAPS = '[Map] FETCH_ALL_MAPS',
     FETCH_ALL_MAPS_SUCCESS = '[Map] FETCH_ALL_MAPS_SUCCESS',
-    SELECT_MAP = '[Map] SELECT_MAP'
+    SELECT_MAP = '[Map] SELECT_MAP',
 }
 
 export const fetchAllMaps = createAction(

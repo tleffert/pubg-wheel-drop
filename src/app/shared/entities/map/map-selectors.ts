@@ -15,4 +15,4 @@ export const getSelectedMap = () => createSelector(
     (state) => {
         return state.selectedMap;
     }
-)
+);
