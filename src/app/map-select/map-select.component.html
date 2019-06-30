@@ -3,7 +3,11 @@
         *ngFor="let map of maps"
         class="btn"
         (click)="selectMap(map)"
-        [ngClass]="{'btn-primary': map.selected, 'btn-secondary' : !map.selected}"
+        [disabled]="disableOptionSelect"
+        [ngClass]="{
+            'btn-primary': map.selected,
+            'btn-secondary': !map.selected
+        }"
     >
     {{map.name}}
     </button>

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { LocationApiService } from '@app/api';
 import { Map } from '@app/types';
-import { MapSelectors, MapEntity, MapActions, LocationActions } from '@app/store';
+import { MapSelectors, MapEntity, MapActions, LocationActions, selectWheelState } from '@app/store';
 
 @Component({
   selector: 'app-map-select',
@@ -16,6 +16,7 @@ export class MapSelectComponent implements OnInit {
 
     maps : Array<any>;
     selectedMap : MapEntity;
+    disableOptionSelect: boolean;
 
     private cleanup: boolean;
 
@@ -47,6 +48,14 @@ export class MapSelectComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Listener to check on the state of the wheel.
+        this.store.select(selectWheelState)
+        .pipe(
+            tap(wheelState => {
+                // Using this to know when to disable buttons
+                this.disableOptionSelect = wheelState.spinning;
+            })
+        ).subscribe();
 
     }
 

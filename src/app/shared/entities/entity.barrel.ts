@@ -20,4 +20,6 @@ export {
     locationEntityAdapter, locationEntityCollectioninitialState, locationEntityCollectionReducer,
 
     WheelActions, WheelState, wheelStateInitial, wheelStateReducer
-}
+};
+
+export * from './wheel/wheel-selectors';

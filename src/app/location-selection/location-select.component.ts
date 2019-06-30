@@ -3,7 +3,8 @@ import { Component, OnInit, NgModule, Input } from '@angular/core';
 import { tap, takeWhile, switchMap, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { LocationSelectors, LocationEntity, LocationActions, MapSelectors} from '@app/store';
+import { LocationSelectors, LocationEntity,
+     LocationActions, MapSelectors, selectWheelState} from '@app/store';
 import { LocationApiService } from '@app/api';
 import { EventService } from '../shared/services/eventService.service';
 
@@ -23,7 +24,7 @@ export class LocationSelectComponent implements OnInit {
     spice1toggleAll: boolean;
     spice2toggleAll: boolean;
     spice3toggleAll: boolean;
-
+    disableOptionSelect: boolean;
 
     constructor(
         private store: Store<any>,
@@ -49,6 +50,12 @@ export class LocationSelectComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.store.select(selectWheelState)
+        .pipe(
+            tap(wheelState => {
+                this.disableOptionSelect = wheelState.spinning;
+            })
+        ).subscribe();
     }
 
     toggleOption(location : LocationEntity) : void {

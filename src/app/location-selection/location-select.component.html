@@ -4,7 +4,8 @@
             <div
                 class="spice-level-icons"
                 [ngClass]="{'allSpiceLevel': spiceToggle[spiceLevel.key]}"
-                (click)="toggleSpice(spiceLevel.key)">
+                (click)="!disableOptionSelect && toggleSpice(spiceLevel.key)"
+            >
                 <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 1"/>
                 <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 2"/>
                 <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key == 3"/>
@@ -17,6 +18,7 @@
                 *ngFor="let locationEntry of spiceLevel.value | keyvalue"
                 class="btn"
                 (click)="toggleOption(locationEntry.value)"
+                [disabled]="disableOptionSelect"
                 [ngClass]="{'btn-secondary' : !locationEntry.value.selected, 'spice-active' : locationEntry.value.selected}"
             >
                 {{locationEntry.value.text}}
