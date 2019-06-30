@@ -7,10 +7,11 @@ import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 import { LocationApiService } from '@app/api';
 import { EventService } from '../shared/services/eventService.service';
 
-import { Location, WheelConfig, wheelConfigDefaultConf, WheelOption } from '@app/types';
+import { Location, WheelConfig, wheelConfigDefaultConf, WheelSegment } from '@app/types';
 import bonusEntries from './bonus_wheel_entries.json';
 
 import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
 import { MapSelectors, MapEntity, LocationSelectors, LocationEntity, WheelActions } from '@app/store';
 
 declare var $: any;
@@ -24,32 +25,20 @@ let Winwheel = require('../Winwheel');
 })
 export class WheelComponent implements OnInit {
     private wheel : any;
-    private bonusWheel : any;
+
     private wheelSegments : object[];
-    private wheelSpinning : boolean;
-    private wheelPower : number;
-
     private bonus : object[];
-
-    private mapSelection : string;
-    private currentMap : string;
-    private currentMapLocations : any;
-
     private showBonus : boolean = false;
-
-
     private selectedMap: MapEntity;
-
-    private wheelConfig: WheelConfig = wheelConfigDefaultConf;
+    private cleanup: boolean;
 
   constructor(
       private store: Store<any>,
+      private actionStream$: Actions,
       private locationApi : LocationApiService,
       private eventService : EventService
   ) {
     this.bonus = bonusEntries;
-    console.log(this.bonus);
-
   }
 
   ngOnInit() {
@@ -85,6 +74,15 @@ export class WheelComponent implements OnInit {
              )
          })
      ).subscribe();
+
+     // Setting up listener for a spin event, to start spinning the wheel.
+     this.actionStream$.pipe(
+         ofType(WheelActions.startSpin),
+         tap(() => {
+             this.wheel.startAnimation();
+         }),
+         takeWhile(() => !this.cleanup)
+     ).subscribe();
   }
 
   addOptions(options) : void {
@@ -101,7 +99,7 @@ export class WheelComponent implements OnInit {
   }
 
   addOption(location: LocationEntity) :void {
-      let option: WheelOption = {
+      let option: WheelSegment = {
           location: location,
           fillStyle: null,
           text: location.text
@@ -115,19 +113,14 @@ export class WheelComponent implements OnInit {
   }
 
 
-  spin() : void {
-      // Begin the spin animation by calling startAnimation on the wheel object.
-      if(this.showBonus || this.selectedMap.name === 'Bonus') {
-          this.bonusWheel.startAnimation();
-      } else {
-          this.wheel.startAnimation();
-      }
+  spin() {
+      this.store.dispatch(WheelActions.startSpin());
   }
 
   announceLocation(showBonus?) : void {
       let winner;
       if(showBonus || this.selectedMap.name === 'Bonus') {
-          winner = this.bonusWheel.getIndicatedSegment();
+          // winner = this.bonusWheel.getIndicatedSegment();
       } else {
           winner = this.wheel.getIndicatedSegment();
       }
@@ -140,39 +133,46 @@ export class WheelComponent implements OnInit {
         this.initBonusWheel();
 
       } else {
-         let winner =  this.wheel.getIndicatedSegment();
+         winner =  this.wheel.getIndicatedSegment();
          this.store.dispatch(WheelActions.announceLocationWinner({location: winner['location']}));
       }
   }
 
   reset() : void {
       if(this.showBonus || this.selectedMap.name === 'Bonus') {
-          this.bonusWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
-          this.bonusWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
-          this.bonusWheel.draw();                // Call draw to render changes to the wheel.
-          this.wheelSpinning = false;
+          // this.bonusWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+          // this.bonusWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+          // this.bonusWheel.draw();                // Call draw to render changes to the wheel.
       } else {
           this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
           this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
           this.wheel.draw();                // Call draw to render changes to the wheel.
-          this.wheelSpinning = false;
       }
   }
 
   initWheel(initText?) : void {
     this.wheelSegments.sort(function(a, b){return 0.5 - Math.random()});
-    if(this.bonusWheel){
-        this.bonusWheel.clearCanvas();
+
+    if(this.wheel) {
+        this.wheel.clearCanvas();
     }
+
     let config = wheelConfigDefaultConf;
     config.numSegments = this.wheelSegments.length;
     config.segments = this.wheelSegments;
     config.animation.duration = (Math.random()+1)*5;
-    config.animation.callbackFinished = () => {this.announceLocation()};
+    config.animation.callbackFinished = () => {
+        // Notify store the wheel isn't spinning anymore and annnouce winner
+        this.store.dispatch(WheelActions.endSpin());
+        this.announceLocation();
+    };
     this.wheel = new Winwheel(config);
   }
 
   initBonusWheel() : void {
+
+      this.cleanup = true;
+
       this.wheel.clearCanvas();
 
       let bonusConfig = wheelConfigDefaultConf;
@@ -180,10 +180,13 @@ export class WheelComponent implements OnInit {
       bonusConfig.segments = this.wheelSegments;
       bonusConfig.animation.duration = (Math.random()+1)*5;
       bonusConfig.animation.callbackFinished = () => {this.announceLocation()};
-      bonusConfig.fillStyle = '#99019a',
+      bonusConfig.fillStyle = '#99019a';
 
-      this.bonusWheel = new Winwheel(bonusConfig);
+      this.wheel = new Winwheel(bonusConfig);
+      this.wheel.draw();
 
-     this.bonusWheel.draw();
+     //  this.bonusWheel = new Winwheel(bonusConfig);
+     //
+     // this.bonusWheel.draw();
   }
 }

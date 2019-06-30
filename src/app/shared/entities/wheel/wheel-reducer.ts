@@ -9,4 +9,22 @@ export function wheelStateReducer(state: WheelState | undefined, action: Action)
 
 export const reducer = createReducer(
     wheelStateInitial,
+
+    on(
+        WheelActions.startSpin,
+        (state) => {
+            let updatedState = {...state};
+            updatedState.spinning = true;
+            return updatedState;
+        }
+    ),
+
+    on(
+        WheelActions.endSpin,
+        (state) => {
+            let updatedState = {...state};
+            updatedState.spinning = false;
+            return updatedState;
+        }
+    )
 )
