@@ -1,6 +1,3 @@
-
-
-
 export interface WheelState {
     spinning: boolean;
     winner: any;

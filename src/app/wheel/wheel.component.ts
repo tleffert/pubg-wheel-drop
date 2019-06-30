@@ -31,6 +31,12 @@ export class WheelComponent implements OnInit {
     private showBonus : boolean = false;
     private selectedMap: MapEntity;
     private cleanup: boolean;
+    private spiceFillStyles = [
+        '#FFFFFF',
+        '#1d5d1d',
+        '#ea9904',
+        '#e02626'
+    ]
 
   constructor(
       private store: Store<any>,
@@ -85,34 +91,22 @@ export class WheelComponent implements OnInit {
      ).subscribe();
   }
 
-  addOptions(options) : void {
-      options.forEach(option => {
-        option.selected = true;
-        switch(option.level) {
-            case 1: option.fillStyle = '#1d5d1d'; break;
-            case 2: option.fillStyle = '#ea9904'; break;
-            case 3: option.fillStyle = '#e02626'; break;
-        }
-     })
-     this.wheelSegments = this.wheelSegments.concat(options);
-     this.initWheel();
-  }
-
+  /**
+   * Creates wheel segment and adds to array of segments for the wheel
+   * @param location <LocationEntity> from the Store
+   */
   addOption(location: LocationEntity) :void {
-      let option: WheelSegment = {
+      let segment: WheelSegment = {
           location: location,
-          fillStyle: null,
+          fillStyle: this.spiceFillStyles[location.level],
           text: location.text
       };
-      switch(option.location.level) {
-          case 1: option.fillStyle = '#1d5d1d'; break;
-          case 2: option.fillStyle = '#ea9904'; break;
-          case 3: option.fillStyle = '#e02626'; break;
-      }
-      this.wheelSegments.push(option);
+      this.wheelSegments.push(segment);
   }
 
-
+  /**
+   * Dispatches Spin Action to the store
+   */
   spin() {
       this.store.dispatch(WheelActions.startSpin());
   }
