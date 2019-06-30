@@ -1,22 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 import { filter, tap, takeWhile, switchMap, take } from 'rxjs/operators';
-
-import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
-
-import { LocationApiService } from '@app/api';
-import { EventService } from '../shared/services/eventService.service';
-
-import { Location, WheelConfig, wheelConfigDefaultConf, WheelSegment } from '@app/types';
-import bonusEntries from './bonus_wheel_entries.json';
-
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
+
+import { WheelConfig, wheelConfigDefaultConf, WheelSegment } from '@app/types';
 import { MapSelectors, MapEntity, LocationSelectors, LocationEntity, WheelActions } from '@app/store';
 
-declare var $: any;
-
 let Winwheel = require('../Winwheel');
+import bonusEntries from './bonus_wheel_entries.json';
+
 // declare var Winwheel: any;
 @Component({
   selector: 'app-wheel',
@@ -26,11 +19,14 @@ let Winwheel = require('../Winwheel');
 export class WheelComponent implements OnInit {
     private wheel : any;
 
-    private wheelSegments : object[];
+    private wheelSegments : WheelSegment[] = [];
     private bonus : object[];
     private showBonus : boolean = false;
     private selectedMap: MapEntity;
     private cleanup: boolean;
+
+
+    // Quick mappings for spice level -> fillstyles (probably a better way?)
     private spiceFillStyles = [
         '#FFFFFF',
         '#1d5d1d',
@@ -40,18 +36,12 @@ export class WheelComponent implements OnInit {
 
   constructor(
       private store: Store<any>,
-      private actionStream$: Actions,
-      private locationApi : LocationApiService,
-      private eventService : EventService
+      private actionStream$: Actions
   ) {
     this.bonus = bonusEntries;
   }
 
   ngOnInit() {
-
-      this.showBonus = false;
-      this.wheelSegments = [];
-
      // Getting the selected Map and it's initial set of locations
      this.store.select(MapSelectors.getSelectedMap)
      .pipe(
@@ -89,6 +79,15 @@ export class WheelComponent implements OnInit {
          }),
          takeWhile(() => !this.cleanup)
      ).subscribe();
+
+     // Listener to announce winner when the wheel stops spinning
+     this.actionStream$.pipe(
+         ofType(WheelActions.endSpin),
+         tap(() => {
+             this.announceLocation();
+         }),
+         takeWhile(() => !this.cleanup)
+     ).subscribe();
   }
 
   /**
@@ -110,27 +109,13 @@ export class WheelComponent implements OnInit {
   spin() {
       this.store.dispatch(WheelActions.startSpin());
   }
-
-  announceLocation(showBonus?) : void {
-      let winner;
-      if(showBonus || this.selectedMap.name === 'Bonus') {
-          // winner = this.bonusWheel.getIndicatedSegment();
-      } else {
-          winner = this.wheel.getIndicatedSegment();
-      }
-      if(winner.text === 'Bonus') {
-          this.showBonus = true;
-        swal({
-            text : "ITS BONUS TIME, GIVE THE BONUS WHEEL A SPIN",
-            allowOutsideClick: false
-        });
-        this.initBonusWheel();
-
-      } else {
-         winner =  this.wheel.getIndicatedSegment();
-         this.store.dispatch(WheelActions.announceLocationWinner({location: winner['location']}));
-      }
-  }
+    /**
+     * Dispatches event to announce winning location, pulls indicated segment (winner) from WinWheel
+     */
+    announceLocation() : void {
+        let winner: WheelSegment = this.wheel.getIndicatedSegment();
+        this.store.dispatch(WheelActions.announceLocationWinner({location: winner.location}));
+    }
 
   reset() : void {
       if(this.showBonus || this.selectedMap.name === 'Bonus') {
@@ -158,7 +143,6 @@ export class WheelComponent implements OnInit {
     config.animation.callbackFinished = () => {
         // Notify store the wheel isn't spinning anymore and annnouce winner
         this.store.dispatch(WheelActions.endSpin());
-        this.announceLocation();
     };
     this.wheel = new Winwheel(config);
   }
