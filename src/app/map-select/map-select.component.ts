@@ -35,7 +35,7 @@ export class MapSelectComponent implements OnInit {
         ).subscribe();
 
         // Updater for selected map updates
-        this.store.select(MapSelectors.getSelectedMap())
+        this.store.select(MapSelectors.getSelectedMap)
         .pipe(
             filter(selectedMap => !!selectedMap),
             tap(selectedMap => {
@@ -61,7 +61,7 @@ export class MapSelectComponent implements OnInit {
 
 
     selectMap(map: MapEntity) {
-        this.store.dispatch(MapActions.selectMap({map: map}));
+        this.store.dispatch(MapActions.selectMap({mapId: map._id}));
     }
 
 

@@ -7,7 +7,7 @@ export interface MapEntity extends Map {
 }
 
 export interface MapEntityCollectionState extends EntityState<MapEntity> {
-    selectedMap: MapEntity;
+    selectedMap: string;
     fetching: boolean;
 }
 

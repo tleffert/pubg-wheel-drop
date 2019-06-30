@@ -20,5 +20,5 @@ export const fetchAllMapsSuccess = createAction(
 
 export const selectMap = createAction(
     Events.SELECT_MAP,
-    props<{map: MapEntity}>()
+    props<{mapId: string}>()
 );

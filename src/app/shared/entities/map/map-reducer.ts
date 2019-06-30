@@ -14,12 +14,12 @@ export const reducer = createReducer(
 
     on(
         MapActions.selectMap,
-        (state, {map}) => {
+        (state, {mapId}) => {
             let updatedState = {...state};
             if(state.selectedMap) {
                 // First make sure the previously selected map is deselected
                 updatedState = mapEntityAdapter.updateOne({
-                    id: state.selectedMap._id,
+                    id: state.selectedMap,
                     changes: {
                         selected: false
                     }
@@ -28,14 +28,14 @@ export const reducer = createReducer(
 
             // Update the specific map is now selected
             updatedState = mapEntityAdapter.updateOne({
-                id: map._id,
+                id: mapId,
                 changes: {
                     selected: true
                 }
             }, updatedState);
 
             // Update overall collection state on the selected map
-            updatedState.selectedMap = map;
+            updatedState.selectedMap = mapId;
             return updatedState;
         }
     ),

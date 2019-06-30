@@ -10,9 +10,9 @@ export const {selectAll: selectAllMaps, selectIds } = mapEntityAdapter.getSelect
 );
 
 // Selector that will return the currently selected map
-export const getSelectedMap = () => createSelector(
+export const getSelectedMap = createSelector(
     selectMapEntityState,
     (state) => {
-        return state.selectedMap;
+        return state.entities[state.selectedMap];
     }
 );

@@ -33,7 +33,7 @@ export class LocationSelectComponent implements OnInit {
     ) {
 
         // Need to keep an eye on the selected map to know what locations to show
-        this.store.select(MapSelectors.getSelectedMap())
+        this.store.select(MapSelectors.getSelectedMap)
         .pipe(
             filter(selectedMap => !!selectedMap),
             switchMap(selectedMap => {

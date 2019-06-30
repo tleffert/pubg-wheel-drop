@@ -47,7 +47,7 @@ export class WheelComponent implements OnInit {
       this.wheelSegments = [];
 
      // Getting the selected Map and it's initial set of locations
-     this.store.select(MapSelectors.getSelectedMap())
+     this.store.select(MapSelectors.getSelectedMap)
      .pipe(
          // Make sure to filter out null values
         filter(selectedMap => !!selectedMap),

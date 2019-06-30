@@ -23,9 +23,8 @@ export class AppComponent {
       private renderer: Renderer2,
       eventService : EventService
   ) {
-
       // Watching the selected map to change the 'themeing' of the wheel
-      this.store.select(MapSelectors.getSelectedMap())
+      this.store.select(MapSelectors.getSelectedMap)
       .pipe(
           filter(selectedMap => !!selectedMap),
           tap(selectedMap => {
