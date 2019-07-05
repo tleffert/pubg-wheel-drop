@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { filter, tap, takeWhile, switchMap, take } from 'rxjs/operators';
+import { filter, tap, takeWhile, switchMap, take, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 
-import { WheelConfig, wheelConfigDefaultConf, WheelSegment } from '@app/types';
+import { wheelConfigDefaultConf, WheelSegment } from '@app/types';
 import { MapSelectors, MapEntity, LocationSelectors, LocationEntity, WheelActions } from '@app/store';
 
 let Winwheel = require('../Winwheel');
@@ -24,7 +24,6 @@ export class WheelComponent implements OnInit {
     private showBonus : boolean = false;
     private selectedMap: MapEntity;
     private cleanup: boolean;
-
 
     // Quick mappings for spice level -> fillstyles (probably a better way?)
     private spiceFillStyles = [
@@ -52,24 +51,20 @@ export class WheelComponent implements OnInit {
          }),
          // Since we have a new map we need to also grab it's locations
          switchMap(selectedMap => {
-             return this.store.select(LocationSelectors.getLocationsByMap(selectedMap))
-             .pipe(
-                 filter(locations => !!locations.length),
-                 // Will rerun everytime a location is selcted for x number of total locations
-                 tap(locations => {
-                     // reset the segments
-                     this.wheelSegments = [];
-                     locations.forEach(location => {
-                        if(location.selected) {
-                            // add the selected locations to the wheel
-                            this.addOption(location);
-                        }
-                     });
-                     this.initWheel();
-                 })
-             )
+             return this.store.select(LocationSelectors.getSelectedLocationsByMap(selectedMap.name));
+         }),
+         // Will rerun everytime a location is selcted for x number of total locations
+         map(selectedLocations => {
+             // Create segments for the wheel to display
+             return this.createManySegments(selectedLocations);
+         }),
+         tap(segments => {
+             // Update the wheel with the segments
+             this.updateWheel(segments);
          })
      ).subscribe();
+
+     // this.store.select(LocationSelectors.getLocationsByMap(this.selectedMap))
 
      // Setting up listener for a spin event, to start spinning the wheel.
      this.actionStream$.pipe(
@@ -104,6 +99,21 @@ export class WheelComponent implements OnInit {
   }
 
   /**
+   * Creates a list of WheelSegments from a list of LocationEntity
+   * @param  locations List of LocationEntity to create WheelSegments from
+   * @return WheelSegment[]
+   */
+  createManySegments(locations: LocationEntity[]): WheelSegment[] {
+      return locations.map(location => {
+          return {
+              location: location,
+              fillStyle: this.spiceFillStyles[location.level],
+              text: location.text
+          }
+      });
+  }
+
+  /**
    * Dispatches Spin Action to the store
    */
   spin() {
@@ -117,6 +127,9 @@ export class WheelComponent implements OnInit {
         this.store.dispatch(WheelActions.announceLocationWinner({location: winner.location}));
     }
 
+    /**
+     * Resets the wheel to an initial drawn state
+     */
   reset() : void {
       if(this.showBonus || this.selectedMap.name === 'Bonus') {
           // this.bonusWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
@@ -129,23 +142,28 @@ export class WheelComponent implements OnInit {
       }
   }
 
-  initWheel(initText?) : void {
-    this.wheelSegments.sort(function(a, b){return 0.5 - Math.random()});
+    /**
+     *  Updates the wheel with the provided segments. First clears drawn canvas,
+     * creates a new instance of the wheel and draws it to the canvas.
+     * @param segments Segments to be drawn as pieces of the wheel
+     */
+    updateWheel(segments: WheelSegment[]) {
+        segments.sort(function(a, b){return 0.5 - Math.random()});
 
-    if(this.wheel) {
-        this.wheel.clearCanvas();
+        if(this.wheel) {
+            this.wheel.clearCanvas();
+        }
+
+        let config = wheelConfigDefaultConf;
+        config.numSegments = segments.length;
+        config.segments = segments;
+        config.animation.duration = (Math.random()+1)*5;
+        config.animation.callbackFinished = () => {
+            // Notify store the wheel isn't spinning anymore and annnouce winner
+            this.store.dispatch(WheelActions.endSpin());
+        };
+        this.wheel = new Winwheel(config);
     }
-
-    let config = wheelConfigDefaultConf;
-    config.numSegments = this.wheelSegments.length;
-    config.segments = this.wheelSegments;
-    config.animation.duration = (Math.random()+1)*5;
-    config.animation.callbackFinished = () => {
-        // Notify store the wheel isn't spinning anymore and annnouce winner
-        this.store.dispatch(WheelActions.endSpin());
-    };
-    this.wheel = new Winwheel(config);
-  }
 
   initBonusWheel() : void {
 

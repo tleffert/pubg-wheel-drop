@@ -1,20 +1,39 @@
 import { createFeatureSelector, createSelector} from '@ngrx/store';
 import { LocationEntityCollectionState, locationEntityAdapter } from './location-state';
-import { MapEntity } from '../map/map-state';
 
 // Selects the Map collection slice from the store
-export const selectLocationEntityState = () => createFeatureSelector<LocationEntityCollectionState>('locations');
+export const selectLocationEntityState = createFeatureSelector<LocationEntityCollectionState>('locations');
 
-// Some magic setting up alias for selecting all Maps from the store
+/** Alias for selectAll (selectAllLocations) provided with EntityAdapters */
 export const {selectAll: selectAllLocations, selectIds } = locationEntityAdapter.getSelectors(
-    selectLocationEntityState()
+    selectLocationEntityState
 );
 
-export const getLocationsByMap = (map: MapEntity) => createSelector(
+/**
+ * Selector to fetch locations by specified map
+ * @param  mapName Name of map for desired locations
+ * @return LocationEntity[]
+ */
+export const getLocationsByMap = (mapName: string) => createSelector(
     selectAllLocations,
     (locations) => {
         return locations.filter(location => {
-            return location.map === map.name;
+            return location.map === mapName;
         });
     }
 );
+
+/**
+ * Selector to fetch selected locations by specified map
+ * @param  mapName Name of map for desired selected locations
+ * @return LocationEntity[]
+ */
+export const getSelectedLocationsByMap = (mapName: string ) => createSelector(
+    selectAllLocations,
+    (locations) => {
+        return locations.filter(location => {
+            return location.map === mapName && location.selected;
+        })
+    }
+
+)

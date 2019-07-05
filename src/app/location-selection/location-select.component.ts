@@ -37,7 +37,7 @@ export class LocationSelectComponent implements OnInit {
         .pipe(
             filter(selectedMap => !!selectedMap),
             switchMap(selectedMap => {
-                return this.store.select(LocationSelectors.getLocationsByMap(selectedMap));
+                return this.store.select(LocationSelectors.getLocationsByMap(selectedMap.name));
             }),
             tap(mapLocations => {
                 // reset mapLocation Map
