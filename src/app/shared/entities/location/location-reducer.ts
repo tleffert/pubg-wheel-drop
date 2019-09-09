@@ -1,4 +1,4 @@
-import { createReducer, on, Action } from '@ngrx/store';
+import { createReducer, on, Action, Store } from '@ngrx/store';
 
 import { LocationEntity, LocationEntityCollectionState, locationEntityAdapter, locationEntityCollectioninitialState } from './location-state';
 import * as LocationActions from './location-actions';
@@ -15,24 +15,32 @@ export const reducer = createReducer(
     on(
         LocationActions.selectLocation,
         (state, {location}) => {
-            return locationEntityAdapter.updateOne({
+            const updatedState = locationEntityAdapter.updateOne({
                 id: location._id,
                 changes: {
                     selected: true
                 }
             }, state);
+            const map = localStorage.getItem('map')
+            localStorage.setItem(`${map}-locations`, JSON.stringify(updatedState))
+            return updatedState
         }
     ),
 
     on(
         LocationActions.deselectLocation,
-        (state, {location}) => {
-            return locationEntityAdapter.updateOne({
+        (state, data) => {
+            const { location } = data
+            console.log(state, data)
+            const updatedState = locationEntityAdapter.updateOne({
                 id: location._id,
                 changes: {
                     selected: false
                 }
             }, state);
+            const map = localStorage.getItem('map')
+            localStorage.setItem(`${map}-locations`, JSON.stringify(updatedState))
+            return updatedState 
         }
     ),
 
@@ -49,6 +57,11 @@ export const reducer = createReducer(
         LocationActions.fetchAllLocationsByMapSuccess,
         (state, {locations}) => {
             let updatedState = locationEntityAdapter.upsertMany(<LocationEntity[]>locations, state);
+            const map = localStorage.getItem('map')
+            const storageLocations = JSON.parse(localStorage.getItem(`${map}-locations`))
+            if (storageLocations) {
+                updatedState = storageLocations
+            }
             updatedState.fetching = false;
             return updatedState;
         }
@@ -66,7 +79,10 @@ export const reducer = createReducer(
                     }
                 });
             });
-            return locationEntityAdapter.updateMany(updates, state);
+            const updatedState = locationEntityAdapter.updateMany(updates, state);
+            const map = localStorage.getItem('map')
+            localStorage.setItem(`${map}-locations`, JSON.stringify(updatedState))
+            return updatedState
         }
     )
 
