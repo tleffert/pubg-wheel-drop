@@ -14,6 +14,7 @@ module.exports = function(parentRoute) {
     locationRouter.get('/', function(req, res){
         Map.find()
         .then(function(maps){
+            console.log(maps)
             res.json(maps).end();
         })
     });
@@ -21,6 +22,14 @@ module.exports = function(parentRoute) {
     // Returns list of all locations of a specific map
     locationRouter.get('/:map/locations', function(req, res){
         Location.find({"map": req.params.map})
+        .then(function(mapLocations){
+            res.json(mapLocations).end();
+        })
+    });
+
+    // Returns list of all locations 
+    locationRouter.get('/locations', function(req, res){
+        Location.find()
         .then(function(mapLocations){
             res.json(mapLocations).end();
         })
