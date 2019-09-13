@@ -24,7 +24,7 @@ export class LocationEffects {
         switchMap(([{map}, store]) => {
             // TODO: Invalidate cached state
             if (!store.locations.lastFetched) {
-                return this.locationApi.getMapLocations(map.name);
+                return this.locationApi.getLocations();
             } else {
                 return EMPTY
             }

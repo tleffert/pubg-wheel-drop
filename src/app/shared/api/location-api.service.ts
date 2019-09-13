@@ -20,6 +20,9 @@ export class LocationApiService {
       return this.http.get<Array<Location>>('/api/maps/'+map+'/locations');
   }
 
+  getLocations() : Observable<Array<Location>> {
+      return this.http.get<Array<Location>>('/api/maps/locations');
+  }
   reportWinner(locationId) : Observable<any> {
       return this.http.post('/api/location/winner/'+locationId, {});
   }
