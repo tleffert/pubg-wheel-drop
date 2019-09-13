@@ -21,8 +21,6 @@ export const reducer = createReducer(
                     selected: true
                 }
             }, state);
-            const map = localStorage.getItem('map')
-            localStorage.setItem(`${map}-locations`, JSON.stringify(updatedState))
             return updatedState
         }
     ),
@@ -38,8 +36,6 @@ export const reducer = createReducer(
                     selected: false
                 }
             }, state);
-            const map = localStorage.getItem('map')
-            localStorage.setItem(`${map}-locations`, JSON.stringify(updatedState))
             return updatedState 
         }
     ),
@@ -57,11 +53,6 @@ export const reducer = createReducer(
         LocationActions.fetchAllLocationsByMapSuccess,
         (state, {locations}) => {
             let updatedState = locationEntityAdapter.upsertMany(<LocationEntity[]>locations, state);
-            const map = localStorage.getItem('map')
-            const storageLocations = JSON.parse(localStorage.getItem(`${map}-locations`))
-            if (storageLocations) {
-                updatedState = storageLocations
-            }
             updatedState.fetching = false;
             return updatedState;
         }
@@ -80,8 +71,6 @@ export const reducer = createReducer(
                 });
             });
             const updatedState = locationEntityAdapter.updateMany(updates, state);
-            const map = localStorage.getItem('map')
-            localStorage.setItem(`${map}-locations`, JSON.stringify(updatedState))
             return updatedState
         }
     )

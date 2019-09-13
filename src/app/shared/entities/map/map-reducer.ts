@@ -3,8 +3,6 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { MapEntity, MapEntityCollectionState, mapEntityCollectioninitialState, mapEntityAdapter} from './map-state';
 import * as MapActions from './map-actions';
 
-
-
 export function mapEntityCollectionReducer(state: MapEntityCollectionState | undefined, action: Action) {
     return reducer(state, action);
 }
@@ -36,8 +34,6 @@ export const reducer = createReducer(
 
             // Update overall collection state on the selected map
             updatedState.selectedMap = map;
-            // Store selected map locally
-            localStorage.setItem('map', map._id)
             return updatedState;
         }
     ),
@@ -55,16 +51,6 @@ export const reducer = createReducer(
         MapActions.fetchAllMapsSuccess,
         (state, {maps}) => {
             let updatedState = mapEntityAdapter.upsertMany(<MapEntity[]>maps, state);
-            // Get storeded locally map
-            const storageMap = localStorage.getItem('map')
-            if (storageMap) {
-                // Find map object from stored map id
-                const selectedMap = <MapEntity> maps.find(map => map._id === storageMap)
-                // Set map object to selected
-                selectedMap.selected = true
-                // Updated selected map
-                updatedState.selectedMap = selectedMap
-            }
             updatedState.fetching = false;
             return updatedState;
         }
