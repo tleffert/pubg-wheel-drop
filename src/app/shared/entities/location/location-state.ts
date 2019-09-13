@@ -8,6 +8,7 @@ export interface LocationEntity extends Location {
 
 export interface LocationEntityCollectionState extends EntityState<LocationEntity> {
     fetching: boolean;
+    lastFetched: number;
 }
 
 // Registering how the entity adapter will compare each Entity by some 'id'
@@ -16,5 +17,6 @@ export const locationEntityAdapter = createEntityAdapter<LocationEntity>({
 });
 
 export const locationEntityCollectioninitialState: LocationEntityCollectionState = locationEntityAdapter.getInitialState({
-    fetching: false
+    fetching: false,
+    lastFetched: null 
 });

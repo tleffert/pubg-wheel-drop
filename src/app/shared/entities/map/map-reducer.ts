@@ -52,6 +52,7 @@ export const reducer = createReducer(
         (state, {maps}) => {
             let updatedState = mapEntityAdapter.upsertMany(<MapEntity[]>maps, state);
             updatedState.fetching = false;
+            updatedState.lastFetched = new Date().getTime()
             return updatedState;
         }
     )
