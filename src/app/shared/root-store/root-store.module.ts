@@ -9,13 +9,17 @@ import { MapStoreModule } from '../entities/map/map-store.module';
 import { LocationStoreModule } from '../entities/location/location-store.module';
 import { WheelStoreModule } from '../entities/wheel/wheel-store.module';
 
+import { storageMetaReducer } from './storage-metareducer'
+
 @NgModule({
     imports: [
         CommonModule,
         MapStoreModule,
         LocationStoreModule,
         WheelStoreModule,
-        StoreModule.forRoot({}, {}),
+        StoreModule.forRoot({}, {
+            metaReducers: [storageMetaReducer]
+        }),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({
             maxAge: 25
