@@ -3,6 +3,8 @@ import { createAction, props} from '@ngrx/store';
 import { Map } from '@app/types';
 import { MapEntity } from './map-state';
 
+export const MapActionKey = '[Map]';
+
 export enum Events {
     FETCH_ALL_MAPS = '[Map] FETCH_ALL_MAPS',
     FETCH_ALL_MAPS_SUCCESS = '[Map] FETCH_ALL_MAPS_SUCCESS',
@@ -10,15 +12,15 @@ export enum Events {
 }
 
 export const fetchAllMaps = createAction(
-    Events.FETCH_ALL_MAPS
+    `${MapActionKey} FETCH_ALL_MAPS`
 );
 
 export const fetchAllMapsSuccess = createAction(
-    Events.FETCH_ALL_MAPS_SUCCESS,
+    `${MapActionKey} FETCH_ALL_MAPS_SUCCESS`,
     props<{maps: Map[]}>()
 );
 
 export const selectMap = createAction(
-    Events.SELECT_MAP,
-    props<{map: MapEntity}>()
+    `${MapActionKey} SELECT_MAP`,
+    props<{mapId: string}>()
 );
