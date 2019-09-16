@@ -2,6 +2,8 @@ import { createAction, props} from '@ngrx/store';
 
 import { Map } from '@app/types';
 
+import { MapEntity } from './map-state';
+
 export const MapActionKey = '[Map]';
 
 export const fetchAllMaps = createAction(
@@ -15,5 +17,5 @@ export const fetchAllMapsSuccess = createAction(
 
 export const selectMap = createAction(
     `${MapActionKey} SELECT_MAP`,
-    props<{mapId: string}>()
+    props<{map: MapEntity}>()
 );

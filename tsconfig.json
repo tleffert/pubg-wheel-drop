@@ -30,6 +30,9 @@
       ],
       "@app/store" : [
           "app/shared/entities/entity.barrel.ts"
+      ],
+      "@app/localStorageService" : [
+          "app/shared/services/localStorageService.ts"
       ]
     }
   }

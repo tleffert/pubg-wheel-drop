@@ -23,7 +23,7 @@ export class LocationEffects {
         ofType(LocationActions.fetchAllLocationsByMap),
         switchMap(({map}) => {
             // First check the store for locations
-            return this.store.select(getLocationsByMap(map.name))
+            return this.store.select(getLocationsByMap(map))
             .pipe(
                 switchMap(locations => {
                     return iif(
