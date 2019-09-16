@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { StoreModule, ActionReducer, MetaReducer } from '@ngrx/store';
-import { EffectsModule, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { StoreModule, MetaReducer } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
-import { LocalStorageService } from '@app/localStorageService';
 
 import { LocationEffects } from './location-effects';
 import { locationEntityCollectionReducer } from './location-reducer';
-import { LocationEntityCollectionState } from './location-state';
 import { LocationActionKey } from './location-actions';
 
 import { hydrateState, storeStateSlice } from '../../services/localStorageMetaReducers';
