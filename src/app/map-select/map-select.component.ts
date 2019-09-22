@@ -1,11 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { map, tap, take, takeWhile, filter } from 'rxjs/operators';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Store } from '@ngrx/store';
-
-import { LocationApiService } from '@app/api';
-import { Map } from '@app/types';
-import { MapSelectors, MapEntity, MapActions, LocationActions } from '@app/store';
+import { MapEntity } from '@app/store';
 
 @Component({
   selector: 'app-map-select',
@@ -14,45 +9,21 @@ import { MapSelectors, MapEntity, MapActions, LocationActions } from '@app/store
 })
 export class MapSelectComponent implements OnInit {
 
-    maps : Array<any>;
-    selectedMap : MapEntity;
+    @Input()
+    maps: Array<MapEntity>;
 
-    private cleanup: boolean;
+    @Input()
+    selectedMap: MapEntity;
 
-    constructor(
-        private store: Store<any>
-    ) {
-        // Force fetch from API (probably move this somewhere else)
-        this.store.dispatch(MapActions.fetchAllMaps());
+    @Output()
+    selectedMapChange: EventEmitter<MapEntity> = new EventEmitter<MapEntity>();
 
-        this.store.select(MapSelectors.selectAllMaps)
-        .pipe(
-            tap(maps => {
-                this.maps = maps;
-            }),
-            takeWhile(() => !this.cleanup)
-        ).subscribe();
+    constructor() {}
 
-        // Updater for selected map updates
-        this.store.select(MapSelectors.getSelectedMap())
-        .pipe(
-            filter(selectedMap => !!selectedMap),
-            tap(selectedMap => {
-                this.selectedMap = selectedMap;
-                this.store.dispatch(LocationActions.fetchAllLocationsByMap({map: selectedMap}));
-            }),
-            takeWhile(() => !this.cleanup)
-        ).subscribe();
-
-    }
-
-    ngOnInit() {
-
-    }
-
+    ngOnInit() {}
 
     selectMap(map: MapEntity) {
-        this.store.dispatch(MapActions.selectMap({map: map}));
+        this.selectedMapChange.emit(map);
     }
 
 
