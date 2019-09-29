@@ -1,20 +1,25 @@
-<div class="row location-select">
-    <div class="col-4" *ngFor="let spiceLevel of mapLocationsBySpice | keyvalue">
+<div class="row location-select" >
+    <div class="col-4" *ngFor="let spiceLevel of locationBySpice;let spice = index">
         <div class="d-flex justify-content-center">
             <div
                 class="spice-level-icons"
-                [ngClass]="{'allSpiceLevel': spiceToggle[spiceLevel.key]}"
-                (click)="toggleSpice(spiceLevel.key)">
-                <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 1"/>
-                <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key >= 2"/>
-                <img src="/assets/spicyempty.png" *ngIf="spiceLevel.key == 3"/>
+                [ngClass]="{'allSpiceLevel': spiceLevel.groupSelected}" 
+                (click)="toggleSpiceGroup(spice)"
+            >
+            <div>
+                <img
+                    *ngFor="let count of arr(spice+1)"
+                    src="/assets/spicyempty.png"
+                />
+            </div>
             </div>
         </div>
         <div
-            [ngClass]="'spice-group'+spiceLevel.key"
+            [ngClass]="'spice-group'+ (spice+1)"
+            *ngIf="spiceLevel?.locations"
         >
             <button
-                *ngFor="let locationEntry of spiceLevel.value | keyvalue"
+                *ngFor="let locationEntry of spiceLevel.locations | keyvalue"
                 class="btn"
                 (click)="toggleOption(locationEntry.value)"
                 [ngClass]="{'btn-secondary' : !locationEntry.value.selected, 'spice-active' : locationEntry.value.selected}"

@@ -1,73 +1,80 @@
-import { Component, OnInit, NgModule, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
-import { tap, takeWhile, switchMap, filter } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Map as GameMap, Location } from '@app/types';
 
-import { LocationSelectors, LocationEntity, LocationActions, MapSelectors} from '@app/store';
-import { LocationApiService } from '@app/api';
-import { EventService } from '../shared/services/eventService.service';
+export interface LocationGroup {
+    level: number;
+    groupSelected: boolean;
+    locations: Map<string, Location>;
+}
 
 @Component({
   selector: 'location-select',
   templateUrl: './location-select.component.html',
   styleUrls: ['./location-select.component.scss'],
 })
-export class LocationSelectComponent implements OnInit {
+export class LocationSelectComponent implements OnInit, OnChanges {
 
     @Input()
-    map : string;
+    map: GameMap;
 
-    mapLocationsBySpice: {[key: number]: {[key: string]: LocationEntity}};
+    @Input()
+    locations: Location[];
+
+    @Output()
+    selected: EventEmitter<Location | Location[]> = new EventEmitter<Location | Location[]>();
+
+    // each index is considered a spice leve/group
+    locationBySpice: LocationGroup[];
+
+    // Just to make Array available in the template
+    arr = Array;
+
     spiceToggle = {};
 
-    spice1toggleAll: boolean;
-    spice2toggleAll: boolean;
-    spice3toggleAll: boolean;
-
-
-    constructor(
-        private store: Store<any>,
-        private locationApi : LocationApiService,
-        private eventService : EventService
-    ) {
-
-        // Need to keep an eye on the selected map to know what locations to show
-        this.store.select(MapSelectors.getSelectedMap())
-        .pipe(
-            filter(selectedMap => !!selectedMap),
-            switchMap(selectedMap => {
-                return this.store.select(LocationSelectors.getLocationsByMap(selectedMap));
-            }),
-            tap(mapLocations => {
-                // reset mapLocation Map
-                this.mapLocationsBySpice = { 1:{}, 2:{}, 3:{}};
-                mapLocations.forEach(location => {
-                    this.mapLocationsBySpice[location.level][location._id] = location;
-                });
-            })
-        ).subscribe()
+    constructor() {
+        this.resetLocations();
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
-    toggleOption(location : LocationEntity) : void {
-        if(location.selected) {
-            this.store.dispatch(LocationActions.deselectLocation({location: location}));
-        } else {
-            this.store.dispatch(LocationActions.selectLocation({location: location}));
+    ngOnChanges(changes: SimpleChanges) {
+        if(changes.map) {
+            this.resetLocations();
+        }
+
+        if(this.locationBySpice && changes.locations) {
+            changes.locations.currentValue.forEach((location: Location) => {
+                if(!this.locationBySpice[location.level - 1].locations) {
+                    this.locationBySpice[location.level - 1].locations = new Map<string, Location>();
+                }
+                this.locationBySpice[location.level - 1].locations.set(location._id, location);
+            });
         }
     }
 
-    toggleSpice(level: number) {
-        let locations: LocationEntity[] = [];
-        for(let locationEntry in this.mapLocationsBySpice[level]) {
-            locations.push(this.mapLocationsBySpice[level][locationEntry]);
-        }
-        this.spiceToggle[level] = !this.spiceToggle[level];
-        this.store.dispatch(LocationActions.selectManyLocations({
-            locations: locations,
-            toggleValue: this.spiceToggle[level]
-        }));
+    private resetLocations() {
+        this.locationBySpice =  [
+            {locations: new Map<string, Location>()} as LocationGroup,
+            {locations: new Map<string, Location>()} as LocationGroup,
+            {locations: new Map<string, Location>()} as LocationGroup,
+        ];
+    }
+
+    filterLocationsBySpice(level: number) {
+        return this.locations.filter(location => {
+            return location.level === level;
+        });
+    }
+
+    toggleOption(location: Location) {
+        this.selected.emit(location);
+    }
+
+    toggleSpiceGroup(spice: number) {
+        this.locationBySpice[spice].groupSelected = !this.locationBySpice[spice].groupSelected;
+        this.selected.emit(
+            Array.from(this.locationBySpice[spice].locations.values())
+        );
     }
 }
