@@ -48,8 +48,6 @@ export class WheelComponent implements OnInit {
       private eventService : EventService
   ) {
     this.bonus = bonusEntries;
-    console.log(this.bonus);
-
   }
 
   ngOnInit() {

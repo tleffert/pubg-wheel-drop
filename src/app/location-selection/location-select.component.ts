@@ -30,8 +30,6 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     // Just to make Array available in the template
     arr = Array;
 
-    spiceToggle = {};
-
     constructor() {
         this.resetLocations();
     }
