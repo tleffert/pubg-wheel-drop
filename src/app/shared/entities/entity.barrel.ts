@@ -1,4 +1,4 @@
-import * as MapActions from './map/map-actions';
+export { MapActions } from './map/map-actions';
 import { MapEntity, MapEntityCollectionState, mapEntityCollectioninitialState} from './map/map-state';
 import { mapEntityCollectionReducer } from './map/map-reducer';
 import * as MapSelectors from './map/map-selectors';
@@ -13,7 +13,7 @@ import { WheelState, wheelStateInitial } from './wheel/wheel-state';
 import { wheelStateReducer } from './wheel/wheel-reducer';
 
 export {
-    MapActions, MapEntity, MapEntityCollectionState,
+    MapEntity, MapEntityCollectionState,
     MapSelectors, mapEntityCollectioninitialState, mapEntityCollectionReducer,
 
     LocationActions, LocationEntity, LocationEntityCollectionState, LocationSelectors,

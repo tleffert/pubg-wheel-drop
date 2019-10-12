@@ -1,7 +1,7 @@
 import { createReducer, on, Action } from '@ngrx/store';
 
 import { MapEntity, MapEntityCollectionState, mapEntityCollectioninitialState, mapEntityAdapter} from './map-state';
-import * as MapActions from './map-actions';
+import  { MapActions } from './map-actions';
 
 
 
@@ -15,28 +15,7 @@ export const reducer = createReducer(
     on(
         MapActions.selectMap,
         (state, {map}) => {
-            let updatedState = {...state};
-            if(state.selectedMap) {
-                // First make sure the previously selected map is deselected
-                updatedState = mapEntityAdapter.updateOne({
-                    id: state.selectedMap._id,
-                    changes: {
-                        selected: false
-                    }
-                }, state);
-            }
-
-            // Update the specific map is now selected
-            updatedState = mapEntityAdapter.updateOne({
-                id: map._id,
-                changes: {
-                    selected: true
-                }
-            }, updatedState);
-
-            // Update overall collection state on the selected map
-            updatedState.selectedMap = map;
-            return updatedState;
+            return {...state, selectedMapId: map._id};
         }
     ),
 

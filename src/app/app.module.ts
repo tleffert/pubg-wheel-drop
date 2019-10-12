@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AlertModule } from 'ngx-bootstrap';
 
@@ -32,7 +33,8 @@ import { MapSelectComponent } from './map-select/map-select.component';
     HttpClientModule,
     CommonModule,
     SharedModule,
-    LocationSelectModule
+    LocationSelectModule,
+    AppRoutingModule
   ],
   providers: [EventService],
   bootstrap: [AppComponent]

@@ -39,18 +39,15 @@ export const reducer = createReducer(
     on(
         LocationActions.fetchAllLocationsByMap,
         (state) => {
-            let updatedState = {...state};
-            updatedState.fetching = true;
-            return updatedState;
+            return {...state, fetching: true};
         }
     ),
 
     on(
         LocationActions.fetchAllLocationsByMapSuccess,
         (state, {locations}) => {
-            let updatedState = locationEntityAdapter.upsertMany(<LocationEntity[]>locations, state);
-            updatedState.fetching = false;
-            return updatedState;
+            let updatedState = {...state, fetching: false};
+            return locationEntityAdapter.upsertMany(<LocationEntity[]>locations, updatedState);
         }
     ),
 

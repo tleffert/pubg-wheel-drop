@@ -4,35 +4,29 @@ import { Location } from '@app/types';
 import { LocationEntity } from './location-state';
 import { MapEntity } from '../map/map-state';
 
-export enum Events {
-    SELECT_ONE_LOCATION = '[Location] SELECT_ONE_LOCATION',
-    DESELECT_LOCATION = '[Location] DESELECT_LOCATION',
-    SELECT_MANY_LOCATIONS = '[Location] SELECT_MANY_LOCATIONS',
-    FETCH_ALL_LOCATIONS_BY_MAP = '[Location] FETCH_ALL_LOCATIONS_BY_MAP',
-    FETCH_ALL_LOCATIONS_BY_MAP_SUCCESS = '[Location] FETCH_ALL_LOCATIONS_BY_MAP_SUCCESS'
-}
+export const LocationActionKey = '[Location]';
 
 export const fetchAllLocationsByMap = createAction(
-    Events.FETCH_ALL_LOCATIONS_BY_MAP,
+    `${LocationActionKey} FETCH_ALL_LOCATIONS_BY_MAP`,
     props<{map: MapEntity}>()
 );
 
 export const fetchAllLocationsByMapSuccess = createAction(
-    Events.FETCH_ALL_LOCATIONS_BY_MAP_SUCCESS,
+    `${LocationActionKey} FETCH_ALL_LOCATIONS_BY_MAP_SUCCESS`,
     props<{locations: Location[]}>()
 );
 
 export const deselectLocation = createAction(
-    Events.DESELECT_LOCATION,
+    `${LocationActionKey} DESELECT_ONE_LOCATION`,
     props<{location: LocationEntity}>()
 );
 
 export const selectLocation = createAction(
-    Events.SELECT_ONE_LOCATION,
+    `${LocationActionKey} SELECT_ONE_LOCATION`,
     props<{location: LocationEntity}>()
 );
 
 export const selectManyLocations = createAction(
-    Events.SELECT_MANY_LOCATIONS,
+    `${LocationActionKey} SELECT_MANY_LOCATIONS`,
     props<{locations: LocationEntity[], toggleValue: boolean}>()
-)
+);

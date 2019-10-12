@@ -1,28 +1,48 @@
 import { Injectable } from '@angular/core';
 
+import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType} from '@ngrx/effects';
-import { map, tap, switchMap} from 'rxjs/operators';
+import { map, tap, switchMap, take } from 'rxjs/operators';
+import { iif, of } from 'rxjs';
 
 import { LocationApiService } from '@app/api';
 import * as LocationActions from './location-actions';
+import { MapActions } from '../map/map-actions';
+import { getLocationsByMap } from './location-selectors';
 
 @Injectable()
 export class LocationEffects {
     constructor(
         private actionStream$: Actions,
-        private locationApi: LocationApiService
+        private locationApi: LocationApiService,
+        private store: Store<any>
     ) {}
 
 
     @Effect()
     fetchMaps$ = this.actionStream$.pipe(
-        ofType(LocationActions.fetchAllLocationsByMap),
+        ofType(
+            LocationActions.fetchAllLocationsByMap,
+            MapActions.selectMap
+        ),
         switchMap(({map}) => {
-            return this.locationApi.getMapLocations(map.name);
+            // First check the store for locations
+            return this.store.select(getLocationsByMap(map))
+            .pipe(
+                switchMap(locations => {
+                    return iif(
+                        () => locations.length > 0,
+                        // If th store returned locations use those
+                        of(locations),
+                        // Else get locations from the api
+                        this.locationApi.getMapLocations(map.name)
+                    );
+                }),
+                take(1)
+            )
         }),
         map(locations => {
             return LocationActions.fetchAllLocationsByMapSuccess({locations: locations});
         })
-
     )
 }
