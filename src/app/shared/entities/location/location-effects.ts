@@ -7,6 +7,7 @@ import { iif, of } from 'rxjs';
 
 import { LocationApiService } from '@app/api';
 import * as LocationActions from './location-actions';
+import { MapActions } from '../map/map-actions';
 import { getLocationsByMap } from './location-selectors';
 
 @Injectable()
@@ -20,7 +21,10 @@ export class LocationEffects {
 
     @Effect()
     fetchMaps$ = this.actionStream$.pipe(
-        ofType(LocationActions.fetchAllLocationsByMap),
+        ofType(
+            LocationActions.fetchAllLocationsByMap,
+            MapActions.selectMap
+        ),
         switchMap(({map}) => {
             // First check the store for locations
             return this.store.select(getLocationsByMap(map))

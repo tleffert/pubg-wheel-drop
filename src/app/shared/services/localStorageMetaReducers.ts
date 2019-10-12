@@ -3,12 +3,17 @@ import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 
 import { LocalStorageService } from './localStorageService';
 
+
+export function hydrateState(actionKey: string) {
+    return _hydrateState(actionKey);
+}
+
 /**
  * MetaReducer function that can be used to rehydrate the state from local storage.
  * Listens to the ROOT_EFFECTS_INIT action to trigger the hydrate step.
  * @param  actionKey Key to match with in local storage
  */
-export function hydrateState(actionKey: string) {
+export function _hydrateState(actionKey: string) {
     return function(reducer: ActionReducer<any>): ActionReducer<any> {
         return function(state, action) {
             // Calculating the state, so that we can save it or other things
@@ -27,13 +32,16 @@ export function hydrateState(actionKey: string) {
     }
 }
 
+export function storeStateSlice(actionKey: string) {
+    return _storeStateSlice(actionKey);
+}
 
 /**
  * MetaReducer that will match actions with the provided actionKey, calculate the new state
  * from that action, store the results in local storage and pass the calculated state
  * @param  actionKey Key to store state results to in local storage
  */
-export function storeStateSlice(actionKey: string) {
+export function _storeStateSlice(actionKey: string) {
     return function(reducer: ActionReducer<any>): ActionReducer<any> {
         return function(state, action) {
             // Calculating the state, so that we can save it or other things

@@ -4,18 +4,20 @@ import { Map } from '@app/types';
 
 import { MapEntity } from './map-state';
 
-export const MapActionKey = '[Map]';
+export namespace MapActions {
+    export const ActionKey = '[Map]';
 
-export const fetchAllMaps = createAction(
-    `${MapActionKey} FETCH_ALL_MAPS`
-);
+    export const fetchAllMaps = createAction(
+        `${ActionKey} FETCH_ALL_MAPS`
+    );
 
-export const fetchAllMapsSuccess = createAction(
-    `${MapActionKey} FETCH_ALL_MAPS_SUCCESS`,
-    props<{maps: Map[]}>()
-);
+    export const fetchAllMapsSuccess = createAction(
+        `${ActionKey} FETCH_ALL_MAPS_SUCCESS`,
+        props<{maps: Map[]}>()
+    );
 
-export const selectMap = createAction(
-    `${MapActionKey} SELECT_MAP`,
-    props<{map: MapEntity}>()
-);
+    export const selectMap = createAction(
+        `${ActionKey} SELECT_MAP`,
+        props<{map: MapEntity}>()
+    );
+}

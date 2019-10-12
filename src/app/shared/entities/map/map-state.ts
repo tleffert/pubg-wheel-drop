@@ -7,7 +7,7 @@ export interface MapEntity extends Map {
 }
 
 export interface MapEntityCollectionState extends EntityState<MapEntity> {
-    selectedMap: MapEntity;
+    selectedMapId: string;
     fetching: boolean;
 }
 
@@ -17,6 +17,6 @@ export const mapEntityAdapter = createEntityAdapter<MapEntity>({
 });
 
 export const mapEntityCollectioninitialState: MapEntityCollectionState = mapEntityAdapter.getInitialState({
-    selectedMap: null,
+    selectedMapId: null,
     fetching: false
 });
