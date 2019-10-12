@@ -10,7 +10,6 @@ import { LocationStoreModule } from '../entities/location/location-store.module'
 import { WheelStoreModule } from '../entities/wheel/wheel-store.module';
 
 
-
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   return function(state, action) {
 

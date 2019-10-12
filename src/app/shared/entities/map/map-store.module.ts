@@ -10,7 +10,7 @@ import { MapActions } from './map-actions';
 
 import { hydrateState, storeStateSlice } from '../../services/localStorageMetaReducers';
 
-export const metaReducers: MetaReducer<any>[] = []//[storeStateSlice(MapActions.ActionKey), hydrateState(MapActions.ActionKey)];
+export const metaReducers: MetaReducer<any>[] = [storeStateSlice(MapActions.ActionKey), hydrateState(MapActions.ActionKey)];
 
 @NgModule({
     imports: [

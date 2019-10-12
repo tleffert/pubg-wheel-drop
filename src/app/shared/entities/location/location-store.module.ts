@@ -11,7 +11,7 @@ import { LocationActionKey } from './location-actions';
 
 import { hydrateState, storeStateSlice } from '../../services/localStorageMetaReducers';
 
-export const metaReducers: MetaReducer<any>[] = []//[storeStateSlice(LocationActionKey), hydrateState(LocationActionKey)];
+export const metaReducers: MetaReducer<any>[] = [storeStateSlice(LocationActionKey), hydrateState(LocationActionKey)];
 
 @NgModule({
     imports: [
