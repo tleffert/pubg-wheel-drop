@@ -1,31 +1,30 @@
-<div class="row location-select" >
-    <div class="col-4" *ngFor="let spiceLevel of locationBySpice;let spice = index">
-        <div class="d-flex justify-content-center">
-            <div
-                class="spice-level-icons"
-                [ngClass]="{'allSpiceLevel': spiceLevel.groupSelected}" 
-                (click)="toggleSpiceGroup(spice)"
-            >
-            <div>
-                <img
-                    *ngFor="let count of arr(spice+1)"
-                    src="/assets/spicyempty.png"
-                />
-            </div>
-            </div>
-        </div>
+<div class="d-flex flex-sm-column flex-md-row location-select" >
+    <div class="flex-equal" *ngFor="let spiceLevel of locationBySpice;let spice = index">
         <div
             [ngClass]="'spice-group'+ (spice+1)"
             *ngIf="spiceLevel?.locations"
         >
-            <button
-                *ngFor="let locationEntry of spiceLevel.locations | keyvalue"
-                class="btn"
-                (click)="toggleOption(locationEntry.value)"
-                [ngClass]="{'btn-secondary' : !locationEntry.value.selected, 'spice-active' : locationEntry.value.selected}"
+            <app-location-group
+                [locations]="group1"
             >
-                {{locationEntry.value.text}}
-            </button>
+                <ng-template location-group-toggle>
+                    <div
+                    *ngFor="let count of arr(spice+1)"
+                    >
+                        <img
+                            src="/assets/spicyempty.png"
+                        />
+                    </div>
+                    <!-- <div class="fire">
+                        <div class="particle">
+                        </div>
+                        <div class="particle">
+                        </div>
+                        <div class="particle">
+                        </div>
+                    </div> -->
+                </ng-template>
+            </app-location-group>
         </div>
     </div>
 </div>
