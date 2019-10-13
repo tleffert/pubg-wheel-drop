@@ -1,0 +1,21 @@
+<div class="d-flex flex-column">
+    <div class="group-toggle justify-content-center d-flex my-2 mx-2">
+        <ng-template
+            [ngTemplateOutlet]="groupToggleTemplate"
+        >
+        </ng-template>
+    </div>
+    <div class="group-options">
+        <button
+            *ngFor="let location of locations"
+            location-option
+            [selected]="locationMap.get(location._id).selected"
+            (selectedChange)="selectedUpate($event, location)"
+            activeClass="selected"
+            inactiveClass="btn-secondary"
+            class="group-option btn"
+        >
+            {{location.text}}
+        </button>
+    </div>
+</div>
