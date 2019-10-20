@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 
 import { MapEntity } from '@app/store';
 
 @Component({
   selector: 'app-map-select',
   templateUrl: './map-select.component.html',
-  styleUrls: ['./map-select.component.css']
+  styleUrls: ['./map-select.component.css'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapSelectComponent implements OnInit {
 
@@ -23,7 +24,10 @@ export class MapSelectComponent implements OnInit {
     ngOnInit() {}
 
     selectMap(map: MapEntity) {
-        this.selectedMapChange.emit(map);
+        // No need to emit if currently selected was selected again
+        if(map._id !== this.selectedMap._id) {
+            this.selectedMapChange.emit(map);
+        }
     }
 
 

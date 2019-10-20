@@ -1,20 +1,21 @@
 <div class="d-flex flex-sm-column flex-md-row location-select" >
-    <div class="flex-equal" *ngFor="let spiceLevel of locationBySpice;let spice = index">
+    <div class="flex-equal" *ngFor="let group of groups;let spice = index">
         <div
             [ngClass]="'spice-group'+ (spice+1)"
-            *ngIf="spiceLevel?.locations"
+            *ngIf="group"
         >
             <app-location-group
-                [locations]="group1"
+                [locations]="group"
             >
                 <ng-template location-group-toggle>
                     <div
-                    *ngFor="let count of arr(spice+1)"
+                        *ngFor="let count of arr(spice+1)"
                     >
                         <img
                             src="/assets/spicyempty.png"
                         />
                     </div>
+
                     <!-- <div class="fire">
                         <div class="particle">
                         </div>
@@ -23,6 +24,22 @@
                         <div class="particle">
                         </div>
                     </div> -->
+                </ng-template>
+
+                <ng-template
+                    location-option-tmpl
+                    let-location="location"
+                >
+                    <button
+                        location-option
+                        [selected]="location.selected"
+                        (selectedChange)="selectedUpdate($event, location)"
+                        activeClass="selected"
+                        inactiveClass="btn-secondary"
+                        class="group-option btn"
+                    >
+                        {{location.text}}
+                    </button>
                 </ng-template>
             </app-location-group>
         </div>
