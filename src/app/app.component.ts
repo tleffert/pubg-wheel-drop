@@ -1,12 +1,13 @@
 import { Component, Renderer2 } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
 
-import { tap, filter, first } from 'rxjs/operators';
+import { tap, filter, first, distinctUntilChanged, share } from 'rxjs/operators';
 
 
 import { Store } from '@ngrx/store';
 import { MapSelectors, MapEntity, MapActions, LocationEntity, LocationSelectors, LocationActions } from '@app/store';
 import { Location } from '@app/types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -16,33 +17,40 @@ import { Location } from '@app/types';
 export class AppComponent {
   title = 'app';
   showLocationNav : boolean = true;
-  selectedMap: MapEntity;
-  maps: Array<MapEntity>;
-  mapLocations: LocationEntity[];
+  selectedMap$: Observable<MapEntity>;
+  maps$: Observable<MapEntity[]>;
+  mapLocations$: Observable<LocationEntity[]>;
 
   constructor(
       private store: Store<any>,
       private renderer: Renderer2
   ) {
 
-    this.store.select(MapSelectors.selectAllMaps)
-    .pipe(
-        filter(maps => !!maps.length),
-        tap(maps => {
-            this.maps = maps;
-        }),
-        // first(),
-        tap(() => {
-            this.thing();
-        })
-    ).subscribe();
+      this.maps$ = this.store.select(MapSelectors.selectAllMaps).pipe(
+          tap(maps => {
+              console.log("MAPS APP", maps)
+          })
+      );
 
-    this.store.select(LocationSelectors.getSelectedMapLocations)
-    .pipe(
-        tap(locations => {
-            this.mapLocations = locations;
-        })
-    ).subscribe();
+      this.selectedMap$ = this.store.select(MapSelectors.getSelectedMap)
+       .pipe(
+           filter(selectedMap => !!selectedMap),
+           distinctUntilChanged(),
+           tap(selectedMap => {
+               // Removing old map class
+               // if(this.selectedMap) {
+               //     this.renderer.removeClass(document.body, this.selectedMap.name);
+               // }
+               // Adding new map class
+               this.renderer.addClass(document.body, selectedMap.name);
+               this.store.dispatch(LocationActions.fetchAllLocationsByMap({
+                   map: selectedMap
+               }))
+           }),
+           share()
+       );
+
+       this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations);
 
   }
 
@@ -55,20 +63,20 @@ export class AppComponent {
      this.showLocationNav = true;
   }
 
-  updateSelected(selected: Location | Location[]) {
-      if(Array.isArray(selected)) {
+  updateSelected(update: Location | Location[]) {
+      if(Array.isArray(update)) {
           this.store.dispatch(LocationActions.selectManyLocations({
-              locations: selected,
+              locations: update,
               toggleValue: true
           }));
       } else {
-          if(selected.selected){
+          if(!update.selected){
               this.store.dispatch(LocationActions.deselectLocation({
-                  location: selected
+                  location: update
               }));
           } else {
               this.store.dispatch(LocationActions.selectLocation({
-                  location: selected
+                  location: update
               }));
           }
       }
@@ -76,26 +84,7 @@ export class AppComponent {
 
   thing() {
       // Watching the selected map to change the 'themeing' of the wheel
-      this.store.select(MapSelectors.getSelectedMap)
-      .pipe(
-          tap(selectedMap => {
-              if(!selectedMap && this.maps) {
-                  this.store.dispatch(MapActions.selectMap({map: this.maps[0]}));
-              }
-          }),
-          filter(selectedMap => !!selectedMap),
-          tap(selectedMap => {
-              this.selectedMap = selectedMap;
 
-              // Removing old map class
-              if(this.selectedMap) {
-                  this.renderer.removeClass(document.body, this.selectedMap.name);
-              }
-              // Adding new map class
-              this.renderer.addClass(document.body, selectedMap.name);
-
-          })
-      ).subscribe();
   }
 
 
