@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, TemplateRef,
 import { Location } from '@app/types';
 
 import { LocationGroupToggle } from '../location-group-toggle.directive';
+import { LocationOptionTemplateDirective } from './location-option-template.directive';
 
 export interface SelectableLocation {
     location: Location;
@@ -25,6 +26,9 @@ export class LocationGroupComponent implements OnInit {
     @ContentChild(LocationGroupToggle, {read: TemplateRef, static: false})
     groupToggleTemplate: TemplateRef<any>;
 
+    @ContentChild(LocationOptionTemplateDirective, {read: TemplateRef, static: false})
+    locationOptionTemplate: TemplateRef<any>;
+
     allSelected: boolean;
 
     numSelected: number;
@@ -44,7 +48,6 @@ export class LocationGroupComponent implements OnInit {
 
     selectedUpate(selected: boolean, location: Location) {
         this.locationMap.get(location._id).selected = selected;
-        console.log(this.locationMap.get(location._id));
         this.selectedLocation.emit(this.locationMap.get(location._id));
     }
 
