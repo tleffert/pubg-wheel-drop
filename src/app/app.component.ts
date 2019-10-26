@@ -60,14 +60,14 @@ export class AppComponent {
 
 
   toggleLocationNav() : void {
-     this.showLocationNav = true;
+     this.locationSelectToggle = !this.locationSelectToggle;
   }
 
   updateSelected(update: Location | Location[]) {
       if(Array.isArray(update)) {
           this.store.dispatch(LocationActions.selectManyLocations({
               locations: update,
-              toggleValue: true
+              toggleValue: update[0].selected
           }));
       } else {
           if(!update.selected){
