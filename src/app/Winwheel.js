@@ -33,7 +33,7 @@ module.exports = Winwheel;
 // ====================================================================================================================
 function Winwheel(options, drawWheel)
 {
-    defaultOptions = {
+    let defaultOptions = {
         'canvasId'          : 'canvas',     // Id of the canvas which the wheel is to draw on to.
         'centerX'           : null,         // X position of the center of the wheel. The default of these are null which means will be placed in center of the canvas.
         'centerY'           : null,         // Y position of the wheel center. If left null at time of construct the center of the canvas is used.
@@ -146,7 +146,7 @@ function Winwheel(options, drawWheel)
     // Add array of segments to the wheel, then populate with segments if number of segments is specified for this object.
     this.segments = new Array(null);
 
-    for (x = 1; x <= this.numSegments; x++)
+    for (let x = 1; x <= this.numSegments; x++)
     {
         // If options for the segments have been specified then create a segment sending these options so
         // the specified values are used instead of the defaults.
@@ -281,7 +281,7 @@ Winwheel.prototype.updateSegmentSizes = function()
         var numSet  = 0;
 
         // Remember, to make it easy to access segments, the position of the segments in the array starts from 1 (not 0).
-        for (x = 1; x <= this.numSegments; x ++)
+        for (let x = 1; x <= this.numSegments; x ++)
         {
             if (this.segments[x].size !== null)
             {
@@ -304,7 +304,7 @@ Winwheel.prototype.updateSegmentSizes = function()
         // Now loop though and set the start and end angle of each segment.
         var currentDegree = 0;
 
-        for (x = 1; x <= this.numSegments; x ++)
+        for (let x = 1; x <= this.numSegments; x ++)
         {
             // Set start angle.
             this.segments[x].startAngle = currentDegree;
@@ -647,10 +647,10 @@ Winwheel.prototype.drawSegments = function()
         {
             // Loop though and output all segments - position 0 of the array is not used, so start loop from index 1
             // this is to avoid confusion when talking about the first segment.
-            for (x = 1; x <= this.numSegments; x ++)
+            for (let x = 1; x <= this.numSegments; x ++)
             {
                 // Get the segment object as we need it to read options from.
-                seg = this.segments[x];
+                let seg = this.segments[x];
 
                 var fillStyle;
                 var lineWidth;
@@ -755,13 +755,13 @@ Winwheel.prototype.drawSegmentText = function()
         var fontSetting;
 
         // Loop though all the segments.
-        for (x = 1; x <= this.numSegments; x ++)
+        for (let x = 1; x <= this.numSegments; x ++)
         {
             // Save the context so it is certain that each segment text option will not affect the other.
             this.ctx.save();
 
             // Get the segment object as we need it to read options from.
-            seg = this.segments[x];
+            let seg = this.segments[x];
 
             // Check is text as no point trying to draw if there is no text to render.
             if (seg.text)
@@ -811,7 +811,7 @@ Winwheel.prototype.drawSegmentText = function()
                     lineOffset = 0;
                 }
 
-                for(i = 0; i < lines.length; i ++)
+                for(let i = 0; i < lines.length; i ++)
                 {
                     // ---------------------------------
                     // If direction is reversed then do things differently than if normal (which is the default - see further down)
@@ -2057,7 +2057,7 @@ function Pin(options)
 // ====================================================================================================================
 function Animation(options)
 {
-    defaultOptions = {
+    let defaultOptions = {
         'type'              : 'spinOngoing',       // For now there are only supported types are spinOngoing (continuous), spinToStop, spinAndBack, custom.
         'direction'         : 'clockwise',         // clockwise or anti-clockwise.
         'propertyName'      : null,                // The name of the winning wheel property to be affected by the animation.
@@ -2076,7 +2076,7 @@ function Animation(options)
 
     // Now loop through the default options and create properties of this class set to the value for
     // the option passed in if a value was, or if not then set the value of the default.
-    for (var key in defaultOptions)
+    for (let key in defaultOptions)
     {
         if ((options != null) && (typeof(options[key]) !== 'undefined'))
             this[key] = options[key];
@@ -2104,7 +2104,7 @@ function Segment(options)
 {
     // Define default options for segments, most are null so that the global defaults for the wheel
     // are used if the values for a particular segment are not specifically set.
-    defaultOptions = {
+    let defaultOptions = {
         'size'              : null, // Leave null for automatic. Valid values are degrees 0-360. Use percentToDegrees function if needed to convert.
         'text'              : '',   // Default is blank.
         'fillStyle'         : null, // If null for the rest the global default will be used.
@@ -2183,7 +2183,7 @@ Segment.prototype.changeImage = function(image, imageDirection)
 // ====================================================================================================================
 function PointerGuide(options)
 {
-    defaultOptions = {
+    let defaultOptions = {
         'display'     : false,
         'strokeStyle' : 'red',
         'lineWidth'   : 3
@@ -2191,7 +2191,7 @@ function PointerGuide(options)
 
     // Now loop through the default options and create properties of this class set to the value for
     // the option passed in if a value was, or if not then set the value of the default.
-    for (var key in defaultOptions)
+    for (let key in defaultOptions)
     {
         if ((options != null) && (typeof(options[key]) !== 'undefined'))
         {
