@@ -31,6 +31,8 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     arr = Array;
     groups: Array<Location[]> = new Array<Location[]>(3);
 
+    groupSelect = [false, false, false];
+
     constructor() {}
 
     ngOnInit() {
@@ -44,6 +46,13 @@ export class LocationSelectComponent implements OnInit, OnChanges {
                 this.groups[location.level - 1] = [];
             }
             this.groups[location.level - 1].push(location);
+        });
+
+        this.groups.forEach((group, index) => {
+            let allGroupSelected = group.every(groupLocation => {
+                return groupLocation.selected === true;
+            });
+            this.groupSelect[index] = allGroupSelected;
         })
     }
 
@@ -77,14 +86,21 @@ export class LocationSelectComponent implements OnInit, OnChanges {
         this.selected.emit(location);
     }
 
-    toggleSpiceGroup(spice: number) {
-        this.locationBySpice[spice].groupSelected = !this.locationBySpice[spice].groupSelected;
-        this.selected.emit(
-            Array.from(this.locationBySpice[spice].locations.values())
-        );
+    toggleSpiceGroup(spice: any) {
+        this.groupSelect[spice] = !this.groupSelect[spice];
+
+        this.groups[spice].forEach(location => {
+            location.selected = this.groupSelect[spice];
+        });
+        this.selected.emit([...this.groups[spice]]);
     }
 
-    selectedUpdate(selected, location) {
-        this.selected.emit({...location, selected: selected});
+    selectedUpdate(selected: boolean, location: Location) {
+        location.selected = selected;
+        this.selected.emit(location);
+        let allGroupSelected = this.groups[location.level-1].every(groupLocation => {
+            return groupLocation.selected;
+        });
+        this.groupSelect[location.level-1] = allGroupSelected;
     }
 }

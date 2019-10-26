@@ -1,4 +1,4 @@
-<div class="d-flex flex-sm-column flex-md-row location-select" >
+<div class="d-flex flex-column flex-md-row location-select" >
     <div class="flex-equal" *ngFor="let group of groups;let spice = index">
         <div
             [ngClass]="'spice-group'+ (spice+1)"
@@ -7,14 +7,20 @@
             <app-location-group
                 [locations]="group"
             >
-                <ng-template location-group-toggle>
-                    <div
-                        *ngFor="let count of arr(spice+1)"
+                <ng-template
+                    location-group-toggle
+                >
+                    <div class="spice-group-icon justify-content-center d-flex my-2 mx-2"
+                        [ngClass]="{'selected': groupSelect[spice]}"
+                        (click)="toggleSpiceGroup(spice)"
                     >
-                        <img
-                            src="/assets/spicyempty.png"
-                        />
-                    </div>
+                        <div
+                            *ngFor="let count of arr(spice+1)"
+                        >
+                            <img
+                                src="/assets/spicyempty.png"
+                            />
+                        </div>
 
                     <!-- <div class="fire">
                         <div class="particle">
@@ -24,6 +30,7 @@
                         <div class="particle">
                         </div>
                     </div> -->
+                    </div>
                 </ng-template>
 
                 <ng-template

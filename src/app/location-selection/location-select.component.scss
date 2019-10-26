@@ -26,28 +26,22 @@
     }
 }
 
-.location-select {
-    position : absolute;
-    background-color: rgba(0, 0, 0, 0.65);
-    z-index: 1000;
-}
+.spice-group-icon {
 
-.spice-level-icons {
-
-    &.allSpiceLevel img {
+    &.selected img {
         content:url("/assets/spicyfull-small.png");
     }
 
-    &:hover img {
-        content:url("/assets/spicyfull-small.png");
-        animation: fade-in .5s ease-in ;
+    &:hover {
+        & img {
+            content:url("/assets/spicyfull-small.png");
+            animation: fade-in .5s ease-in ;
+        }
     }
 
     & img {
-        height: 69px;
-        width: 31px;
+        height: 5rem;
         cursor: pointer;
-        animation: fade-in .5s ease-in ;
     }
 }
 

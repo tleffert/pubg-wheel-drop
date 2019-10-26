@@ -1,10 +1,10 @@
-import { Input, Output, EventEmitter, Directive, Renderer2, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Input, Output, EventEmitter, Directive, Renderer2, ElementRef, HostListener, OnInit, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[location-option]',
   // templateUrl: './location-option.component.html',
 })
-export class LocationOption implements OnInit {
+export class LocationOption implements OnInit, OnChanges {
 
     @HostListener('click', ['$event']) onClick($event){
         this.updateSelected();
@@ -38,14 +38,25 @@ export class LocationOption implements OnInit {
         }
     }
 
-    private updateSelected() {
-        this.selected = !this.selected;
-        this.selectedChange.emit(this.selected);
+    ngOnChanges(changes: SimpleChanges) {
+        if(changes.selected) {
+            this.selected = changes.selected.currentValue
+            this.updateClass();
+        }
+    }
+
+    private updateClass() {
         if(this.selected) {
             this.setActiveClass();
         } else {
             this.setInactiveClass();
         }
+    }
+
+    private updateSelected() {
+        this.selected = !this.selected;
+        this.selectedChange.emit(this.selected);
+        this.updateClass();
     }
 
     private setActiveClass() {
