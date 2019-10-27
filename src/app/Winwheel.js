@@ -538,7 +538,7 @@ Winwheel.prototype.drawSegmentImages = function()
         {
             // Loop though and output all segments - position 0 of the array is not used, so start loop from index 1
             // this is to avoid confusion when talking about the first segment.
-            for (x = 1; x <= this.numSegments; x ++)
+            for (let x = 1; x <= this.numSegments; x ++)
             {
                 // Get the segment object as we need it to read options from.
                 seg = this.segments[x];
@@ -1693,7 +1693,7 @@ Winwheel.prototype.getIndicatedSegmentNumber = function()
     }
 
     // Now we can work out the prize won by seeing what prize segment startAngle and endAngle the relativeAngle is between.
-    for (x = 1; x < (this.segments.length); x ++)
+    for (let x = 1; x < (this.segments.length); x ++)
     {
         if ((relativeAngle >= this.segments[x]['startAngle']) && (relativeAngle <= this.segments[x]['endAngle']))
         {
