@@ -1,34 +1,59 @@
 import { Component, Renderer2 } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
 
-import { tap, filter, first, distinctUntilChanged, share } from 'rxjs/operators';
-
-
+import { tap, filter, distinctUntilChanged, share } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { MapSelectors, MapEntity, MapActions, LocationEntity, LocationSelectors, LocationActions } from '@app/store';
+import { MapSelectors, MapEntity, MapActions, LocationEntity, LocationSelectors, LocationActions, WheelActions, WheelSelectors } from '@app/store';
 import { Location } from '@app/types';
 import { Observable } from 'rxjs';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateY(-15%)', opacity: .3}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)', opacity: .9}))
+      ]),
+      transition(':leave', [
+          style({transform: 'translateY(0%)', opacity: .9}),
+        animate('200ms ease-in', style({transform: 'translateY(-15%)', opacity: .3}))
+      ])
+    ])
+  ]
 })
 export class AppComponent {
   title = 'app';
-  showLocationNav : boolean = true;
+  locationSelectToggle : boolean = true;
   selectedMap$: Observable<MapEntity>;
   maps$: Observable<MapEntity[]>;
   mapLocations$: Observable<LocationEntity[]>;
+  winner$: Observable<any>;
+  spinning$: Observable<boolean>;
 
   constructor(
       private store: Store<any>,
       private renderer: Renderer2
   ) {
-
+      this.store.dispatch(MapActions.fetchAllMaps());
       this.maps$ = this.store.select(MapSelectors.selectAllMaps).pipe(
+          filter(maps => !!maps.length),
           tap(maps => {
-              console.log("MAPS APP", maps)
+              this.store.dispatch(MapActions.selectMap({
+                  map: maps[0]
+              }))
+          })
+      );
+
+      this.winner$ = this.store.select(WheelSelectors.getWinner);
+      this.spinning$ = this.store.select(WheelSelectors.getWheelSpinning).pipe(
+          tap(spinning => {
+             if(spinning) {
+                 this.locationSelectToggle = false;
+             }
           })
       );
 
@@ -82,9 +107,18 @@ export class AppComponent {
       }
   }
 
-  thing() {
-      // Watching the selected map to change the 'themeing' of the wheel
+  handleWinner(winner: Location) {
+      this.store.dispatch(WheelActions.announceLocationWinner({
+          location: winner
+      }));
+  }
 
+  spinHandler(spinning: boolean) {
+      if(spinning) {
+          this.store.dispatch(WheelActions.startSpin());
+      } else {
+          this.store.dispatch(WheelActions.endSpin());
+      }
   }
 
 
