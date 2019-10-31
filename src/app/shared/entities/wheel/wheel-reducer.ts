@@ -22,5 +22,20 @@ export const reducer = createReducer(
         (state) => {
             return {...state, winner: null}
         }
+    ),
+
+    on(
+        WheelActions.startSpin,
+        (state) => {
+            return {...state, spinning: true};
+        }
+    ),
+
+    on(
+        WheelActions.endSpin,
+        (state) => {
+            return {...state, spinning: false};
+        }
     )
+
 );

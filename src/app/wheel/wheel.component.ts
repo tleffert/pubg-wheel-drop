@@ -14,9 +14,7 @@ export class WheelComponent implements OnInit, OnChanges {
     private wheel : any;
     private bonusWheel : any;
     private wheelSegments : object[] = [];
-    private wheelSpinning : boolean;
-    private wheelPower : number;
-
+    private spinning: boolean;
     private bonus : object[];
 
     private showBonus : boolean = false;
@@ -30,12 +28,14 @@ export class WheelComponent implements OnInit, OnChanges {
     @Output()
     winner: EventEmitter<Location> = new EventEmitter<Location>();
 
+    @Output()
+    spinningChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() {
     this.bonus = bonusEntries;
   }
 
   ngOnInit() {
-      console.log("WHAT IS GOING ON", this.locations);
       // Merging the wheelConfig input with a default config.
       this.wheelConfig = {...this.wheelConfig, ...wheelConfigDefaultConf};
 
@@ -52,7 +52,6 @@ export class WheelComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
       // this.initWheel();
-      console.log(changes);
       if(changes.locations && changes.locations.currentValue.length) {
           this.reset();
           this.wheelSegments = [];
@@ -100,7 +99,8 @@ export class WheelComponent implements OnInit, OnChanges {
       // if(this.showBonus || this.selectedMap.name === 'Bonus') {
       //     this.bonusWheel.startAnimation();
       // } else {
-          this.wheel.startAnimation();
+      this.spinningChange.emit(true);
+      this.wheel.startAnimation();
       // }
   }
 
@@ -136,12 +136,11 @@ export class WheelComponent implements OnInit, OnChanges {
         if(this.wheel) {
             this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
             this.wheel.draw();                // Call draw to render changes to the wheel.
-            this.wheelSpinning = false;
+            this.spinningChange.emit(false);
         }
   }
 
   initWheel(initText?) : void {
-      console.log("WHEEL", this.wheelSegments);
     this.wheelSegments.sort(function(a, b){return 0.5 - Math.random()});
     if(this.bonusWheel){
         this.bonusWheel.clearCanvas();
@@ -150,7 +149,10 @@ export class WheelComponent implements OnInit, OnChanges {
     config.numSegments = this.wheelSegments.length;
     config.segments = this.wheelSegments;
     config.animation.duration = (Math.random()+1)*5;
-    config.animation.callbackFinished = () => {this.announceLocation()};
+    config.animation.callbackFinished = () => {
+        this.announceLocation();
+        this.spinningChange.emit(false);
+    };
     this.wheel = new Winwheel(config);
   }
 
@@ -161,7 +163,10 @@ export class WheelComponent implements OnInit, OnChanges {
       bonusConfig.numSegments = this.wheelSegments.length;
       bonusConfig.segments = this.wheelSegments;
       bonusConfig.animation.duration = (Math.random()+1)*5;
-      bonusConfig.animation.callbackFinished = () => {this.announceLocation()};
+      bonusConfig.animation.callbackFinished = () => {
+          this.announceLocation();
+          this.spinningChange.emit(false);
+      };
       bonusConfig.fillStyle = '#99019a',
 
       this.bonusWheel = new Winwheel(bonusConfig);

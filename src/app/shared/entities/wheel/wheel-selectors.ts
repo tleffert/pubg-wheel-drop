@@ -15,3 +15,10 @@ export const getWinner = createSelector(
         return null;
     }
 );
+
+export const getWheelSpinning = createSelector(
+    selectWheelState,
+    (state) => {
+        return state.spinning;
+    }
+);
