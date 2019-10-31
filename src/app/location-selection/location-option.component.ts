@@ -1,4 +1,4 @@
-import { Input, Output, EventEmitter, Directive, Renderer2, ElementRef, HostListener, OnInit, SimpleChanges } from '@angular/core';
+import { Input, Output, EventEmitter, Directive, Renderer2, ElementRef, HostListener, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 
 @Directive({
   selector: '[location-option]',

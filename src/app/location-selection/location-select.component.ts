@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Map as GameMap, Location } from '@app/types';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 export interface LocationGroup {
     level: number;
@@ -11,7 +12,7 @@ export interface LocationGroup {
 @Component({
   selector: 'location-select',
   templateUrl: './location-select.component.html',
-  styleUrls: ['./location-select.component.scss'],
+  styleUrls: ['./location-select.component.scss']
 })
 export class LocationSelectComponent implements OnInit, OnChanges {
 
