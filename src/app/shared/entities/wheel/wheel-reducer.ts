@@ -9,4 +9,18 @@ export function wheelStateReducer(state: WheelState | undefined, action: Action)
 
 export const reducer = createReducer(
     wheelStateInitial,
-)
+
+    on(
+        WheelActions.announceLocationWinner,
+        (state, {location}) => {
+            return {...state, winner: location._id};
+        }
+    ),
+
+    on(
+        WheelActions.clearWinner,
+        (state) => {
+            return {...state, winner: null}
+        }
+    )
+);

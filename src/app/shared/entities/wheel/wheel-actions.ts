@@ -12,7 +12,11 @@ export enum Events {
 export const announceLocationWinner = createAction(
     Events.ANNOUNCE_LOCATION_WINNER,
     props<{location: LocationEntity}>()
-)
+);
+
+export const clearWinner = createAction(
+    `[Wheel] CLEAR_WINNER`
+);
 
 export const startSpin = createAction(
     Events.START_SPIN

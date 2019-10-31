@@ -7,4 +7,5 @@ export class Location {
     location_img : string; // Name of file not path to, as image should be within assets
     selected : boolean; // If the location is apart of the default selection
     weighting : number;
+    img?: string;
 }
