@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { OverlayModule, OVERLAY_PROVIDERS } from '@angular/cdk/overlay';
+
 
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +19,8 @@ import { NavComponent } from './nav/nav.component';
 import { EventService } from './shared/services/eventService.service';
 import { SteamStatusComponent } from './steam-status/steam-status.component';
 import { MapSelectComponent } from './map-select/map-select.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WinnerAnnounceComponent } from './winner-announce/winner-announce.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import { MapSelectComponent } from './map-select/map-select.component';
     WheelComponent,
     NavComponent,
     SteamStatusComponent,
-    MapSelectComponent
+    MapSelectComponent,
+    WinnerAnnounceComponent
   ],
   imports: [
     BrowserModule,
@@ -34,9 +39,12 @@ import { MapSelectComponent } from './map-select/map-select.component';
     CommonModule,
     SharedModule,
     LocationSelectModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    OverlayModule
   ],
-  providers: [EventService],
-  bootstrap: [AppComponent]
+  providers: [EventService, OVERLAY_PROVIDERS],
+  bootstrap: [AppComponent],
+  entryComponents: [WinnerAnnounceComponent]
 })
 export class AppModule { }

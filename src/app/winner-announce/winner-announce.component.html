@@ -1,0 +1,17 @@
+<div class="card winner-container" [@slideContent]="animationState">
+    <div class="card-header">
+        <small class="card-text">{{(winner$ | async)?.winner_message}}</small>
+    </div>
+  <img [src]="'/assets/'+(winner$ | async)?.img" class="card-img-top" alt="...">
+  <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-center">
+            <span class="card-title lead">{{(winner$ | async)?.text}}</span>
+        </div>
+        <div>
+        </div>
+        <div class="d-flex">
+            <button class="btn btn-primary mx-auto" (click)="dismiss()">
+                <span>Jumpin' !</span>
+            </button>
+        </div>
+  </div>
