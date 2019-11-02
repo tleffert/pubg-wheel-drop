@@ -1,7 +1,7 @@
 import { Component, Renderer2 } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
 
-import { tap, filter, distinctUntilChanged, share } from 'rxjs/operators';
+import { tap, filter, distinctUntilChanged, share, withLatestFrom, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { MapSelectors, MapEntity, MapActions, LocationEntity, LocationSelectors, LocationActions, WheelActions, WheelSelectors } from '@app/store';
 import { Location } from '@app/types';
@@ -28,11 +28,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class AppComponent {
   title = 'app';
   locationSelectToggle : boolean = true;
-  selectedMap$: Observable<MapEntity>;
+  selectedMap$: Observable<MapEntity> = new Observable<MapEntity>();
   maps$: Observable<MapEntity[]>;
   mapLocations$: Observable<LocationEntity[]>;
   winner$: Observable<any>;
   spinning$: Observable<boolean>;
+  currentMap: MapEntity;
 
   constructor(
       private store: Store<any>,
@@ -61,16 +62,17 @@ export class AppComponent {
        .pipe(
            filter(selectedMap => !!selectedMap),
            distinctUntilChanged(),
-           tap(selectedMap => {
+           tap((selectedMap) => {
                // Removing old map class
-               // if(this.selectedMap) {
-               //     this.renderer.removeClass(document.body, this.selectedMap.name);
-               // }
+               if(this.currentMap) {
+                   this.renderer.removeClass(document.body, this.currentMap.name);
+               }
                // Adding new map class
                this.renderer.addClass(document.body, selectedMap.name);
                this.store.dispatch(LocationActions.fetchAllLocationsByMap({
                    map: selectedMap
-               }))
+               }));
+               this.currentMap = selectedMap;
            }),
            share()
        );
