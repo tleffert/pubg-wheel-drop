@@ -6,7 +6,7 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     /*background-image: url("./assets/pubg_map_down_scale.jpg");*/
-    background-image: url("./assets/erangel/erangel.png");
+    background-image: url("./assets/erangel/erangel.jpg");
 
     /* Background image is centered vertically and horizontally at all times */
      background-position: center center;
@@ -29,19 +29,19 @@ body {
      overflow: hidden;
 
      &.Erangel, &.Bonus {
-        background-image: url("./assets/erangel/erangel.png");
+        background-image: url("./assets/erangel/erangel.jpg");
      }
 
      &.Miramar {
-        background-image: url("./assets/miramar/miramar.png");
+        background-image: url("./assets/miramar/miramar.jpg");
      }
 
      &.Sahnok {
-        background-image: url("./assets/sanhok/sanhok.png");
+        background-image: url("./assets/sanhok/sanhok.jpg");
      }
 
      &.Vikendi {
-        background-image: url("./assets/vikendi/vikendi.png");
+        background-image: url("./assets/vikendi/vikendi.jpg");
      }
 }
 
