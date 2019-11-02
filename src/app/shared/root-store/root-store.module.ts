@@ -10,14 +10,14 @@ import { LocationStoreModule } from '../entities/location/location-store.module'
 import { WheelStoreModule } from '../entities/wheel/wheel-store.module';
 
 
-export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
-  return function(state, action) {
+// export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
+//   return function(state, action) {
+//
+//     return reducer(state, action);
+//   };
+// }
 
-    return reducer(state, action);
-  };
-}
-
-export const metaReducers: MetaReducer<any>[] = [debug];
+// export const metaReducers: MetaReducer<any>[] = [debug];
 
 
 @NgModule({
