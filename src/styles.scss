@@ -52,6 +52,16 @@ body {
   }
 }
 
+// Overlay global position strategy not playing nice so centering manually;
+.cdk-overlay-pane {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
 .swal2-container {
   z-index: 1000;
 }

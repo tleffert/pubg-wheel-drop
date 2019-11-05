@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ComponentFactoryResolver } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { WinnerAnnounceComponent } from 'app/winner-announce/winner-announce.component';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +11,11 @@ export class OverlayService {
 
     private overlayRef: OverlayRef;
 
+    winnerAnnouncePortal: ComponentPortal<WinnerAnnounceComponent>;
+
     constructor(
         private overlay: Overlay,
-    ) {
-
-    }
+    ) {}
 
     /**
      * Will create and pop up overlay with provided component, and custom config
@@ -21,21 +23,18 @@ export class OverlayService {
      * @param  config    custom configuration for material overly
      * @return           [description]
      */
-    createOverlay(component: ComponentType<any>, config?: OverlayConfig ) {
-        let positionStrategy = this.overlay.position()
-            .global()
-            .centerHorizontally()
-            .centerVertically();
+    createOverlay() {
+        this.winnerAnnouncePortal = new ComponentPortal(WinnerAnnounceComponent);
+        let overlayConfig = new OverlayConfig();
 
-        config = new OverlayConfig({
-            hasBackdrop: true,
-            backdropClass: 'dark-backdrop',
-            positionStrategy,
-            ...config
-        });
+        overlayConfig.positionStrategy = this.overlay.position().global();
 
-        this.overlayRef = this.overlay.create(config);
-        this.overlayRef.attach(new ComponentPortal(component));
+        overlayConfig.hasBackdrop = true;
+        overlayConfig.backdropClass = 'dark-backdrop';
+
+        this.overlayRef = this.overlay.create(overlayConfig);
+
+        this.overlayRef.attach(this.winnerAnnouncePortal);
     }
 
     /**

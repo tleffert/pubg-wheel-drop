@@ -1,7 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
-import { AlertModule } from 'ngx-bootstrap';
 
-import { tap, filter, distinctUntilChanged, share, withLatestFrom, map } from 'rxjs/operators';
+import { tap, filter, distinctUntilChanged, share } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { MapSelectors, MapEntity, MapActions, LocationEntity, LocationSelectors, LocationActions, WheelActions, WheelSelectors } from '@app/store';
 import { Location } from '@app/types';
@@ -44,7 +43,7 @@ export class AppComponent {
           filter(maps => !!maps.length),
           tap(maps => {
               this.store.dispatch(MapActions.selectMap({
-                  map: maps[0]
+                  map: maps.find(map => map.default)
               }))
           })
       );
@@ -78,7 +77,6 @@ export class AppComponent {
        );
 
        this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations);
-
   }
 
   setSelectMap(selectedMap: MapEntity) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ApplicationRef } from '@angular/core';
 
 import { Location, WheelConfig, wheelConfigDefaultConf, WheelOption } from '@app/types';
 import bonusEntries from './bonus_wheel_entries.json';
@@ -31,7 +31,9 @@ export class WheelComponent implements OnInit, OnChanges {
     @Output()
     spinningChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() {
+  constructor(
+      private appRef: ApplicationRef
+  ) {
     this.bonus = bonusEntries;
   }
 
@@ -152,6 +154,8 @@ export class WheelComponent implements OnInit, OnChanges {
     config.animation.callbackFinished = () => {
         this.announceLocation();
         this.spinningChange.emit(false);
+        // Need the appRef tick becusae this happens ourside of the context of angular 'zone'
+        this.appRef.tick();
     };
     this.wheel = new Winwheel(config);
   }

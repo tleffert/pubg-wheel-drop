@@ -24,8 +24,8 @@ export class WheelEffects {
     })
     announceLocationWinner$ = this.actionStream$.pipe(
         ofType(WheelActions.announceLocationWinner),
-        tap(({location}) => {
-            this.overlayService.createOverlay(WinnerAnnounceComponent);
+        tap(() => {
+            this.overlayService.createOverlay();
         })
     )
 

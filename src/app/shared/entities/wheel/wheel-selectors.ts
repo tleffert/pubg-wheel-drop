@@ -12,7 +12,6 @@ export const getWinner = createSelector(
         if(wheelState.winner) {
             return locationState.entities[wheelState.winner];
         }
-        return null;
     }
 );
 
