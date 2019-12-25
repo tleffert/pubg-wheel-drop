@@ -16,7 +16,7 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "forkTypeChecker": false,
+            "forkTypeChecker": true,
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -73,7 +73,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/styles.css",
+              "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
             "assets": [
@@ -127,7 +127,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

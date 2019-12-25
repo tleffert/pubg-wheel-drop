@@ -1,7 +1,7 @@
 <div class="btn-group btn-group-toggle" *ngIf="maps && selectedMap" >
     <button
         *ngFor="let map of maps"
-        class="btn"
+        class="btn btn-lg"
         (click)="selectMap(map)"
         [ngClass]="{'btn-primary': map._id === selectedMap._id, 'btn-secondary' : map._id !== selectedMap._id}"
     >

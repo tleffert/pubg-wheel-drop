@@ -2,40 +2,46 @@
     margin : 5px;
 }
 
-.spice-group1 .spice-active {
-    background-color: green;
+// Enforces flex items to be equal width
+.flex-equal {
+    flex: 1;
 }
 
-.spice-group2 .spice-active {
-    background-color: orange;
+
+.spice-group1 {
+    ::ng-deep & .btn.selected {
+        background-color: green;
+    }
 }
 
-.spice-group3 .spice-active {
-    background-color: red;
+.spice-group2 {
+    ::ng-deep & .btn.selected {
+        background-color: orange;
+    }
 }
 
-.location-select {
-    position : absolute;
-    background-color: rgba(0, 0, 0, 0.65);
-    z-index: 1000;
+.spice-group3 {
+    ::ng-deep & .btn.selected {
+        background-color: red;
+    }
 }
 
-.spice-level-icons {
+.spice-group-icon {
 
-    &.allSpiceLevel img {
+    &.selected img {
         content:url("/assets/spicyfull-small.png");
     }
 
-    &:hover img {
-        content:url("/assets/spicyfull-small.png");
-        animation: fade-in .5s ease-in ;
+    &:hover {
+        & img {
+            content:url("/assets/spicyfull-small.png");
+            animation: fade-in .5s ease-in ;
+        }
     }
 
     & img {
-        height: 69px;
-        width: 31px;
+        height: 5rem;
         cursor: pointer;
-        animation: fade-in .5s ease-in ;
     }
 }
 

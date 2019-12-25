@@ -4,11 +4,11 @@ import { MapEntity } from '../map/map-state';
 import { getSelectedMap } from '../map/map-selectors';
 
 // Selects the Map collection slice from the store
-export const selectLocationEntityState = () => createFeatureSelector<LocationEntityCollectionState>('locations');
+export const selectLocationEntityState = createFeatureSelector<LocationEntityCollectionState>('locations');
 
 // Some magic setting up alias for selecting all Maps from the store
 export const {selectAll: selectAllLocations, selectIds } = locationEntityAdapter.getSelectors(
-    selectLocationEntityState()
+    selectLocationEntityState
 );
 
 export const getLocationsByMap = (map: MapEntity) => createSelector(

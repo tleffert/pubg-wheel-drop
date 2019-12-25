@@ -1,0 +1,21 @@
+<div class="d-flex flex-column">
+    <div class="group-toggle">
+        <ng-template
+            [ngTemplateOutlet]="groupToggleTemplate"
+        >
+        </ng-template>
+    </div>
+    <div class="group-options d-flex">
+        <div class="d-flex flex-wrap justify-content-center">
+            <ng-container *ngFor="let location of locations">
+                <div>
+                    <ng-template
+                        [ngTemplateOutlet]="locationOptionTemplate"
+                        [ngTemplateOutletContext]="{location: location}"
+                    >
+                    </ng-template>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

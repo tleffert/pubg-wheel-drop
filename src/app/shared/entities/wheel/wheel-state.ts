@@ -3,7 +3,7 @@
 
 export interface WheelState {
     spinning: boolean;
-    winner: any;
+    winner: string;
 }
 
 export const wheelStateInitial = {

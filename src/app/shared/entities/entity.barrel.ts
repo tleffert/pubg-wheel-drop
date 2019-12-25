@@ -11,6 +11,7 @@ import { locationEntityCollectionReducer } from './location/location-reducer';
 import * as WheelActions from './wheel/wheel-actions';
 import { WheelState, wheelStateInitial } from './wheel/wheel-state';
 import { wheelStateReducer } from './wheel/wheel-reducer';
+import * as WheelSelectors from './wheel/wheel-selectors';
 
 export {
     MapEntity, MapEntityCollectionState,
@@ -19,5 +20,5 @@ export {
     LocationActions, LocationEntity, LocationEntityCollectionState, LocationSelectors,
     locationEntityAdapter, locationEntityCollectioninitialState, locationEntityCollectionReducer,
 
-    WheelActions, WheelState, wheelStateInitial, wheelStateReducer
+    WheelActions, WheelState, wheelStateInitial, wheelStateReducer, WheelSelectors
 }

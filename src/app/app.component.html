@@ -1,70 +1,75 @@
-<div class="container-fluid page-header">
+<div class="d-flex flex-fill">
+    <nav class="navbar navbar-dark navbar-expand w-100"
+        [ngClass]="{'location-select-open': locationSelectToggle}"
+    >
+        <div class="d-flex flex-column flex-fill">
+            <div class="d-flex">
+                <div class="col-lg-8 col-12 mx-auto banner">
+                    <img class="img-fluid mx-auto d-block" src="/assets/wheelbanner.gif"/>
+                </div>
+            </div>
+            <div class="d-flex flex-fill mb-4">
+                <!-- <div class="d-flexf flex-column">
+                    <div>
+                        <a class="navbar-brand" href="#">Spite Club</a>
+                    </div>
+                  <div>
+                      <app-steam-status></app-steam-status>
+                  </div>
+              </div> -->
+              <div class="mx-auto">
+                  <!-- <div class="btn-group mr-2">
+                      (click)="showInfo()"
+                      <button class="btn btn-secondary" >
+                          <fa [name]="'question-circle'" [size]="2"></fa>
+                      </button>
+                  </div> -->
+                  <app-map-select
+                      [maps]="maps$ | async"
+                      [selectedMap]="selectedMap$ | async"
+                      (selectedMapChange)="setSelectMap($event)"
+                  >
+                  </app-map-select>
+                  <div class="btn-group ml-2">
+                      <button class="btn"
+                          (click)="toggleLocationNav()"
+                          [ngClass]="{'btn-primary': locationSelectToggle,
+                           'btn-secondary' : !locationSelectToggle,
+                            'disabled': spinning$ | async}"
+                      >
+                          <fa [name]="'map-marker'" [size]="2"></fa>
+                      </button>
+                  </div>
 
-    <div class="container">
-        <div>
-            <img class="banner img-fluid mx-auto d-block" src="/assets/wheelbanner.gif"/>
-        </div>
-    </div>
 
-
-    <!-- <nav-primary>
-
-    </nav-primary> -->
-    <nav class="navbar navbar-dark navbar-expand">
-        <a class="navbar-brand" href="#">Spite Club</a>
-      <div>
-          <!-- <app-steam-status></app-steam-status> -->
-      </div>
-      <div class="ml-auto">
-          <app-map-select
-              *ngIf="maps && selectedMap"
-              [maps]="maps"
-              [selectedMap]="selectedMap"
-              (selectedMapChange)="setSelectMap($event)"
-          >
-          </app-map-select>
-          <!-- <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
-            <button class="btn" (click)="selectMap('Erangel')" [ngClass]="{'btn-primary' : map == 'Erangel', 'btn-secondary' : map != 'Erangel'}">
-                Erangel
-            </button>
-            <button class="btn" (click)="selectMap('Miramar')" [ngClass]="{'btn-primary' : map == 'Miramar', 'btn-secondary' : map != 'Miramar'}">
-                Miramar
-            </button>
-            <button class="btn" (click)="selectMap('Sahnok')" [ngClass]="{'btn-primary' : map == 'Sahnok', 'btn-secondary' : map != 'Sahnok'}">
-                Sanhok
-            </button>
-            <button class="btn" (click)="selectMap('Vikendi')" [ngClass]="{'btn-primary' : map == 'Vikendi', 'btn-secondary' : map != 'Vikendi'}">
-                Vikendi
-            </button>
-            <button class="btn" (click)="selectMap('Bonus')" [ngClass]="{'btn-bonus' : map == 'Bonus', 'btn-secondary' : map != 'Bonus'}">
-                Bonus
-            </button>
-          </div> -->
-          <div class="btn-group mr-2">
-              <!-- (click)="toggleLocationNav()"  [ngClass]="{'btn-primary': locationSelectToggle, 'btn-secondary' : !locationSelectToggle}"-->
-              <button class="btn btn-sm"  >
-                  <fa [name]="'map-marker'" [size]="2"></fa>
-              </button>
+              </div>
           </div>
-
-          <div class="btn-group">
-              <!-- (click)="showInfo()" -->
-              <button class="btn btn-sm btn-secondary" >
-                  <fa [name]="'question-circle'" [size]="2"></fa>
-              </button>
+          <div class="d-flex location-select-container">
+              <ng-container
+                *ngIf="locationSelectToggle"
+              >
+                  <location-select
+                      [@slideInOut]
+                      class="w-100 location-select pb-3"
+                      [map]="selectedMap$ | async"
+                      [locations]="mapLocations$ | async"
+                      (selected)="updateSelected($event)"
+                  ></location-select>
+              </ng-container>
           </div>
-      </div>
+  </div>
     </nav>
-    <location-select
-        [map]="selectedMap"
-        [locations]="mapLocations"
-        (selected)="updateSelected($event)"
-    ></location-select>
+
 </div>
 
 <!-- Nav?? -->
 
 <div class="container">
-    <app-wheel></app-wheel>
-    <!-- <router-outlet></router-outlet> -->
+    <div style="margin-top: 15%">
+        <app-wheel
+            [locations]="mapLocations$ | async"
+            (winner)="handleWinner($event)"
+            (spinningChange)=spinHandler($event)
+        ></app-wheel>
+    </div>
 </div>

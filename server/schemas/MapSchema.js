@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var mapSchema = new Schema({
-  name: {type: String, required: true}
+  name: {type: String, required: true},
+  default: {type: Boolean}
 });
 
 var Map = mongoose.model('MAP', mapSchema);

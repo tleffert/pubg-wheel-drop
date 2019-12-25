@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Map as GameMap, Location } from '@app/types';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 export interface LocationGroup {
     level: number;
@@ -11,7 +12,7 @@ export interface LocationGroup {
 @Component({
   selector: 'location-select',
   templateUrl: './location-select.component.html',
-  styleUrls: ['./location-select.component.scss'],
+  styleUrls: ['./location-select.component.scss']
 })
 export class LocationSelectComponent implements OnInit, OnChanges {
 
@@ -29,34 +30,51 @@ export class LocationSelectComponent implements OnInit, OnChanges {
 
     // Just to make Array available in the template
     arr = Array;
+    groups: Array<Location[]> = new Array<Location[]>(3);
 
-    constructor() {
-        this.resetLocations();
+    groupSelect = [false, false, false];
+
+    constructor() {}
+
+    ngOnInit() {
+        this.createGroups();
     }
 
-    ngOnInit() {}
+    createGroups() {
+        this.resetLocations();
+        this.locations.forEach(location => {
+            if(!this.groups[location.level - 1]) {
+                this.groups[location.level - 1] = [];
+            }
+            this.groups[location.level - 1].push(location);
+        });
+
+        this.groups.forEach((group, index) => {
+            let allGroupSelected = group.every(groupLocation => {
+                return groupLocation.selected === true;
+            });
+            this.groupSelect[index] = allGroupSelected;
+        })
+    }
 
     ngOnChanges(changes: SimpleChanges) {
+        let mapUpdated: boolean;
         if(changes.map) {
+            mapUpdated = changes.map.firstChange ||
+             (changes.map.previousValue && changes.map.previousValue._id !== changes.map.currentValue._id);
+        }
+
+        if(mapUpdated) {
             this.resetLocations();
         }
 
-        if(this.locationBySpice && changes.locations) {
-            changes.locations.currentValue.forEach((location: Location) => {
-                if(!this.locationBySpice[location.level - 1].locations) {
-                    this.locationBySpice[location.level - 1].locations = new Map<string, Location>();
-                }
-                this.locationBySpice[location.level - 1].locations.set(location._id, location);
-            });
+        if(mapUpdated && changes.locations) {
+            this.createGroups();
         }
     }
 
     private resetLocations() {
-        this.locationBySpice =  [
-            {locations: new Map<string, Location>()} as LocationGroup,
-            {locations: new Map<string, Location>()} as LocationGroup,
-            {locations: new Map<string, Location>()} as LocationGroup,
-        ];
+        this.groups = new Array<Location[]>(3);
     }
 
     filterLocationsBySpice(level: number) {
@@ -69,10 +87,21 @@ export class LocationSelectComponent implements OnInit, OnChanges {
         this.selected.emit(location);
     }
 
-    toggleSpiceGroup(spice: number) {
-        this.locationBySpice[spice].groupSelected = !this.locationBySpice[spice].groupSelected;
-        this.selected.emit(
-            Array.from(this.locationBySpice[spice].locations.values())
-        );
+    toggleSpiceGroup(spice: any) {
+        this.groupSelect[spice] = !this.groupSelect[spice];
+
+        this.groups[spice].forEach(location => {
+            location.selected = this.groupSelect[spice];
+        });
+        this.selected.emit([...this.groups[spice]]);
+    }
+
+    selectedUpdate(selected: boolean, location: Location) {
+        location.selected = selected;
+        this.selected.emit(location);
+        let allGroupSelected = this.groups[location.level-1].every(groupLocation => {
+            return groupLocation.selected;
+        });
+        this.groupSelect[location.level-1] = allGroupSelected;
     }
 }

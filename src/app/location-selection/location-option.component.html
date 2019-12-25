@@ -1,0 +1,7 @@
+<button
+    class="btn"
+    [ngClass]="{ 'active' : selected, 'btn-secondary': !selected}"
+    (click)="updateSelected()"
+>
+    {{label}}
+</button>

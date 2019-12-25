@@ -1,10 +1,12 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
+@import "~@angular/cdk/overlay-prebuilt.css";
+
 
 /* You can add global styles to this file, and also import other style files */
 body {
     /*background-image: url("./assets/pubg_map_down_scale.jpg");*/
-    background-image: url("./assets/pubg_map_down_scale.jpg");
+    background-image: url("./assets/erangel/erangel.jpg");
 
     /* Background image is centered vertically and horizontally at all times */
      background-position: center center;
@@ -26,22 +28,39 @@ body {
 
      overflow: hidden;
 
-     &.Erange, &.Bonus {
-        background-image: url("./assets/pubg_map_down_scale.jpg");
+     &.Erangel, &.Bonus {
+        background-image: url("./assets/erangel/erangel.jpg");
      }
 
      &.Miramar {
-        background-image: url("./assets/desrt-map-1080.png");
+        background-image: url("./assets/miramar/miramar.jpg");
      }
 
-     &.Sahnok {
-        background-image: url("./assets/PUBG-Sanhok-map.jpg");
+     &.Sanhok {
+        background-image: url("./assets/sanhok/sanhok.jpg");
      }
 
      &.Vikendi {
-        background-image: url("./assets/vikendi.jpg");
+        background-image: url("./assets/vikendi/vikendi.jpg");
      }
 }
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  &.dark-backdrop {
+    background: #000;
+    opacity: 0.85 !important;
+  }
+}
+
+// Overlay global position strategy not playing nice so centering manually;
+.cdk-overlay-pane {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
 
 .swal2-container {
   z-index: 1000;

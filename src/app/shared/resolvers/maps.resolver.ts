@@ -23,7 +23,7 @@ export class MapsResolver implements Resolve<MapEntity[]> {
       .pipe(
           tap(maps => {
               if(!maps.length) {
-                  this.store.dispatch(MapActions.fetchAllMaps());
+                  // this.store.dispatch(MapActions.fetchAllMaps());
               }
           }),
           filter(maps => !!maps.length),

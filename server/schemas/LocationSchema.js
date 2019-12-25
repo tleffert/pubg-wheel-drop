@@ -11,7 +11,8 @@ var locationSchema = new Schema({
     winner_message : {type : String, default : "You're going to Sunny...."},
     location_img : String, // Name of file not path to, as image should be within assets
     selected : {type : Boolean, default : false}, // If the location is apart of the default selection
-    weighting : {type : Number, min : 0, max : 1, default : 1}
+    weighting : {type : Number, min : 0, max : 1, default : 1},
+    img: {type : String, required: false}
 });
 
 var Location = mongoose.model('LOCATION', locationSchema);

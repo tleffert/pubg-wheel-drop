@@ -1,19 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
-import { filter, tap, takeWhile, switchMap, take } from 'rxjs/operators';
-
-import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
-
-import { LocationApiService } from '@app/api';
-import { EventService } from '../shared/services/eventService.service';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ApplicationRef } from '@angular/core';
 
 import { Location, WheelConfig, wheelConfigDefaultConf, WheelOption } from '@app/types';
 import bonusEntries from './bonus_wheel_entries.json';
-
-import { Store } from '@ngrx/store';
-import { MapSelectors, MapEntity, LocationSelectors, LocationEntity, WheelActions } from '@app/store';
-
-declare var $: any;
 
 let Winwheel = require('../Winwheel');
 // declare var Winwheel: any;
@@ -22,67 +10,62 @@ let Winwheel = require('../Winwheel');
   templateUrl: './wheel.component.html',
   styleUrls: ['./wheel.component.css'],
 })
-export class WheelComponent implements OnInit {
+export class WheelComponent implements OnInit, OnChanges {
     private wheel : any;
     private bonusWheel : any;
-    private wheelSegments : object[];
-    private wheelSpinning : boolean;
-    private wheelPower : number;
-
+    private wheelSegments : object[] = [];
+    private spinning: boolean;
     private bonus : object[];
-
-    private mapSelection : string;
-    private currentMap : string;
-    private currentMapLocations : any;
 
     private showBonus : boolean = false;
 
+    @Input()
+    wheelConfig: WheelConfig;
 
-    private selectedMap: MapEntity;
+    @Input()
+    locations: Location[];
 
-    private wheelConfig: WheelConfig = wheelConfigDefaultConf;
+    @Output()
+    winner: EventEmitter<Location> = new EventEmitter<Location>();
+
+    @Output()
+    spinningChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
-      private store: Store<any>,
-      private locationApi : LocationApiService,
-      private eventService : EventService
+      private appRef: ApplicationRef
   ) {
     this.bonus = bonusEntries;
   }
 
   ngOnInit() {
+      // Merging the wheelConfig input with a default config.
+      this.wheelConfig = {...this.wheelConfig, ...wheelConfigDefaultConf};
 
-      this.showBonus = false;
-      this.wheelSegments = [];
+      if(this.locations) {
+          this.initWheel();
+          this.locations.forEach(location => {
+             if(location.selected) {
+                 // add the selected locations to the wheel
+                 this.addOption(location);
+             }
+          });
+      }
+  }
 
-     // Getting the selected Map and it's initial set of locations
-     this.store.select(MapSelectors.getSelectedMap)
-     .pipe(
-         // Make sure to filter out null values
-        filter(selectedMap => !!selectedMap),
-         tap(selectedMap => {
-             this.selectedMap = selectedMap;
-         }),
-         // Since we have a new map we need to also grab it's locations
-         switchMap(selectedMap => {
-             return this.store.select(LocationSelectors.getLocationsByMap(selectedMap))
-             .pipe(
-                 filter(locations => !!locations.length),
-                 // Will rerun everytime a location is selcted for x number of total locations
-                 tap(locations => {
-                     // reset the segments
-                     this.wheelSegments = [];
-                     locations.forEach(location => {
-                        if(location.selected) {
-                            // add the selected locations to the wheel
-                            this.addOption(location);
-                        }
-                     });
-                     this.initWheel();
-                 })
-             )
-         })
-     ).subscribe();
+  ngOnChanges(changes: SimpleChanges) {
+      // this.initWheel();
+      if(changes.locations && changes.locations.currentValue.length) {
+          this.reset();
+          this.wheelSegments = [];
+          this.locations = changes.locations.currentValue;
+          this.locations.forEach(location => {
+             if(location.selected) {
+                 // add the selected locations to the wheel
+                 this.addOption(location);
+             }
+          });
+          this.initWheel();
+      }
   }
 
   addOptions(options) : void {
@@ -98,7 +81,7 @@ export class WheelComponent implements OnInit {
      this.initWheel();
   }
 
-  addOption(location: LocationEntity) :void {
+  addOption(location: Location) :void {
       let option: WheelOption = {
           location: location,
           fillStyle: null,
@@ -115,46 +98,48 @@ export class WheelComponent implements OnInit {
 
   spin() : void {
       // Begin the spin animation by calling startAnimation on the wheel object.
-      if(this.showBonus || this.selectedMap.name === 'Bonus') {
-          this.bonusWheel.startAnimation();
-      } else {
-          this.wheel.startAnimation();
-      }
+      // if(this.showBonus || this.selectedMap.name === 'Bonus') {
+      //     this.bonusWheel.startAnimation();
+      // } else {
+      this.spinningChange.emit(true);
+      this.wheel.startAnimation();
+      // }
   }
 
   announceLocation(showBonus?) : void {
       let winner;
-      if(showBonus || this.selectedMap.name === 'Bonus') {
-          winner = this.bonusWheel.getIndicatedSegment();
-      } else {
+      // if(showBonus || this.selectedMap.name === 'Bonus') {
+      //     winner = this.bonusWheel.getIndicatedSegment();
+      // } else {
           winner = this.wheel.getIndicatedSegment();
-      }
+      // }
       if(winner.text === 'Bonus') {
           this.showBonus = true;
-        swal({
-            text : "ITS BONUS TIME, GIVE THE BONUS WHEEL A SPIN",
-            allowOutsideClick: false
-        });
         this.initBonusWheel();
 
       } else {
          let winner =  this.wheel.getIndicatedSegment();
-         this.store.dispatch(WheelActions.announceLocationWinner({location: winner['location']}));
+         // this.store.dispatch(WheelActions.announceLocationWinner({location: winner['location']}));
+         this.winner.emit(winner['location']);
       }
   }
 
   reset() : void {
-      if(this.showBonus || this.selectedMap.name === 'Bonus') {
-          this.bonusWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
-          this.bonusWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
-          this.bonusWheel.draw();                // Call draw to render changes to the wheel.
-          this.wheelSpinning = false;
-      } else {
-          this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
-          this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
-          this.wheel.draw();                // Call draw to render changes to the wheel.
-          this.wheelSpinning = false;
-      }
+      // if(this.showBonus || this.selectedMap.name === 'Bonus') {
+      //     this.bonusWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+      //     this.bonusWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+      //     this.bonusWheel.draw();                // Call draw to render changes to the wheel.
+      //     this.wheelSpinning = false;
+      // } else {
+          // this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+
+      // }
+      //
+        if(this.wheel) {
+            this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+            this.wheel.draw();                // Call draw to render changes to the wheel.
+            this.spinningChange.emit(false);
+        }
   }
 
   initWheel(initText?) : void {
@@ -166,7 +151,12 @@ export class WheelComponent implements OnInit {
     config.numSegments = this.wheelSegments.length;
     config.segments = this.wheelSegments;
     config.animation.duration = (Math.random()+1)*5;
-    config.animation.callbackFinished = () => {this.announceLocation()};
+    config.animation.callbackFinished = () => {
+        this.announceLocation();
+        this.spinningChange.emit(false);
+        // Need the appRef tick becusae this happens ourside of the context of angular 'zone'
+        this.appRef.tick();
+    };
     this.wheel = new Winwheel(config);
   }
 
@@ -177,7 +167,10 @@ export class WheelComponent implements OnInit {
       bonusConfig.numSegments = this.wheelSegments.length;
       bonusConfig.segments = this.wheelSegments;
       bonusConfig.animation.duration = (Math.random()+1)*5;
-      bonusConfig.animation.callbackFinished = () => {this.announceLocation()};
+      bonusConfig.animation.callbackFinished = () => {
+          this.announceLocation();
+          this.spinningChange.emit(false);
+      };
       bonusConfig.fillStyle = '#99019a',
 
       this.bonusWheel = new Winwheel(bonusConfig);
