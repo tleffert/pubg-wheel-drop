@@ -31,7 +31,7 @@ export const reducer = createReducer(
     on(
         MapActions.fetchAllMapsSuccess,
         (state, {maps}) => {
-            let updatedState = mapEntityAdapter.upsertMany(<MapEntity[]>maps, state);
+            let updatedState = mapEntityAdapter.upsertMany(<MapEntity[]>maps, {...state});
             updatedState.fetching = false;
             return updatedState;
         }
