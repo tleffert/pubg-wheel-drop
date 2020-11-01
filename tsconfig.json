@@ -9,7 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es5",
+    "target": "es2018",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -20,7 +20,7 @@
       "es2017",
       "dom"
     ],
-    "module": "esnext",
+    "module": "es2020",
     "baseUrl": "src",
     "paths": {
       "@app/types": [
