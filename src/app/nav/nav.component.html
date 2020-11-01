@@ -25,13 +25,13 @@
       </div> -->
       <div class="btn-group mr-2">
           <button class="btn btn-sm" (click)="toggleLocationNav()" [ngClass]="{'btn-primary': locationSelectToggle, 'btn-secondary' : !locationSelectToggle}">
-              <fa [name]="'map-marker'" [size]="2"></fa>
+              <fa-icon [icon]="['fa', 'map-marker']" size="2x"></fa-icon>
           </button>
       </div>
 
       <div class="btn-group">
           <button class="btn btn-sm btn-secondary" (click)="showInfo()">
-              <fa [name]="'question-circle'" [size]="2"></fa>
+              <fa-icon [icon]="['fa', 'question-circle']" size="2x"></fa-icon>
           </button>
       </div>
   </div>

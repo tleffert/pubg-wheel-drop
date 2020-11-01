@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { OverlayModule, OVERLAY_PROVIDERS } from '@angular/cdk/overlay';
@@ -21,6 +20,7 @@ import { SteamStatusComponent } from './steam-status/steam-status.component';
 import { MapSelectComponent } from './map-select/map-select.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WinnerAnnounceComponent } from './winner-announce/winner-announce.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -34,14 +34,15 @@ import { WinnerAnnounceComponent } from './winner-announce/winner-announce.compo
   imports: [
     BrowserModule,
     AlertModule.forRoot(),
-    Angular2FontawesomeModule,
+    // Angular2FontawesomeModule,
     HttpClientModule,
     CommonModule,
     SharedModule,
     LocationSelectModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    OverlayModule
+    OverlayModule,
+    FontAwesomeModule
   ],
   providers: [EventService, OVERLAY_PROVIDERS],
   bootstrap: [AppComponent],

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy, Renderer2, ElementRef, ViewChild, Inject } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { OverlayService } from 'app/shared/services/overlay.service';
-import { Location, CONTAINER_DATA } from '@app/types';
+import { Location } from '@app/types';
 import { WheelSelectors, WheelActions } from '@app/store';
 import { Store } from '@ngrx/store';
 import { Observable, EMPTY, Subject } from 'rxjs';
