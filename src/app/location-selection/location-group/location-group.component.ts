@@ -23,10 +23,10 @@ export class LocationGroupComponent implements OnInit {
     @Output()
     selectedLocation = new EventEmitter<SelectableLocation>();
 
-    @ContentChild(LocationGroupToggle, {read: TemplateRef, static: false})
+    @ContentChild(LocationGroupToggle, { read: TemplateRef })
     groupToggleTemplate: TemplateRef<any>;
 
-    @ContentChild(LocationOptionTemplateDirective, {read: TemplateRef, static: false})
+    @ContentChild(LocationOptionTemplateDirective, { read: TemplateRef })
     locationOptionTemplate: TemplateRef<any>;
 
     allSelected: boolean;
