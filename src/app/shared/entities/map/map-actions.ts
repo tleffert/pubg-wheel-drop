@@ -20,4 +20,10 @@ export namespace MapActions {
         `${ActionKey} SELECT_MAP`,
         props<{map: MapEntity}>()
     );
+
+    export const initMaps = createAction(
+        `${ActionKey} INIT_MAPS`,
+        props<{maps: Map[]}>()
+    );
+
 }

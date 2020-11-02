@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { OverlayModule, OVERLAY_PROVIDERS } from '@angular/cdk/overlay';
@@ -21,6 +21,11 @@ import { MapSelectComponent } from './map-select/map-select.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WinnerAnnounceComponent } from './winner-announce/winner-announce.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LocationApiService } from './shared/api/location-api.service';
+import { Store } from '@ngrx/store';
+import { MapActions } from './shared/entities/map/map-actions';
+import { switchMap, tap } from 'rxjs/operators';
+import { LocationActions } from '@app/store';
 
 @NgModule({
   declarations: [
@@ -44,7 +49,35 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     OverlayModule,
     FontAwesomeModule
   ],
-  providers: [EventService, OVERLAY_PROVIDERS],
+  providers: [
+      EventService,
+      OVERLAY_PROVIDERS,
+      {
+        provide: APP_INITIALIZER,
+        useFactory: (locationApi: LocationApiService, store: Store<any>) => {
+            return () => locationApi.getMaps().pipe(
+                 tap(maps => {
+                     console.log("INIT MAPS", maps);
+                     store.dispatch(MapActions.initMaps({
+                         maps: maps
+                     }));
+                 }),
+                 switchMap(maps => {
+                     let defaultMap = maps.find(map => map.default);
+                     console.log("HERE IS THE DEFAULT MAP", defaultMap);
+                     return locationApi.getMapLocations(defaultMap.name);
+                 }),
+                 tap(locations => {
+                     store.dispatch(LocationActions.fetchAllLocationsByMapSuccess({
+                         locations: locations
+                     }));
+                 })
+            ).toPromise();
+        },
+        deps: [LocationApiService, Store],
+        multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [WinnerAnnounceComponent]
 })
