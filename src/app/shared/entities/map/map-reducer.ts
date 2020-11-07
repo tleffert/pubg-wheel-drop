@@ -35,5 +35,14 @@ export const reducer = createReducer(
             updatedState.fetching = false;
             return updatedState;
         }
+    ),
+
+    on(
+        MapActions.initMaps,
+        (state, {maps}) => {
+            let updatedState = mapEntityAdapter.upsertMany(<MapEntity[]>maps, {...state});
+            updatedState.selectedMapId = maps.find(map => map.default)._id;
+            return updatedState;
+        }
     )
 );

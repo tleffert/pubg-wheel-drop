@@ -27,7 +27,7 @@ export class LocationEffects {
         ),
         switchMap(({map}) => {
             // First check the store for locations
-            return this.store.select(getLocationsByMap(map))
+            return this.store.select(getLocationsByMap, {map: map})
             .pipe(
                 switchMap(locations => {
                     return iif(
@@ -44,5 +44,22 @@ export class LocationEffects {
         map(locations => {
             return LocationActions.fetchAllLocationsByMapSuccess({locations: locations});
         })
-    )
+    );
+
+    @Effect()
+    initDefaultMapLocations$ = this.actionStream$.pipe(
+        ofType(MapActions.initMaps),
+        switchMap(({maps}) => {
+            let defaultMap = maps.find(map => map.default);
+
+            return this.locationApi.getMapLocations(defaultMap.name).pipe(
+                map(locations => {
+                    return LocationActions.initDefaultMapLocations({
+                        map: defaultMap,
+                        locations: locations
+                    })
+                })
+            );
+        })
+    );
 }

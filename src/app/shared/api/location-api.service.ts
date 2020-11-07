@@ -16,8 +16,8 @@ export class LocationApiService {
       return this.http.get<Array<Map>>('/api/maps');
   }
 
-  getMapLocations(map) : Observable<Array<Location>> {
-      return this.http.get<Array<Location>>('/api/maps/'+map+'/locations');
+  getMapLocations(mapName: string) : Observable<Array<Location>> {
+      return this.http.get<Array<Location>>('/api/maps/'+mapName+'/locations');
   }
 
   reportWinner(locationId) : Observable<any> {

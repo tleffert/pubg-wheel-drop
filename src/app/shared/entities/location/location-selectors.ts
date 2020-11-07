@@ -11,11 +11,11 @@ export const {selectAll: selectAllLocations, selectIds } = locationEntityAdapter
     selectLocationEntityState
 );
 
-export const getLocationsByMap = (map: MapEntity) => createSelector(
+export const getLocationsByMap = createSelector(
     selectAllLocations,
-    (locations) => {
+    (locations, props) => {
         return locations.filter(location => {
-            return location.map === map.name;
+            return location.map === props.map.name;
         });
     }
 );

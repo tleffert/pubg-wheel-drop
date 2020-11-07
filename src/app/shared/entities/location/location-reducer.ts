@@ -45,6 +45,7 @@ export const reducer = createReducer(
 
     on(
         LocationActions.fetchAllLocationsByMapSuccess,
+        LocationActions.initDefaultMapLocations,
         (state, {locations}) => {
             let updatedState = {...state, fetching: false};
             return locationEntityAdapter.upsertMany(<LocationEntity[]>locations, updatedState);

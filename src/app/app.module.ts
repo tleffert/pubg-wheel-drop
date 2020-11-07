@@ -54,20 +54,13 @@ import { LocationActions } from '@app/store';
       OVERLAY_PROVIDERS,
       {
         provide: APP_INITIALIZER,
+        // Simple factory that requests the maps, and fetches locations for the default to make data available
+        // during app init
         useFactory: (locationApi: LocationApiService, store: Store<any>) => {
             return () => locationApi.getMaps().pipe(
                  tap(maps => {
                      store.dispatch(MapActions.initMaps({
                          maps: maps
-                     }));
-                 }),
-                 switchMap(maps => {
-                     let defaultMap = maps.find(map => map.default);
-                     return locationApi.getMapLocations(defaultMap.name);
-                 }),
-                 tap(locations => {
-                     store.dispatch(LocationActions.fetchAllLocationsByMapSuccess({
-                         locations: locations
                      }));
                  })
             ).toPromise();

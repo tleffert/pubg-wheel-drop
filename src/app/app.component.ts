@@ -38,14 +38,9 @@ export class AppComponent {
       private store: Store<any>,
       private renderer: Renderer2
   ) {
-      this.store.dispatch(MapActions.fetchAllMaps());
+      // this.store.dispatch(MapActions.fetchAllMaps());
       this.maps$ = this.store.select(MapSelectors.selectAllMaps).pipe(
-          filter(maps => !!maps.length),
-          tap(maps => {
-              this.store.dispatch(MapActions.selectMap({
-                  map: maps.find(map => map.default)
-              }))
-          })
+          filter(maps => !!maps.length)
       );
 
       this.winner$ = this.store.select(WheelSelectors.getWinner);
@@ -68,15 +63,14 @@ export class AppComponent {
                }
                // Adding new map class
                this.renderer.addClass(document.body, selectedMap.name);
-               this.store.dispatch(LocationActions.fetchAllLocationsByMap({
-                   map: selectedMap
-               }));
                this.currentMap = selectedMap;
            }),
            share()
        );
 
-       this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations);
+       this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations).pipe(
+           tap(locs => console.log("GETTING LOCATON UPDATES", locs))
+       );
   }
 
   setSelectMap(selectedMap: MapEntity) {
@@ -96,11 +90,11 @@ export class AppComponent {
           }));
       } else {
           if(!update.selected){
-              this.store.dispatch(LocationActions.deselectLocation({
+              this.store.dispatch(LocationActions.selectLocation({
                   location: update
               }));
           } else {
-              this.store.dispatch(LocationActions.selectLocation({
+              this.store.dispatch(LocationActions.deselectLocation({
                   location: update
               }));
           }

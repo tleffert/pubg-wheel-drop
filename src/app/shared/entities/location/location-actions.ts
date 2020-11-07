@@ -1,6 +1,6 @@
 import { createAction, props} from '@ngrx/store';
 
-import { Location } from '@app/types';
+import { Location, Map } from '@app/types';
 import { LocationEntity } from './location-state';
 import { MapEntity } from '../map/map-state';
 
@@ -29,4 +29,9 @@ export const selectLocation = createAction(
 export const selectManyLocations = createAction(
     `${LocationActionKey} SELECT_MANY_LOCATIONS`,
     props<{locations: LocationEntity[], toggleValue: boolean}>()
+);
+
+export const initDefaultMapLocations = createAction(
+    `${LocationActionKey} INIT_DEFAULT_MAP_LOCATIONS`,
+    props<{map: Map, locations: Location[]}>()
 );
