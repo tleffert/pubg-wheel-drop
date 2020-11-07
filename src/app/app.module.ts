@@ -57,14 +57,12 @@ import { LocationActions } from '@app/store';
         useFactory: (locationApi: LocationApiService, store: Store<any>) => {
             return () => locationApi.getMaps().pipe(
                  tap(maps => {
-                     console.log("INIT MAPS", maps);
                      store.dispatch(MapActions.initMaps({
                          maps: maps
                      }));
                  }),
                  switchMap(maps => {
                      let defaultMap = maps.find(map => map.default);
-                     console.log("HERE IS THE DEFAULT MAP", defaultMap);
                      return locationApi.getMapLocations(defaultMap.name);
                  }),
                  tap(locations => {
