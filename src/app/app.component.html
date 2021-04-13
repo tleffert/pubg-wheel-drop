@@ -37,6 +37,7 @@
                               [ngClass]="{'btn-primary': locationSelectToggle,
                                'btn-secondary' : !locationSelectToggle,
                                 'disabled': spinning$ | async}"
+                                [disabled]="spinning$ | async"
                           >
                           <i class="fas fa-map-marker-alt"></i>
                             Show Locations

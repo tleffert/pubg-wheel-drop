@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://wheel.church/",
+    "secure": false
+    },
+    "logLevel": "debug"
+}

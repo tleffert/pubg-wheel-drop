@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "dev": "sudo ng serve --proxy-config proxy.conf.json",
+    "dev": "sudo ng serve --proxy-config proxy.conf.json --sourceMap true",
+    "dev-nodb": "sudo ng serve --proxy-config proxy.nodb.json --sourceMap true",
     "dev-prod": "ng serve --proxy-config proxy.conf.json --prod",
     "build": "ng build --prod",
     "test": "ng test",
