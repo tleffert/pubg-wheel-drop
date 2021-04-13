@@ -1,15 +1,15 @@
-import { Input, Output, EventEmitter, Component, Renderer2, ElementRef, HostListener, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { Input, Output, EventEmitter, Component, Renderer2, ElementRef, HostListener, OnInit, SimpleChanges, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 
 import { Location } from '@app/types';
 
 @Component({
   selector: 'location-option',
-  templateUrl: './location-option.component.html',
+  templateUrl: './location-option.component.html'
 })
 export class LocationOption implements OnInit {
 
     @Input()
-    location: Location;
+    locationLabel: string;
 
     @Input()
     selected: boolean;
@@ -21,7 +21,7 @@ export class LocationOption implements OnInit {
     inactiveClass: string = 'btn-secondary';
 
     @Output()
-    selectedChange: EventEmitter<Location> = new EventEmitter<Location>();
+    selectedChange: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(
         private elementRef: ElementRef,
@@ -31,7 +31,6 @@ export class LocationOption implements OnInit {
     ngOnInit() {}
 
     updateSelected() {
-        this.selectedChange.emit(this.location);
+        this.selectedChange.emit();
     }
-
 }

@@ -22,27 +22,16 @@
                                 src="/assets/spicyempty.png"
                             />
                         </div>
-
-                    <!-- <div class="fire">
-                        <div class="particle">
-                        </div>
-                        <div class="particle">
-                        </div>
-                        <div class="particle">
-                        </div>
-                    </div> -->
                     </div>
                 </ng-template>
-
                 <ng-template
                     location-option-tmpl
                     let-location="location"
                 >
                     <location-option
-                        [location]="location"
+                        [locationLabel]="location.text"
                         [selected]="location.selected"
-                        (selectedChange)="selectedUpdate($event)"
-                        class="group-option"
+                        (selectedChange)="selectedUpdate(location)"
                     >
                     </location-option>
                 </ng-template>
