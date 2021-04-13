@@ -96,12 +96,7 @@ export class LocationSelectComponent implements OnInit, OnChanges {
         this.selected.emit([...this.groups[spice]]);
     }
 
-    selectedUpdate(selected: boolean, location: Location) {
-        location.selected = selected;
+    selectedUpdate(location: Location) {
         this.selected.emit(location);
-        let allGroupSelected = this.groups[location.level-1].every(groupLocation => {
-            return groupLocation.selected;
-        });
-        this.groupSelect[location.level-1] = allGroupSelected;
     }
 }

@@ -37,16 +37,13 @@
                     location-option-tmpl
                     let-location="location"
                 >
-                    <button
-                        location-option
+                    <location-option
+                        [location]="location"
                         [selected]="location.selected"
-                        (selectedChange)="selectedUpdate($event, location)"
-                        activeClass="selected"
-                        inactiveClass="btn-secondary"
-                        class="group-option btn"
+                        (selectedChange)="selectedUpdate($event)"
+                        class="group-option"
                     >
-                        {{location.text}}
-                    </button>
+                    </location-option>
                 </ng-template>
             </app-location-group>
         </div>
