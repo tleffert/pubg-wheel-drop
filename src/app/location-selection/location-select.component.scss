@@ -9,19 +9,19 @@
 
 
 .spice-group1 {
-    ::ng-deep & .btn.selected {
+    ::ng-deep & .btn.active {
         background-color: green;
     }
 }
 
 .spice-group2 {
-    ::ng-deep & .btn.selected {
+    ::ng-deep & .btn.active {
         background-color: orange;
     }
 }
 
 .spice-group3 {
-    ::ng-deep & .btn.selected {
+    ::ng-deep & .btn.active {
         background-color: red;
     }
 }
