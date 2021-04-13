@@ -1,11 +1,14 @@
 import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 import { tap, filter, distinctUntilChanged, share } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { MapSelectors, MapEntity, MapActions, LocationEntity, LocationSelectors, LocationActions, WheelActions, WheelSelectors } from '@app/store';
-import { Location } from '@app/types';
 import { Observable } from 'rxjs';
-import { trigger, transition, style, animate } from '@angular/animations';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+
+import { Location } from '@app/types';
+
 
 @Component({
   selector: 'app-root',
@@ -28,14 +31,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChild('mapimg') mapBackground: ElementRef;
 
-  title = 'app';
-  locationSelectToggle : boolean = true;
-  selectedMap$: Observable<MapEntity> = new Observable<MapEntity>();
-  maps$: Observable<MapEntity[]>;
-  mapLocations$: Observable<LocationEntity[]>;
-  winner$: Observable<any>;
-  spinning$: Observable<boolean>;
-  currentMap: MapEntity;
+    title = 'app';
+    locationSelectToggle : boolean = true;
+    selectedMap$: Observable<MapEntity> = new Observable<MapEntity>();
+    maps$: Observable<MapEntity[]>;
+    mapLocations$: Observable<LocationEntity[]>;
+    winner$: Observable<any>;
+    spinning$: Observable<boolean>;
+    currentMap: MapEntity;
+    faMapMarkerAlt = faMapMarkerAlt;
 
   constructor(
       private store: Store<any>,
