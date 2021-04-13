@@ -25,6 +25,8 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     @Output()
     selected: EventEmitter<Location | Location[]> = new EventEmitter<Location | Location[]>();
 
+    @Output()
+    toggleSpice:  EventEmitter<number> = new EventEmitter<number>();
     // each index is considered a spice leve/group
     locationBySpice: LocationGroup[];
 
@@ -87,13 +89,8 @@ export class LocationSelectComponent implements OnInit, OnChanges {
         this.selected.emit(location);
     }
 
-    toggleSpiceGroup(spice: any) {
-        this.groupSelect[spice] = !this.groupSelect[spice];
-
-        this.groups[spice].forEach(location => {
-            location.selected = this.groupSelect[spice];
-        });
-        this.selected.emit([...this.groups[spice]]);
+    toggleSpiceGroup(spice: number) {
+        this.toggleSpice.emit(spice);
     }
 
     selectedUpdate(location: Location) {

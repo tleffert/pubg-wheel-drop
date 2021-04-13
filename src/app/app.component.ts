@@ -82,25 +82,24 @@ export class AppComponent {
      this.locationSelectToggle = !this.locationSelectToggle;
   }
 
-  updateSelected(update: Location | Location[]) {
-      if(Array.isArray(update)) {
-          this.store.dispatch(LocationActions.selectManyLocations({
-              locations: update,
-              toggleValue: update[0].selected
+  updateSelected(update: Location) {
+      if(!update.selected){
+          this.store.dispatch(LocationActions.selectLocation({
+              location: update
           }));
       } else {
-          if(!update.selected){
-              this.store.dispatch(LocationActions.selectLocation({
-                  location: update
-              }));
-          } else {
-              this.store.dispatch(LocationActions.deselectLocation({
-                  location: update
-              }));
-          }
+          this.store.dispatch(LocationActions.deselectLocation({
+              location: update
+          }));
       }
   }
 
+  updateSpiceToggle(spice) {
+      this.store.dispatch(LocationActions.toggleSpiceGroup({
+          spiceLevel: spice,
+          map: this.currentMap
+      }));
+  }
   handleWinner(winner: Location) {
       this.store.dispatch(WheelActions.announceLocationWinner({
           location: winner

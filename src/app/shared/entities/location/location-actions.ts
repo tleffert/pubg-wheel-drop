@@ -35,3 +35,8 @@ export const initDefaultMapLocations = createAction(
     `${LocationActionKey} INIT_DEFAULT_MAP_LOCATIONS`,
     props<{map: Map, locations: Location[]}>()
 );
+
+export const toggleSpiceGroup = createAction(
+    `${LocationActionKey} TOGGLE_SPICE_GROUP`,
+    props<{spiceLevel: number, map: Map}>()
+);

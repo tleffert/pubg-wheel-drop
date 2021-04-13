@@ -42,6 +42,14 @@
                   </div>
 
 
+                      <location-select
+                          [@slideInOut]
+                          class="w-100 location-select pb-3"
+                          [map]="selectedMap$ | async"
+                          [locations]="mapLocations$ | async"
+                          (selected)="updateSelected($event)"
+                          (toggleSpice)="updateSpiceToggle($event)"
+                      ></location-select>
               </div>
           </div>
           <div class="d-flex location-select-container">

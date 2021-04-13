@@ -66,6 +66,37 @@ export const reducer = createReducer(
             });
             return locationEntityAdapter.updateMany(updates, state);
         }
+    ),
+
+    on(
+        LocationActions.toggleSpiceGroup,
+        (state, {spiceLevel, map}) => {
+            let updateIds = [];
+            let normalizedSelect = true;
+
+            state.ids.forEach(id => {
+                if (state.entities[id].map === map.name && state.entities[id].level == spiceLevel) {
+                    // finding the ids/entities that we will want to update
+                    updateIds.push(id);
+                    /*
+                        Getting a normalized value on how to toggle the group
+                        This gets us a 'default' selecting all if only a subset of the group is selected
+                    */
+                    normalizedSelect = normalizedSelect && state.entities[id].selected;
+                }
+            });
+
+            const updates = updateIds.map(id => {
+                return {
+                    id: id,
+                    changes: {
+                        selected: !normalizedSelect
+                    }
+                }
+            });
+
+            return locationEntityAdapter.updateMany(updates, state);
+        }
     )
 
 );
