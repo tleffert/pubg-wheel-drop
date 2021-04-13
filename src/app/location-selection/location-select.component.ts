@@ -20,13 +20,19 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     map: GameMap;
 
     @Input()
-    locations: Location[];
+    set locations(locations: Location[]) {
+        if (locations) {
+            this.resetLocations();
+            this.createGroups(locations);
+        }
+    };
 
     @Output()
     selected: EventEmitter<Location | Location[]> = new EventEmitter<Location | Location[]>();
 
     @Output()
     toggleSpice:  EventEmitter<number> = new EventEmitter<number>();
+
     // each index is considered a spice leve/group
     locationBySpice: LocationGroup[];
 
@@ -39,16 +45,16 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     constructor() {}
 
     ngOnInit() {
-        this.createGroups();
+
     }
 
-    createGroups() {
-        this.resetLocations();
-        this.locations.forEach(location => {
+    createGroups(locations: Location[]) {
+
+        locations.forEach(location => {
             if(!this.groups[location.level - 1]) {
                 this.groups[location.level - 1] = [];
             }
-            this.groups[location.level - 1].push(location);
+            this.groups[location.level - 1].push({...location});
         });
 
         this.groups.forEach((group, index) => {
@@ -70,8 +76,9 @@ export class LocationSelectComponent implements OnInit, OnChanges {
             this.resetLocations();
         }
 
-        if(mapUpdated && changes.locations) {
-            this.createGroups();
+        if(mapUpdated && changes.locations.currentValue) {
+        //    this.resetLocations();
+            this.createGroups(changes.locations.currentValue);
         }
     }
 
