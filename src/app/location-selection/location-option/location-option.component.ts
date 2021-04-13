@@ -1,6 +1,4 @@
-import { Input, Output, EventEmitter, Component, Renderer2, ElementRef, HostListener, OnInit, SimpleChanges, OnChanges, ChangeDetectionStrategy } from '@angular/core';
-
-import { Location } from '@app/types';
+import { Input, Output, EventEmitter, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'location-option',
@@ -23,10 +21,7 @@ export class LocationOption implements OnInit {
     @Output()
     selectedChange: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(
-        private elementRef: ElementRef,
-        private renderer: Renderer2
-    ) { }
+    constructor() { }
 
     ngOnInit() {}
 

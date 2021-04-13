@@ -22,13 +22,14 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     @Input()
     set locations(locations: Location[]) {
         if (locations) {
+            // Getting locations but we want to split them based on spice levels
             this.resetLocations();
             this.createGroups(locations);
         }
     };
 
     @Output()
-    selected: EventEmitter<Location | Location[]> = new EventEmitter<Location | Location[]>();
+    selected: EventEmitter<Location> = new EventEmitter<Location>();
 
     @Output()
     toggleSpice:  EventEmitter<number> = new EventEmitter<number>();
@@ -48,6 +49,11 @@ export class LocationSelectComponent implements OnInit, OnChanges {
 
     }
 
+    /**
+     * Takes in an array of Locations and creates groups based on spiceLevel
+     * @param  locations [description]
+     * @return           [description]
+     */
     createGroups(locations: Location[]) {
 
         locations.forEach(location => {
@@ -68,10 +74,12 @@ export class LocationSelectComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         let mapUpdated: boolean;
         if(changes.map) {
+            // On first load and if the map ids have changed - we've got a 'new' map
             mapUpdated = changes.map.firstChange ||
              (changes.map.previousValue && changes.map.previousValue._id !== changes.map.currentValue._id);
         }
 
+        // If our map has changed we need to reset the groups/locations
         if(mapUpdated) {
             this.resetLocations();
         }
@@ -82,6 +90,7 @@ export class LocationSelectComponent implements OnInit, OnChanges {
         }
     }
 
+    // Resets the calculated location groups
     private resetLocations() {
         this.groups = new Array<Location[]>(3);
     }
@@ -92,14 +101,12 @@ export class LocationSelectComponent implements OnInit, OnChanges {
         });
     }
 
-    toggleOption(location: Location) {
-        this.selected.emit(location);
-    }
-
+    // Emits event with the toggled spice level
     toggleSpiceGroup(spice: number) {
         this.toggleSpice.emit(spice);
     }
 
+    // Emits event for the selected/toggled location
     selectedUpdate(location: Location) {
         this.selected.emit(location);
     }
