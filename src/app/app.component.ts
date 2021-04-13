@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 
 import { tap, filter, distinctUntilChanged, share } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -24,7 +24,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, AfterViewInit {
+
+    @ViewChild('mapimg') mapBackground: ElementRef;
+
   title = 'app';
   locationSelectToggle : boolean = true;
   selectedMap$: Observable<MapEntity> = new Observable<MapEntity>();
@@ -38,6 +41,10 @@ export class AppComponent {
       private store: Store<any>,
       private renderer: Renderer2
   ) {
+
+  }
+
+  ngOnInit() {
       // this.store.dispatch(MapActions.fetchAllMaps());
       this.maps$ = this.store.select(MapSelectors.selectAllMaps).pipe(
           filter(maps => !!maps.length)
@@ -56,21 +63,28 @@ export class AppComponent {
        .pipe(
            filter(selectedMap => !!selectedMap),
            distinctUntilChanged(),
-           tap((selectedMap) => {
-               // Removing old map class
-               if(this.currentMap) {
-                   this.renderer.removeClass(document.body, this.currentMap.name);
-               }
-               // Adding new map class
-               this.renderer.addClass(document.body, selectedMap.name);
-               this.currentMap = selectedMap;
-           }),
+           tap(selectedMap => this.currentMap = selectedMap),
            share()
        );
+
 
        this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations).pipe(
            tap(locs => console.log("GETTING LOCATON UPDATES", locs))
        );
+  }
+
+  ngAfterViewInit() {
+      this.selectedMap$.pipe(
+          tap((selectedMap) => {
+              // Removing old map class
+              if(this.currentMap) {
+                  this.renderer.removeClass(this.mapBackground.nativeElement, this.currentMap.name);
+              }
+              // Adding new map class
+              this.renderer.addClass(this.mapBackground.nativeElement, selectedMap.name);
+              this.currentMap = selectedMap;
+          })
+      ).subscribe()
   }
 
   setSelectMap(selectedMap: MapEntity) {
@@ -100,6 +114,7 @@ export class AppComponent {
           map: this.currentMap
       }));
   }
+
   handleWinner(winner: Location) {
       this.store.dispatch(WheelActions.announceLocationWinner({
           location: winner

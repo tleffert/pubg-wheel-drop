@@ -4,46 +4,7 @@
 
 
 /* You can add global styles to this file, and also import other style files */
-body {
-    /*background-image: url("./assets/pubg_map_down_scale.jpg");*/
-    background-image: url("./assets/erangel/erangel.jpg");
 
-    /* Background image is centered vertically and horizontally at all times */
-     background-position: center center;
-
-     /* Background image doesn't tile */
-     background-repeat: no-repeat;
-
-     /* Background image is fixed in the viewport so that it doesn't move when
-        the content's height is greater than the image's height */
-     background-attachment: fixed;
-
-     /* This is what makes the background image rescale based
-        on the container's size */
-     background-size: cover;
-
-     /* Set a background color that will be displayed
-        while the background image is loading */
-     background-color: #464646;
-
-     overflow: hidden;
-
-     &.Erangel, &.Bonus {
-        background-image: url("./assets/erangel/erangel.jpg");
-     }
-
-     &.Miramar {
-        background-image: url("./assets/miramar/miramar.jpg");
-     }
-
-     &.Sanhok {
-        background-image: url("./assets/sanhok/sanhok.jpg");
-     }
-
-     &.Vikendi {
-        background-image: url("./assets/vikendi/vikendi.jpg");
-     }
-}
 
 .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
   &.dark-backdrop {
@@ -58,6 +19,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+body {
+    overflow: hidden;
 }
 
 
