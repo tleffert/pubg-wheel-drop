@@ -30,16 +30,23 @@ import { Location } from '@app/types';
 export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChild('mapimg') mapBackground: ElementRef;
-
     title = 'app';
+
+    // fontawesome icon component for template
+    faMapMarkerAlt = faMapMarkerAlt;
+
     locationSelectToggle : boolean = true;
+
+    // currently selected map
+    currentMap: MapEntity;
+
+    // Store selector helpers/listeners
     selectedMap$: Observable<MapEntity> = new Observable<MapEntity>();
     maps$: Observable<MapEntity[]>;
     mapLocations$: Observable<LocationEntity[]>;
     winner$: Observable<any>;
     spinning$: Observable<boolean>;
-    currentMap: MapEntity;
-    faMapMarkerAlt = faMapMarkerAlt;
+
 
   constructor(
       private store: Store<any>,
@@ -49,12 +56,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-      // this.store.dispatch(MapActions.fetchAllMaps());
+      // listener for all selectable maps
       this.maps$ = this.store.select(MapSelectors.selectAllMaps).pipe(
           filter(maps => !!maps.length)
       );
 
+      // listener for the winning locations after a wheel spin
       this.winner$ = this.store.select(WheelSelectors.getWinner);
+
+      // helper to know when the wheel is spinning
       this.spinning$ = this.store.select(WheelSelectors.getWheelSpinning).pipe(
           tap(spinning => {
              if(spinning) {
@@ -63,6 +73,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           })
       );
 
+      // listener for what the currently selected map is
       this.selectedMap$ = this.store.select(MapSelectors.getSelectedMap)
        .pipe(
            filter(selectedMap => !!selectedMap),
@@ -71,13 +82,12 @@ export class AppComponent implements OnInit, AfterViewInit {
            share()
        );
 
-
-       this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations).pipe(
-           tap(locs => console.log("GETTING LOCATON UPDATES", locs))
-       );
+       // listener for the locations of the currently selected map (selected map from the store)
+       this.mapLocations$ = this.store.select(LocationSelectors.getSelectedMapLocations);
   }
 
   ngAfterViewInit() {
+      // Helper to switchout the background based on the selected map
       this.selectedMap$.pipe(
           tap((selectedMap) => {
               // Removing old map class
@@ -94,7 +104,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   setSelectMap(selectedMap: MapEntity) {
      this.store.dispatch(MapActions.selectMap({map: selectedMap}));
   }
-
 
   toggleLocationNav() : void {
      this.locationSelectToggle = !this.locationSelectToggle;

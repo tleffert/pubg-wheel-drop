@@ -27,10 +27,7 @@ export class MapsResolver implements Resolve<MapEntity[]> {
               }
           }),
           filter(maps => !!maps.length),
-          take(1),
-          tap(maps => {
-              console.log("resolve me", maps);
-          })
+          take(1)
       );
   }
 }
