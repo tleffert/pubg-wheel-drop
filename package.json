@@ -40,7 +40,7 @@
     "font-awesome": "4.7.0",
     "greenlock-express": "2.7.17",
     "mongodb": "3.3.2",
-    "mongoose": "5.7.4",
+    "mongoose": "5.7.5",
     "ngx-bootstrap": "5.1.2",
     "request": "2.88.0",
     "request-promise": "4.2.4",
